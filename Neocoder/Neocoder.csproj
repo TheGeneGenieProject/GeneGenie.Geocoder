@@ -6,10 +6,10 @@
     <Company>GeneGenie.com</Company>
     <Description>Library that geocodes an address by rotating through multiple geocoders. Current version has Bing and Google Geocoding built in.</Description>
     <Copyright>Ryan O'Neill</Copyright>
-    <PackageLicenseUrl>https://github.com/TheGeneGenieProject/MultiGeocoder/blob/master/LICENSE</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/TheGeneGenieProject/MultiGeocoder</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/TheGeneGenieProject/Neocoder/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/TheGeneGenieProject/Neocoder</PackageProjectUrl>
     <PackageIconUrl>https://avatars0.githubusercontent.com/u/22330020?s=200&amp;v=4</PackageIconUrl>
-    <RepositoryUrl>https://github.com/TheGeneGenieProject/MultiGeocoder</RepositoryUrl>
+    <RepositoryUrl>https://github.com/TheGeneGenieProject/Neocoder</RepositoryUrl>
     <PackageTags>geocoder geocoding bing google neocoder</PackageTags>
     <PackageId>Neocoder</PackageId>
     <Product>Neocoder</Product>
