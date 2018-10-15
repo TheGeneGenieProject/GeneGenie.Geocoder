@@ -1,0 +1,64 @@
+﻿{
+    "results": [
+        {
+            "address_components": [
+                {
+                    "long_name": "75",
+                    "short_name": "75",
+                    "types": [ "street_number" ]
+                },
+                {
+                    "long_name": "Beadlow Road",
+                    "short_name": "Beadlow Rd",
+                    "types": [ "route" ]
+                },
+                {
+                    "long_name": "Luton",
+                    "short_name": "Luton",
+                    "types": [ "postal_town" ]
+                },
+                {
+                    "long_name": "Luton",
+                    "short_name": "Luton",
+                    "types": [ "administrative_area_level_2", "political" ]
+                },
+                {
+                    "long_name": "England",
+                    "short_name": "England",
+                    "types": [ "administrative_area_level_1", "political" ]
+                },
+                {
+                    "long_name": "United Kingdom",
+                    "short_name": "GB",
+                    "types": [ "country", "political" ]
+                },
+                {
+                    "long_name": "LU4 0QZ",
+                    "short_name": "LU4 0QZ",
+                    "types": [ "postal_code" ]
+                }
+            ],
+            "formatted_address": "75 Beadlow Rd, Luton LU4 0QZ, UK",
+            "geometry": {
+                "location": {
+                    "lat": 9.9,
+                    "lng": 10.10
+                },
+                "location_type": "RANGE_INTERPOLATED",
+                "viewport": {
+                    "northeast": {
+                        "lat": 5.5,
+                        "lng": 6.6
+                    },
+                    "southwest": {
+                        "lat": 7.7,
+                        "lng": 8.8
+                    }
+                }
+            },
+            "place_id": "EiA3NSBCZWFkbG93IFJkLCBMdXRvbiBMVTQgMFFaLCBVSyIaEhgKFAoSCUnKfH_aTnZIESoGFZ13hkeAEEs",
+            "types": [ "street_address" ]
+        }
+    ],
+    "status": "OK"
+}

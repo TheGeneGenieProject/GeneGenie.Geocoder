@@ -1,0 +1,149 @@
+{
+    "authenticationResultCode": "NoCredentials",
+    "brandLogoUri": "http:\/\/dev.virtualearth.net\/Branding\/logo_powered_by.png",
+    "copyright": "Copyright © 2018 Microsoft and its suppliers. All rights reserved. This API cannot be accessed and the content and any results may not be used, reproduced or transmitted in any manner without express written permission from Microsoft Corporation.",
+    "resourceSets": [
+        {
+            "estimatedTotal": 5,
+            "resources": [
+                {
+                    "__type": "Location:http:\/\/schemas.microsoft.com\/search\/local\/ws\/rest\/v1",
+                    "bbox": [ 51.8544616699219, -0.505958020687103, 51.9277496337891, -0.349913001060486 ],
+                    "name": "Luton, Luton, United Kingdom",
+                    "point": {
+                        "type": "Point",
+                        "coordinates": [ 51.881591796875, -0.416110008955002 ]
+                    },
+                    "address": {
+                        "adminDistrict": "England",
+                        "adminDistrict2": "Luton",
+                        "countryRegion": "United Kingdom",
+                        "formattedAddress": "Luton, Luton, United Kingdom",
+                        "locality": "Luton"
+                    },
+                    "confidence": "High",
+                    "entityType": "PopulatedPlace",
+                    "geocodePoints": [
+                        {
+                            "type": "Point",
+                            "coordinates": [ 51.881591796875, -0.416110008955002 ],
+                            "calculationMethod": "Rooftop",
+                            "usageTypes": [ "Display" ]
+                        }
+                    ],
+                    "matchCodes": [ "Ambiguous" ]
+                },
+                {
+                    "__type": "Location:http:\/\/schemas.microsoft.com\/search\/local\/ws\/rest\/v1",
+                    "bbox": [ 51.854621887207, -0.500609993934631, 51.9264450073242, -0.35359001159668 ],
+                    "name": "Luton, United Kingdom",
+                    "point": {
+                        "type": "Point",
+                        "coordinates": [ 51.8940505981445, -0.426330000162125 ]
+                    },
+                    "address": {
+                        "adminDistrict": "England",
+                        "adminDistrict2": "Luton",
+                        "countryRegion": "United Kingdom",
+                        "formattedAddress": "Luton, United Kingdom"
+                    },
+                    "confidence": "Low",
+                    "entityType": "AdminDivision2",
+                    "geocodePoints": [
+                        {
+                            "type": "Point",
+                            "coordinates": [ 51.8940505981445, -0.426330000162125 ],
+                            "calculationMethod": "Rooftop",
+                            "usageTypes": [ "Display" ]
+                        }
+                    ],
+                    "matchCodes": [ "Ambiguous" ]
+                },
+                {
+                    "__type": "Location:http:\/\/schemas.microsoft.com\/search\/local\/ws\/rest\/v1",
+                    "bbox": [ 51.8784767599684, -0.422962840118143, 51.8862021951097, -0.40627718397167 ],
+                    "name": "Luton, United Kingdom",
+                    "point": {
+                        "type": "Point",
+                        "coordinates": [ 51.8823394775391, -0.414620012044907 ]
+                    },
+                    "address": {
+                        "adminDistrict": "England",
+                        "adminDistrict2": "Luton",
+                        "countryRegion": "United Kingdom",
+                        "formattedAddress": "Luton, United Kingdom",
+                        "locality": "Luton"
+                    },
+                    "confidence": "Low",
+                    "entityType": "RailwayStation",
+                    "geocodePoints": [
+                        {
+                            "type": "Point",
+                            "coordinates": [ 51.8823394775391, -0.414620012044907 ],
+                            "calculationMethod": "Rooftop",
+                            "usageTypes": [ "Display" ]
+                        }
+                    ],
+                    "matchCodes": [ "Ambiguous" ]
+                },
+                {
+                    "__type": "Location:http:\/\/schemas.microsoft.com\/search\/local\/ws\/rest\/v1",
+                    "bbox": [ 51.889558455525, -0.435294892727153, 51.8972838906664, -0.418605122627004 ],
+                    "name": "Luton, Luton, United Kingdom",
+                    "point": {
+                        "type": "Point",
+                        "coordinates": [ 51.8934211730957, -0.426950007677078 ]
+                    },
+                    "address": {
+                        "adminDistrict": "England",
+                        "adminDistrict2": "Luton",
+                        "countryRegion": "United Kingdom",
+                        "formattedAddress": "Luton, Luton, United Kingdom",
+                        "locality": "Luton"
+                    },
+                    "confidence": "Low",
+                    "entityType": "Neighborhood",
+                    "geocodePoints": [
+                        {
+                            "type": "Point",
+                            "coordinates": [ 51.8934211730957, -0.426950007677078 ],
+                            "calculationMethod": "Rooftop",
+                            "usageTypes": [ "Display" ]
+                        }
+                    ],
+                    "matchCodes": [ "Ambiguous" ]
+                },
+                {
+                    "__type": "Location:http:\/\/schemas.microsoft.com\/search\/local\/ws\/rest\/v1",
+                    "bbox": [ 51.3376983181793, 0.488169712114149, 51.3956390841644, 0.611830311727709 ],
+                    "name": "Luton, Medway, United Kingdom",
+                    "point": {
+                        "type": "Point",
+                        "coordinates": [ 51.3666687011719, 0.550000011920929 ]
+                    },
+                    "address": {
+                        "adminDistrict": "England",
+                        "adminDistrict2": "Medway",
+                        "countryRegion": "United Kingdom",
+                        "formattedAddress": "Luton, Medway, United Kingdom",
+                        "locality": "Luton"
+                    },
+                    "confidence": "Low",
+                    "entityType": "PopulatedPlace",
+                    "geocodePoints": [
+                        {
+                            "type": "Point",
+                            "coordinates": [ 51.3666687011719, 0.550000011920929 ],
+                            "calculationMethod": "Rooftop",
+                            "usageTypes": [ "Display" ]
+                        }
+                    ],
+                    "matchCodes": [ "Ambiguous" ]
+                }
+            ]
+        }
+    ],
+    "statusCode": 200,
+    "statusDescription": "Service Unavailable",
+    "traceId": "c48934efd9584206a7648871839b88cb|BN1D27A66C|7.7.0.0"
+}
