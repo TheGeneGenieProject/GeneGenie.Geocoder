@@ -13,6 +13,8 @@
     <PackageTags>geocoder geocoding bing google neocoder</PackageTags>
     <PackageId>Neocoder</PackageId>
     <Product>Neocoder</Product>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>StrongNameKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
