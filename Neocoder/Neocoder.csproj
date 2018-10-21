@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
-    <Authors>Ryan O'Neill</Authors>
+      <TargetFramework>netstandard2.0</TargetFramework>
+      <Authors>Ryan O'Neill</Authors>
     <Company>GeneGenie.com</Company>
     <Description>Library that geocodes an address by rotating through multiple geocoders. Current version has Bing and Google Geocoding built in.</Description>
     <Copyright>Ryan O'Neill</Copyright>
