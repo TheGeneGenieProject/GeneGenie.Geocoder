@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "GeneGenie.Geocoder.Console": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
