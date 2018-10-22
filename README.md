@@ -1,4 +1,4 @@
-# Neocoder
+# GeneGenie.Geocoder
 A .Net standard geocoder library that can query multiple backend geocoders and rotate between them.
 
 Currently supports Google and Bing geocoder APIs.
@@ -9,7 +9,7 @@ Currently supports Google and Bing geocoder APIs.
 
 ## Quickstart
 
-See the Neocoder.Console project for an example of the following.
+See the GeneGenie.Geocoder.Console project for an example of the following.
 Set your Google and Bing geocoder API keys in appsettings.json.
 Register Neocoder for use with .Net Core Dependency Injection via;
 
