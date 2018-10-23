@@ -4,8 +4,8 @@ A .Net standard geocoder library that can query multiple backend geocoders and r
 Currently supports Google and Bing geocoder APIs.
 
 ## Status
-
 [![Build status](https://ci.appveyor.com/api/projects/status/mbxq3udi6n2ic43b?svg=true)](https://ci.appveyor.com/project/RyanONeill1970/genegenie-geocoder)
+[![Tests status](https://appveyor-shields-badge.herokuapp.com/api/testResults/ryanoneill1970/genegenie-geocoder/badge.svg)](https://ci.appveyor.com/project/ryanoneill1970/genegenie-geocoder)
 
 ## Quickstart
 
