@@ -5,7 +5,7 @@ Currently supports Google and Bing geocoder APIs.
 
 ## Status
 
-[![Build status](https://dev.azure.com/ryanoneill/Neocoder/_apis/build/status/Neocoder-ASP.NET%20Core-CI)](https://dev.azure.com/ryanoneill/Neocoder/_build/latest?definitionId=2)
+[![Build status](https://ci.appveyor.com/api/projects/status/mbxq3udi6n2ic43b?svg=true)](https://ci.appveyor.com/project/RyanONeill1970/genegenie-geocoder)
 
 ## Quickstart
 
