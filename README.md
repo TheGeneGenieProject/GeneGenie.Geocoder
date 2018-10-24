@@ -1,5 +1,5 @@
 # GeneGenie.Geocoder
-A .Net standard geocoder library that can query multiple backend geocoders and rotate between them (briefly named Neocoder, this is the new name for the project).
+A .Net standard geocoder library that can query multiple backend geocoders and rotate between them (briefly named Neocoder, GeneGenie.Geocoder is the new name for the project).
 
 Currently supports Google and Bing geocoder APIs.
 

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneGenie.Geocoder.Tests", "GeneGenie.Geocoder.UnitTests\GeneGenie.Geocoder.Tests.csproj", "{C157850A-E858-4E51-A718-980D2E63F3C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneGenie.Geocoder.Tests", "GeneGenie.Geocoder.Tests\GeneGenie.Geocoder.Tests.csproj", "{C157850A-E858-4E51-A718-980D2E63F3C9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneGenie.Geocoder.Console", "GeneGenie.Geocoder.Console\GeneGenie.Geocoder.Console.csproj", "{C473F2F9-8F9D-41F2-9C0A-7C87EA0AE785}"
 EndProject
