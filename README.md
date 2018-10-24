@@ -10,7 +10,7 @@ Currently supports Google and Bing geocoder APIs.
 
 See the GeneGenie.Geocoder.Console project for an example of the following.
 Set your Google and Bing geocoder API keys in appsettings.json.
-Register Neocoder for use with .Net Core Dependency Injection via;
+Register the geocoder for use with .Net Core Dependency Injection via;
 
             // This gets the geocoder settings out of your configuration file.
             var appSettings = configuration.GetSection("App").Get<AppSettings>();
