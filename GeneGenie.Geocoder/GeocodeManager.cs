@@ -11,7 +11,6 @@ namespace GeneGenie.Geocoder
     using GeneGenie.Geocoder.Interfaces;
     using GeneGenie.Geocoder.Models.Geo;
     using GeneGenie.Geocoder.Services;
-    using Microsoft.Extensions.Logging;
 
     /// <summary>
     /// The main entry point for looking up an address.
@@ -21,13 +20,16 @@ namespace GeneGenie.Geocoder
     {
         private readonly IGeocoderSelector geocoderSelector;
         private readonly KeyComposer keyComposer;
-        private readonly ILogger<GeocodeManager> logger;
 
-        public GeocodeManager(IGeocoderSelector geocoderSelector, KeyComposer keyComposer, ILogger<GeocodeManager> logger)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GeocodeManager"/> class.
+        /// </summary>
+        /// <param name="geocoderSelector">An instance of <see cref="IGeocoderSelector"/> that is responsible for returning the next available geocoder.</param>
+        /// <param name="keyComposer">An instance of <see cref="KeyComposer"/> used to construct a unique code per address looked up.</param>
+        public GeocodeManager(IGeocoderSelector geocoderSelector, KeyComposer keyComposer)
         {
             this.geocoderSelector = geocoderSelector;
             this.keyComposer = keyComposer;
-            this.logger = logger;
         }
 
         /// <summary>
@@ -79,37 +81,6 @@ namespace GeneGenie.Geocoder
 
             addressLookupResult.Status = SummariseGeocodeStatus(geocodersTried);
             return addressLookupResult;
-        }
-
-        public AddressLookupStatus MapQualityEnum(AddressQualityStatus status)
-        {
-            if (status == AddressQualityStatus.AllNumeric)
-            {
-                return AddressLookupStatus.AllNumeric;
-            }
-
-            if (status == AddressQualityStatus.Empty)
-            {
-                return AddressLookupStatus.SkippedAsEmpty;
-            }
-
-            if (status == AddressQualityStatus.KnownErroneous)
-            {
-                return AddressLookupStatus.KnownErroneous;
-            }
-
-            if (status == AddressQualityStatus.SeemsToBeADate)
-            {
-                return AddressLookupStatus.SeemsToBeADate;
-            }
-
-            if (status == AddressQualityStatus.OK)
-            {
-                return AddressLookupStatus.RequiresLookup;
-            }
-
-            // This is an error, everything should be mapped. This is picked up by the unit tests.
-            return AddressLookupStatus.NotSet;
         }
 
         private AddressLookupStatus SummariseGeocodeStatus(Dictionary<GeocoderNames, GeocodeStatus> geocodersTried)
