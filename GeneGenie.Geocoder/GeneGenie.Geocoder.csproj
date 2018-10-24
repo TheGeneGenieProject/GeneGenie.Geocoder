@@ -4,7 +4,8 @@
         <TargetFramework>netstandard2.0</TargetFramework>
         <Authors>Ryan O'Neill</Authors>
         <Company>GeneGenie.com</Company>
-        <Description>Library that geocodes an address by rotating through multiple geocoders. Current version has Bing and Google Geocoding built in. Previously named Neocoder.</Description>
+        <PackageDescription>A .Net standard geocoder library that can query multiple backend geocoders and rotate between them (briefly named Neocoder, GeneGenie.Geocoder is the new name for the project).</PackageDescription>
+        <Description>A .Net standard geocoder library that can query multiple backend geocoders and rotate between them (briefly named Neocoder, GeneGenie.Geocoder is the new name for the project).</Description>
         <Copyright>Ryan O'Neill</Copyright>
         <PackageLicenseUrl>https://github.com/TheGeneGenieProject/GeneGenie.Geocoder/blob/master/LICENSE</PackageLicenseUrl>
         <PackageProjectUrl>https://github.com/TheGeneGenieProject/GeneGenie.Geocoder</PackageProjectUrl>
