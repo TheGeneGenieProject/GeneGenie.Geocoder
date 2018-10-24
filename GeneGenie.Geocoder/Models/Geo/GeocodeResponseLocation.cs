@@ -1,11 +1,11 @@
-﻿// <copyright file="GeocodeResponseLocationV2.cs" company="GeneGenie.com">
+﻿// <copyright file="GeocodeResponseLocation.cs" company="GeneGenie.com">
 // Copyright (c) GeneGenie.com. All Rights Reserved.
 // Licensed under the GNU Affero General Public License v3.0. See LICENSE in the project root for license information.
 // </copyright>
 
 namespace GeneGenie.Geocoder.Models.Geo
 {
-    public class GeocodeResponseLocationV2
+    public class GeocodeResponseLocation
     {
         public Bounds Bounds { get; set; }
 

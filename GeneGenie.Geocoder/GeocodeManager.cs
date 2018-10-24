@@ -31,11 +31,11 @@ namespace GeneGenie.Geocoder
         }
 
         /// <summary>
-        /// Takes an address, checks the quality of the address and then selects the next available geocoder to
+        /// Takes an address as a string and then selects the next available geocoder to
         /// look up the address. Cycles through geocoders if they fails in order to get a result.
         /// </summary>
         /// <param name="address">The plain text address to look up.</param>
-        /// <returns></returns>
+        /// <returns>A <see cref="GeocodeResponse"/> with the status of the lookup and a list of locations found.</returns>
         public async Task<GeocodeResponse> GeocodeAddressAsync(string address)
         {
             var geocodeRequest = new GeocodeRequest
@@ -62,7 +62,7 @@ namespace GeneGenie.Geocoder
                 {
                     addressLookupResult.Locations = geocoderResponse
                         .Locations
-                        .Select(l => new GeocodeResponseLocationV2
+                        .Select(l => new GeocodeResponseLocation
                         {
                             Bounds = l.Bounds,
                             FormattedAddress = l.FormattedAddress,

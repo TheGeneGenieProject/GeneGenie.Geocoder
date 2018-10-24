@@ -10,7 +10,7 @@ namespace GeneGenie.Geocoder.Models.Geo
 
     public class GeocodeResponse
     {
-        public List<GeocodeResponseLocationV2> Locations { get; set; } = new List<GeocodeResponseLocationV2>();
+        public List<GeocodeResponseLocation> Locations { get; set; } = new List<GeocodeResponseLocation>();
 
         public GeocoderNames GeocoderId { get; set; }
 
