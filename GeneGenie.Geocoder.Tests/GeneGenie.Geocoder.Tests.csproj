@@ -41,6 +41,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="altcover" Version="4.0.653" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
         <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.1.1" />
