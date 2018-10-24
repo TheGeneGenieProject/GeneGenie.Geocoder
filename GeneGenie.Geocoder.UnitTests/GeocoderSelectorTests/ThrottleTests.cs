@@ -3,15 +3,15 @@
 // Licensed under the GNU Affero General Public License v3.0. See LICENSE in the project root for license information.
 // </copyright>
 
-namespace GeneGenie.Geocoder.UnitTests.GeocoderSelectorTests
+namespace GeneGenie.Geocoder.Tests.GeocoderSelectorTests
 {
     using System;
     using System.Threading.Tasks;
     using GeneGenie.Geocoder.Interfaces;
     using GeneGenie.Geocoder.Services;
     using GeneGenie.Geocoder.Services.Selectors;
-    using GeneGenie.Geocoder.UnitTests.Fakes;
-    using GeneGenie.Geocoder.UnitTests.Setup;
+    using GeneGenie.Geocoder.Tests.Fakes;
+    using GeneGenie.Geocoder.Tests.Setup;
     using Microsoft.Extensions.DependencyInjection;
     using Xunit;
 

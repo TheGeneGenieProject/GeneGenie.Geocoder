@@ -3,13 +3,13 @@
 // Licensed under the GNU Affero General Public License v3.0. See LICENSE in the project root for license information.
 // </copyright>
 
-namespace GeneGenie.Geocoder.UnitTests.Fakes
+namespace GeneGenie.Geocoder.Tests.Fakes
 {
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
     using GeneGenie.Geocoder.Interfaces;
-    using GeneGenie.Geocoder.UnitTests.ExtensionMethods;
+    using GeneGenie.Geocoder.Tests.ExtensionMethods;
 
     /// <summary>
     /// Fake for testing the <see cref="GoogleGeocoder"/> class without causing any network traffic to Google.
@@ -54,7 +54,7 @@ namespace GeneGenie.Geocoder.UnitTests.Fakes
                     var cleaned = WebUtility.UrlDecode(pair[1]);
                     var fileSplit = cleaned.Split("=");
 
-                    content = ResourceReader.ReadEmbeddedFile($"GeneGenie.Geocoder.UnitTests/Data/{fileSplit[1]}");
+                    content = ResourceReader.ReadEmbeddedFile($"GeneGenie.Geocoder.Tests/Data/{fileSplit[1]}");
                     break;
                 }
             }

@@ -1,11 +1,12 @@
 # GeneGenie.Geocoder
-A .Net standard geocoder library that can query multiple backend geocoders and rotate between them.
+A .Net standard geocoder library that can query multiple backend geocoders and rotate between them (briefly named Neocoder, this is the new name for the project).
 
 Currently supports Google and Bing geocoder APIs.
 
 ## Status
-[![Build status](https://ci.appveyor.com/api/projects/status/mbxq3udi6n2ic43b?svg=true)](https://ci.appveyor.com/project/RyanONeill1970/genegenie-geocoder)
-[![Tests status](https://appveyor-shields-badge.herokuapp.com/api/testResults/ryanoneill1970/genegenie-geocoder/badge.svg)](https://ci.appveyor.com/project/ryanoneill1970/genegenie-geocoder)
+[![AppVeyor branch](https://img.shields.io/appveyor/ci/RyanONeill1970/genegenie-geocoder/master.svg)](https://ci.appveyor.com/project/RyanONeill1970/genegenie-geocoder) [![Codecov branch](https://img.shields.io/codecov/c/github/TheGeneGenieProject/GeneGenie.Geocoder/master.svg)](https://codecov.io/gh/TheGeneGenieProject/GeneGenie.Geocoder) [![AppVeyor tests](https://img.shields.io/appveyor/tests/RyanONeill1970/genegenie-geocoder.svg)](https://ci.appveyor.com/project/RyanONeill1970/genegenie-geocoder/build/tests)
+
+[![Build stats](https://buildstats.info/appveyor/chart/ryanoneill1970/genegenie-geocoder)](https://ci.appveyor.com/project/ryanoneill1970/genegenie-geocoder/history)
 
 ## Quickstart
 

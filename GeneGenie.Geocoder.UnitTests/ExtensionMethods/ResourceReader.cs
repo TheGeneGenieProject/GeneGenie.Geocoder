@@ -3,7 +3,7 @@
 // Licensed under the GNU Affero General Public License v3.0. See LICENSE in the project root for license information.
 // </copyright>
 
-namespace GeneGenie.Geocoder.UnitTests.ExtensionMethods
+namespace GeneGenie.Geocoder.Tests.ExtensionMethods
 {
     using System.IO;
     using System.Reflection;

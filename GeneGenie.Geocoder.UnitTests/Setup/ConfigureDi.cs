@@ -3,7 +3,7 @@
 // Licensed under the GNU Affero General Public License v3.0. See LICENSE in the project root for license information.
 // </copyright>
 
-namespace GeneGenie.Geocoder.UnitTests.Setup
+namespace GeneGenie.Geocoder.Tests.Setup
 {
     using System;
     using System.Collections.Generic;
@@ -11,7 +11,7 @@ namespace GeneGenie.Geocoder.UnitTests.Setup
     using GeneGenie.Geocoder.Interfaces;
     using GeneGenie.Geocoder.Models;
     using GeneGenie.Geocoder.Services;
-    using GeneGenie.Geocoder.UnitTests.Fakes;
+    using GeneGenie.Geocoder.Tests.Fakes;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection.Extensions;
     using Microsoft.Extensions.Logging;
