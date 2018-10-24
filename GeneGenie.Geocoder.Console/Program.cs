@@ -12,16 +12,21 @@ namespace GeneGenie.Geocoder.Console
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
 
-    public class Program
+    /// <summary>
+    /// Sample demonstrating usage of the <see cref="GeocodeManager"/> class which is the main method used to geocode addresses.
+    /// </summary>
+    public static class Program
     {
-        private static IServiceProvider serviceProvider;
-        private static ILogger<Program> logger;
-
+        /// <summary>
+        /// Main app entry point.
+        /// </summary>
+        /// <param name="args">Command line arguments, can be used to override the configuration json file.</param>
+        /// <returns>A <see cref="Task"/> representing the result of the asynchronous operation.</returns>
         public static async Task Main(string[] args)
         {
             var configuration = ConfigureSettings.Build(args);
-            serviceProvider = ConfigureDi.BuildDi(configuration);
-            logger = serviceProvider.GetService<ILogger<Program>>();
+            var serviceProvider = ConfigureDi.BuildDi(configuration);
+            var logger = serviceProvider.GetService<ILogger>();
 
             try
             {
