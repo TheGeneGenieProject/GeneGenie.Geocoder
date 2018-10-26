@@ -14,8 +14,6 @@ namespace GeneGenie.Geocoder.Models
 
         public GeocoderNames GeocoderId { get; set; }
 
-        public TimeSpan NextDelay { get; set; }
-
         public int RequestCount { get; set; }
     }
 }
