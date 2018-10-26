@@ -1,4 +1,9 @@
-﻿namespace GeneGenie.Geocoder.Tests.GeocodeManagerTests
+﻿// <copyright file="InstantiationTests.cs" company="GeneGenie.com">
+// Copyright (c) GeneGenie.com. All Rights Reserved.
+// Licensed under the GNU Affero General Public License v3.0. See LICENSE in the project root for license information.
+// </copyright>
+
+namespace GeneGenie.Geocoder.Tests.GeocodeManagerTests
 {
     using System.Collections.Generic;
     using GeneGenie.Geocoder.Models;
