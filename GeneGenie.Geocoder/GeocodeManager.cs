@@ -39,7 +39,7 @@ namespace GeneGenie.Geocoder
         /// Creates an instance of <see cref="GeocodeManager"/> and if this is the first time called initialise the library with the passed
         /// geocoder settings.
         /// </summary>
-        /// <param name="geocoderSettings">A list of API keys for the different geocoder services, only used on the first call to initialise the library.</param>
+        /// <param name="geocoderSettings">A list of API keys for the different geocoder services.</param>
         /// <returns>An instance of <see cref="GeocodeManager"/> which can be used to run an address geocode.</returns>
         public static GeocodeManager Create(List<GeocoderSettings> geocoderSettings)
         {
@@ -48,15 +48,9 @@ namespace GeneGenie.Geocoder
                 return null;
             }
 
-            if (ServiceCollectionExtensions.ServiceCollection == null)
-            {
-                // First time caller, set up DI for them.
-                ServiceCollectionExtensions.ServiceCollection = new ServiceCollection()
-                    .AddSingleton(geocoderSettings)
-                    .AddGeocoders();
-            }
-
-            var serviceProvider = ServiceCollectionExtensions.ServiceCollection.BuildServiceProvider();
+            var serviceProvider = new ServiceCollection()
+                .AddSingleton(geocoderSettings)
+                .AddGeocoders().BuildServiceProvider();
             return serviceProvider.GetRequiredService<GeocodeManager>();
         }
 
