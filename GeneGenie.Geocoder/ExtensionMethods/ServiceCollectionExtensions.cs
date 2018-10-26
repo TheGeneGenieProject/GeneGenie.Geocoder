@@ -15,8 +15,18 @@ namespace GeneGenie.Geocoder.ExtensionMethods
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
 
+    /// <summary>
+    /// Extension methods used for registering and resolving the services used by this library with the frameworks dependency injection.
+    /// </summary>
     public static class ServiceCollectionExtensions
     {
+        /// <summary>
+        /// Gets or sets the list of services registered for dependency injection.
+        /// When the end user does not want to setup DI themselves we check this and instantiate
+        /// a collection ourselves.
+        /// </summary>
+        internal static IServiceCollection ServiceCollection { get; set; }
+
         /// <summary>
         /// Adds services for geocoding addresses and managing the scheduling of geocode requests.
         /// </summary>
@@ -24,6 +34,8 @@ namespace GeneGenie.Geocoder.ExtensionMethods
         /// <returns>The service collection with all geocoder classes registered.</returns>
         public static IServiceCollection AddGeocoders(this IServiceCollection serviceCollection)
         {
+            ServiceCollection = serviceCollection;
+
             return serviceCollection
                 .AddTransient<KeyComposer>()
                 .AddTransient(sp => ResolveBing(sp))

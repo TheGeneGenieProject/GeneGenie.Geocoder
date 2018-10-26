@@ -1,0 +1,30 @@
+﻿namespace GeneGenie.Geocoder.Tests.GeocodeManagerTests
+{
+    using System.Collections.Generic;
+    using GeneGenie.Geocoder.Models;
+    using Xunit;
+
+    /// <summary>
+    /// Tests to check that the library can 'self register' and returns an instance of a <see cref="GeocodeManager"/>.
+    /// </summary>
+    public class InstantiationTests
+    {
+        [Fact]
+        public void Self_registration_does_not_succeed_with_null_list()
+        {
+            var geocodeManager = GeocodeManager.Create(null);
+
+            Assert.Null(geocodeManager);
+        }
+
+        [Fact]
+        public void Self_registration_succeeds_with_empty_list()
+        {
+            var geocoderSettings = new List<GeocoderSettings>();
+
+            var geocodeManager = GeocodeManager.Create(geocoderSettings);
+
+            Assert.NotNull(geocodeManager);
+        }
+    }
+}

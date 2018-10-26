@@ -8,9 +8,12 @@ namespace GeneGenie.Geocoder
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using GeneGenie.Geocoder.ExtensionMethods;
     using GeneGenie.Geocoder.Interfaces;
+    using GeneGenie.Geocoder.Models;
     using GeneGenie.Geocoder.Models.Geo;
     using GeneGenie.Geocoder.Services;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// The main entry point for looking up an address.
@@ -30,6 +33,31 @@ namespace GeneGenie.Geocoder
         {
             this.geocoderSelector = geocoderSelector;
             this.keyComposer = keyComposer;
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="GeocodeManager"/> and if this is the first time called initialise the library with the passed
+        /// geocoder settings.
+        /// </summary>
+        /// <param name="geocoderSettings">A list of API keys for the different geocoder services, only used on the first call to initialise the library.</param>
+        /// <returns>An instance of <see cref="GeocodeManager"/> which can be used to run an address geocode.</returns>
+        public static GeocodeManager Create(List<GeocoderSettings> geocoderSettings)
+        {
+            if (geocoderSettings == null)
+            {
+                return null;
+            }
+
+            if (ServiceCollectionExtensions.ServiceCollection == null)
+            {
+                // First time caller, set up DI for them.
+                ServiceCollectionExtensions.ServiceCollection = new ServiceCollection()
+                    .AddSingleton(geocoderSettings)
+                    .AddGeocoders();
+            }
+
+            var serviceProvider = ServiceCollectionExtensions.ServiceCollection.BuildServiceProvider();
+            return serviceProvider.GetRequiredService<GeocodeManager>();
         }
 
         /// <summary>

@@ -6,60 +6,69 @@
 namespace GeneGenie.Geocoder.Console
 {
     using System;
-    using System.Collections.Generic;
     using System.Threading.Tasks;
-    using GeneGenie.Geocoder.Console.Setup;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Logging;
+    using GeneGenie.Geocoder.Console.Samples;
 
     /// <summary>
-    /// Sample demonstrating usage of the <see cref="GeocodeManager"/> class which is the main method used to geocode addresses.
+    /// Console app demonstrating varying uses of the <see cref="GeocodeManager"/> class which is the main method used to geocode addresses.
     /// </summary>
     public class Program
     {
+        private enum SampleChoice
+        {
+            Exit = 0,
+            SimpleLookup = 1,
+            DependencyInjection = 2,
+        }
+
         /// <summary>
         /// Main app entry point.
         /// </summary>
-        /// <param name="args">Command line arguments, can be used to override the configuration json file.</param>
+        /// <param name="args">Command line arguments, can be used to override the configuration json file in the Dependency Injection example.</param>
         /// <returns>A <see cref="Task"/> representing the result of the asynchronous operation.</returns>
         protected static async Task Main(string[] args)
         {
-            var configuration = ConfigureSettings.Build(args);
-            var serviceProvider = ConfigureDi.BuildDi(configuration);
-            var logger = serviceProvider.GetService<ILogger<Program>>();
+            var choice = RenderAndSelectSampleChoice();
 
-            try
+            switch (choice)
             {
-                var addresses = new List<string>
-                {
-                    "Luton",
-                    "Unknown",
-                    "?",
-                    "75 Beadlow Road, Lewsey Farm, Luton, LU4 0QZ",
-                    "75 Beadlow Road, Lewsey Farm, Luton, LU4 0QZ, UK",
-                };
+                case SampleChoice.SimpleLookup:
+                    var simpleLookup = new SimpleLookup();
+                    await simpleLookup.ExecuteAsync();
+                    break;
+                case SampleChoice.DependencyInjection:
+                    var diLookup = new DependencyInjectionLookup();
+                    await diLookup.ExecuteAsync(args);
+                    break;
+                default:
+                    Console.WriteLine("Could not figure out selection, exiting.");
+                    break;
+            }
 
-                var geocodeManager = serviceProvider.GetRequiredService<GeocodeManager>();
-                foreach (var address in addresses)
-                {
-                    var geocoded = await geocodeManager.GeocodeAddressAsync(address);
+            Console.WriteLine("Complete, press a key to quit");
+            Console.ReadKey();
+        }
 
-                    using (logger.BeginScope("Geocoding results for '{address}' via {engine}", address, geocoded.GeocoderId))
-                    {
-                        foreach (var location in geocoded.Locations)
-                        {
-                            logger.LogInformation("Result '{address}', {lat},{lng} from {source}", location.FormattedAddress, location.Location.Latitude, location.Location.Longitude, geocoded.GeocoderId);
-                        }
-                    }
+        private static SampleChoice RenderAndSelectSampleChoice()
+        {
+            Console.WriteLine("GeneGenie.Geocoder samples");
+            Console.WriteLine();
+            Console.WriteLine("1. Use the simplest lookup (lets the library auto-wire itself up).");
+            Console.WriteLine("2. Use with .Net Core Dependency Injection.");
+            Console.WriteLine();
+
+            var pressed = Console.ReadKey(true);
+            Console.WriteLine();
+
+            if (int.TryParse(pressed.KeyChar.ToString(), out var choice))
+            {
+                if (Enum.IsDefined(typeof(SampleChoice), choice))
+                {
+                    return (SampleChoice)choice;
                 }
             }
-            catch (Exception ex)
-            {
-                logger.LogCritical(ex, "Error running console");
-            }
 
-            logger.LogInformation("Complete, press a key to quit");
-            Console.ReadKey();
+            return SampleChoice.Exit;
         }
     }
 }
