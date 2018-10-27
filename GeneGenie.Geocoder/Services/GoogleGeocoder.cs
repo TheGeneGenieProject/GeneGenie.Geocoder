@@ -21,6 +21,8 @@ namespace GeneGenie.Geocoder.Services
 
     public class GoogleGeocoder : IGeocoder
     {
+        private const string GoogleRestApiEndpoint = "https://maps.googleapis.com/maps/api/geocode/json";
+
         private static readonly List<GeocoderStatusMapping> GoogleStatusMappings = new List<GeocoderStatusMapping>
         {
             new GeocoderStatusMapping { IsPermanentError = false, IsTemporaryError = false, StatusText = "OK", Status = GeocodeStatus.Success },
@@ -248,7 +250,7 @@ namespace GeneGenie.Geocoder.Services
                 parameters.Add("bounds", $"{sw}|{ne}");
             }
 
-            return QueryHelpers.AddQueryString("https://maps.googleapis.com/maps/api/geocode/json", parameters);
+            return QueryHelpers.AddQueryString(GoogleRestApiEndpoint, parameters);
         }
     }
 }

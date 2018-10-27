@@ -22,6 +22,7 @@ namespace GeneGenie.Geocoder.Services
     public class BingGeocoder : IGeocoder
     {
         private const int MaxResults = 25;
+        private const string BingRestApiEndpoint = "https://dev.virtualearth.net/REST/v1/Locations";
 
         private static readonly List<GeocoderStatusMapping> BingStatusMappings = new List<GeocoderStatusMapping>
         {
@@ -203,7 +204,7 @@ namespace GeneGenie.Geocoder.Services
                 parameters.Add("userMapView", $"{sw},{ne}");
             }
 
-            return QueryHelpers.AddQueryString("https://dev.virtualearth.net/REST/v1/Locations", parameters);
+            return QueryHelpers.AddQueryString(BingRestApiEndpoint, parameters);
         }
 
         private LocationPair ConvertPoint(Point point)
