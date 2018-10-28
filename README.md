@@ -42,8 +42,7 @@ foreach (var foundLocation in secondResult.Locations)
 
 ### Using with .Net Core dependency injection
 
-1. Set your Google and Bing geocoder API keys in appsettings.json.
-2. Register the geocoder for use with .Net Core Dependency Injection via;
+Register the geocoder for use with .Net Core Dependency Injection via;
 
 ```cs
 // Define the API keys for the geocoders we'll be using (should come out of your configuration file).
