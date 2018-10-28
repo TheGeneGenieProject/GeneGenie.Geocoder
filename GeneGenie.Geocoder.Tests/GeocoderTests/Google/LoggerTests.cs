@@ -33,8 +33,7 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
                 new GeocoderSettings { GeocoderName = GeocoderNames.Google },
             };
             var serviceProvider = new ServiceCollection()
-                .AddSingleton(geocoderSettings)
-                .AddGeocoders()
+                .AddGeocoders(geocoderSettings)
                 .RemoveAll<ILogger<GoogleGeocoder>>()
                 .AddScoped<ILogger<GoogleGeocoder>, Fakelogger>()
                 .RemoveAll<IGeocoderHttpClient>()

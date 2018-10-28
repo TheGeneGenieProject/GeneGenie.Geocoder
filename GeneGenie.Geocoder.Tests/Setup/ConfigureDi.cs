@@ -42,9 +42,8 @@ namespace GeneGenie.Geocoder.Tests.Setup
             };
 
             var sc = new ServiceCollection()
-                .AddSingleton(geocoderSettings)
                 .AddLogging()
-                .AddGeocoders();
+                .AddGeocoders(geocoderSettings);
 
             // Remove the real geocoder interface registrations and replace with our fakes.
             sc.RemoveAll<IGeocoder>()

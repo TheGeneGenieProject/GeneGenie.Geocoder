@@ -49,8 +49,8 @@ namespace GeneGenie.Geocoder
             }
 
             var serviceProvider = new ServiceCollection()
-                .AddSingleton(geocoderSettings)
-                .AddGeocoders().BuildServiceProvider();
+                .AddGeocoders(geocoderSettings)
+                .BuildServiceProvider();
             return serviceProvider.GetRequiredService<GeocodeManager>();
         }
 

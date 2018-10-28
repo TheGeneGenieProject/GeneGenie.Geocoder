@@ -44,8 +44,7 @@ namespace GeneGenie.Geocoder.Tests.Geo
                 new GeocoderSettings { GeocoderName = GeocoderNames.Google },
             };
             var sp = new ServiceCollection()
-                .AddSingleton(geocoderSettings)
-                .AddGeocoders()
+                .AddGeocoders(geocoderSettings)
                 .BuildServiceProvider();
 
             var geocoders = sp.GetServices<IGeocoder>();
@@ -61,8 +60,7 @@ namespace GeneGenie.Geocoder.Tests.Geo
                 new GeocoderSettings { GeocoderName = GeocoderNames.Bing },
             };
             var sp = new ServiceCollection()
-                .AddSingleton(geocoderSettings)
-                .AddGeocoders()
+                .AddGeocoders(geocoderSettings)
                 .BuildServiceProvider();
 
             var geocoders = sp.GetServices<IGeocoder>();

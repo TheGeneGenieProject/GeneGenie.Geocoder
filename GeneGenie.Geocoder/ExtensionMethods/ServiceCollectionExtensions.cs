@@ -24,9 +24,16 @@ namespace GeneGenie.Geocoder.ExtensionMethods
         /// Adds services for geocoding addresses and managing the scheduling of geocode requests.
         /// </summary>
         /// <param name="serviceCollection">The service collection to add the registrations to.</param>
+        /// <param name="geocoderSettings">An optional list of API keys to use with the geocoders. If not passed in here then you need to register
+        /// these settings with your DI framework yourself.</param>
         /// <returns>The service collection with all geocoder classes registered.</returns>
-        public static IServiceCollection AddGeocoders(this IServiceCollection serviceCollection)
+        public static IServiceCollection AddGeocoders(this IServiceCollection serviceCollection, List<GeocoderSettings> geocoderSettings = null)
         {
+            if (geocoderSettings != null)
+            {
+                serviceCollection.AddSingleton(geocoderSettings);
+            }
+
             return serviceCollection
                 .AddTransient<KeyComposer>()
                 .AddTransient(sp => ResolveBing(sp))

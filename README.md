@@ -54,8 +54,7 @@ var geocoderSettings = new List<GeocoderSettings>
 
 // Register the settings and Neocoder.
 return new ServiceCollection()
-    .AddSingleton(geocoderSettings)
-    .AddGeocoders()
+    .AddGeocoders(geocoderSettings)
     .BuildServiceProvider();
 
 // In your main code, normally you'd get this injected via DI.

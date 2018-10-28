@@ -18,12 +18,11 @@ namespace GeneGenie.Geocoder.Console.Setup
             var appSettings = configuration.GetSection("App").Get<AppSettings>();
 
             return new ServiceCollection()
-                .AddSingleton(appSettings.GeocoderSettings)
                 .AddLogging(builder =>
                     builder
                         .AddConfiguration(configuration.GetSection("Logging"))
                         .AddConsole())
-                .AddGeocoders()
+                .AddGeocoders(appSettings.GeocoderSettings)
                 .BuildServiceProvider();
         }
     }
