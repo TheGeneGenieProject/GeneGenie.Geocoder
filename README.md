@@ -1,33 +1,69 @@
 # GeneGenie.Geocoder
 A .Net standard geocoder library that can query multiple backend geocoders and rotate between them (briefly named Neocoder, GeneGenie.Geocoder is the new name for the project).
 
-Currently supports Google and Bing geocoder APIs.
+Currently supports Google and Bing geocoder APIs but more can be added if needed (can even be added from outside of the library).
 
 ## Status
 [![AppVeyor branch](https://img.shields.io/appveyor/ci/RyanONeill1970/genegenie-geocoder/master.svg)](https://ci.appveyor.com/project/RyanONeill1970/genegenie-geocoder) [![NuGet](https://img.shields.io/nuget/v/GeneGenie.Geocoder.svg)](https://www.nuget.org/packages/GeneGenie.Geocoder) [![AppVeyor tests](https://img.shields.io/appveyor/tests/RyanONeill1970/genegenie-geocoder.svg)](https://ci.appveyor.com/project/RyanONeill1970/genegenie-geocoder/build/tests)
 
 ## Quickstart
 
-See the GeneGenie.Geocoder.Console project for an example of the following.
-Set your Google and Bing geocoder API keys in appsettings.json.
-Register the geocoder for use with .Net Core Dependency Injection via;
+The library can integrate with your chosen Dependency Injection framework or if you want to keep it very simple, just use the Create method as below. See the GeneGenie.Geocoder.Console project for more details on the following approaches.
 
-            // This gets the geocoder settings out of your configuration file.
-            var appSettings = configuration.GetSection("App").Get<AppSettings>();
+### Simple usage (without Dependency Injection)
 
-            // Register the settings and Neocoder.
-            return new ServiceCollection()
-                .AddSingleton(appSettings.GeocoderSettings)
-                .AddGeocoders()
-                .BuildServiceProvider();
+```cs
+// Define the API keys for the geocoders we'll be using (should come out of your configuration file).
+var geocoderSettings = new List<GeocoderSettings>
+{
+    new GeocoderSettings { ApiKey = "Your Bing API key (best practice is to put this in a config file, not in source)", GeocoderName = Services.GeocoderNames.Bing },
+    new GeocoderSettings { ApiKey = "Your Google API key (best practice is to put this in a config file, not in source)", GeocoderName = Services.GeocoderNames.Google },
+};
 
-In your main code
+// Instead of doing 'var g = new GeocodeManager' we use a factory method which initialises the library.
+var geocodeManager = GeocodeManager.Create(geocoderSettings);
 
-                // Normally you'd get this injected via DI.
-                var geocodeManager = serviceProvider.GetRequiredService<GeocodeManager>();
+// This first lookup will be handled by Bing (unless it fails to resolve the address, which will then fail over to Google).
+var firstResult = await geocodeManager.GeocodeAddressAsync("10 Downing St., London, UK");
+Console.WriteLine($"Result of first lookup, used {firstResult.GeocoderId}, status of {firstResult.Status} with {firstResult.Locations.Count} results.");
+foreach (var foundLocation in firstResult.Locations)
+{
+    Console.WriteLine($"Address of {foundLocation.FormattedAddress} has a location of {foundLocation.Location.Latitude} / {foundLocation.Location.Longitude}");
+}
 
-                var geocoded = await geocodeManager.GeocodeAddressAsync(address);
+// The following lookup then uses the other geocoder service.
+var secondResult = await geocodeManager.GeocodeAddressAsync("The Acropolis, Greece");
+Console.WriteLine($"Result of second lookup, used {secondResult.GeocoderId}, status of {secondResult.Status} with {secondResult.Locations.Count} results.");
+foreach (var foundLocation in secondResult.Locations)
+{
+    Console.WriteLine($"Address of {foundLocation.FormattedAddress} has a location of {foundLocation.Location.Latitude} / {foundLocation.Location.Longitude}");
+}
+```
 
+### Using with .Net Core dependency injection
+
+1. Set your Google and Bing geocoder API keys in appsettings.json.
+2. Register the geocoder for use with .Net Core Dependency Injection via;
+
+```cs
+// Define the API keys for the geocoders we'll be using (should come out of your configuration file).
+var geocoderSettings = new List<GeocoderSettings>
+{
+    new GeocoderSettings { ApiKey = "Your Bing API key (best practice is to put this in a config file, not in source)", GeocoderName = Services.GeocoderNames.Bing },
+    new GeocoderSettings { ApiKey = "Your Google API key (best practice is to put this in a config file, not in source)", GeocoderName = Services.GeocoderNames.Google },
+};
+
+// Register the settings and Neocoder.
+return new ServiceCollection()
+    .AddSingleton(geocoderSettings)
+    .AddGeocoders()
+    .BuildServiceProvider();
+
+// In your main code, normally you'd get this injected via DI.
+var geocodeManager = serviceProvider.GetRequiredService<GeocodeManager>();
+
+var geocoded = await geocodeManager.GeocodeAddressAsync(address);
+```
 
 ## Running multiple instances
 If using this library in a multi-process environment (such as serverless functions or a webfarm) then you'll need to implement your own Geocoder selector with the interface IGeocoderSelector. The class you implement would need to figure out what geocoder to select next based on what was used previously by accessing a shared resource (Redis, database layer etc), This would typically involve a locking fetch / update on the resource. See InMemoryGeocoderSelector.cs for ideas.
