@@ -7,23 +7,25 @@ namespace GeneGenie.Geocoder.Models.Geo
 {
     public class GeocodeRequest
     {
+        /// <summary>
+        /// Gets or sets the address to be geocoded. It is assumed that you have checked the quality of this data before attempting to geocode it.
+        /// </summary>
         public string Address { get; set; }
 
-        public string AddressKey { get; set; }
-
         /// <summary>
-        /// A hint passed in from the user that defines the geographical area where the search should apply additional emphasis to.
+        /// Gets or sets a hint passed in from the user that defines the geographical area where the search should apply additional emphasis to.
         /// For example, to focus on a part of the world or a specific part of a country and exclude similar place names found overseas.
         /// </summary>
         public Bounds BoundsHint { get; set; }
 
-        /// <summary>If not empty then used to provide a hint to the geocoder so that the results may be localised.</summary>
+        /// <summary>Gets or sets a hint to the geocoder so that the results may be localised.
+        /// Can be left as empty / null if not used.</summary>
         public string Language { get; set; }
 
-        /// <summary>If not empty then used to provide a hint to the geocoder so that the results may be localised.</summary>
+        /// <summary>Gets or sets a hint to the geocoder so that the results may be localised.</summary>
         public string Locale { get; set; }
 
-        /// <summary>If not empty then used to provide a hint to the geocoder so that the results may be localised.</summary>
-        public string Region { get; internal set; }
+        /// <summary>Gets or sets a hint to the geocoder so that the results may be localised.</summary>
+        public string Region { get; set; }
     }
 }

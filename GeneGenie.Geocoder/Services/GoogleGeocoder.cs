@@ -71,13 +71,13 @@ namespace GeneGenie.Geocoder.Services
                 var status = ExtractStatus(content.Status);
                 if (status.IsPermanentError)
                 {
-                    logger.LogWarning((int)LogEventIds.GeocoderError, "Geocoder returned permanent error for {addressKey} with status of {status} and error detail of {error}", geocodeRequest.AddressKey, status.Status, content.Error_message);
+                    logger.LogWarning((int)LogEventIds.GeocoderError, "Geocoder returned permanent error for {address} with status of {status} and error detail of {error}", geocodeRequest.Address, status.Status, content.Error_message);
                     return new GeocodeResponseDto(GeocodeStatus.Error);
                 }
 
                 if (status.IsTemporaryError)
                 {
-                    logger.LogWarning((int)LogEventIds.GeocoderError, "Geocoder returned temporary error for {addressKey} with status of {status} and error detail of {error}", geocodeRequest.AddressKey, status.Status, content.Error_message);
+                    logger.LogWarning((int)LogEventIds.GeocoderError, "Geocoder returned temporary error for {address} with status of {status} and error detail of {error}", geocodeRequest.Address, status.Status, content.Error_message);
                     return new GeocodeResponseDto(GeocodeStatus.Error);
                 }
 
@@ -96,7 +96,7 @@ namespace GeneGenie.Geocoder.Services
             }
             catch (Exception ex)
             {
-                logger.LogError((int)LogEventIds.GeocodeException, ex, "Call to geocoder failed for {addressKey}", geocodeRequest?.AddressKey);
+                logger.LogError((int)LogEventIds.GeocodeException, ex, "Call to geocoder failed for {address}", geocodeRequest?.Address);
                 return new GeocodeResponseDto(GeocodeStatus.Error);
             }
         }

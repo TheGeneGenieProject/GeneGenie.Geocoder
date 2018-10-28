@@ -22,17 +22,15 @@ namespace GeneGenie.Geocoder
     public class GeocodeManager
     {
         private readonly IGeocoderSelector geocoderSelector;
-        private readonly KeyComposer keyComposer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GeocodeManager"/> class.
         /// </summary>
         /// <param name="geocoderSelector">An instance of <see cref="IGeocoderSelector"/> that is responsible for returning the next available geocoder.</param>
         /// <param name="keyComposer">An instance of <see cref="KeyComposer"/> used to construct a unique code per address looked up.</param>
-        public GeocodeManager(IGeocoderSelector geocoderSelector, KeyComposer keyComposer)
+        public GeocodeManager(IGeocoderSelector geocoderSelector)
         {
             this.geocoderSelector = geocoderSelector;
-            this.keyComposer = keyComposer;
         }
 
         /// <summary>
@@ -65,7 +63,6 @@ namespace GeneGenie.Geocoder
             var geocodeRequest = new GeocodeRequest
             {
                 Address = address,
-                AddressKey = keyComposer.GenerateSourceKey(address),
                 BoundsHint = null,
             };
             var addressLookupResult = new GeocodeResponse();

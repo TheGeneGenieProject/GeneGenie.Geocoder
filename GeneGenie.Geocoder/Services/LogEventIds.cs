@@ -23,8 +23,6 @@ namespace GeneGenie.Geocoder.Services
         GeocoderZeroResults = 1004,
         GeocodeException = 1005,
 
-        AddressKeyError = 2001,
-
         /// <summary>
         /// The geocoder service was called and we were returned an empty result which we couldn't make sense of.
         /// </summary>

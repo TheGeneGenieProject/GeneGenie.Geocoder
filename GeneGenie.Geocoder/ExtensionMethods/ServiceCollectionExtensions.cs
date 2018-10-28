@@ -35,7 +35,6 @@ namespace GeneGenie.Geocoder.ExtensionMethods
             }
 
             return serviceCollection
-                .AddTransient<KeyComposer>()
                 .AddTransient(sp => ResolveBing(sp))
                 .AddTransient(sp => ResolveGoogle(sp))
                 .AddTransient<IGeocoder, BingGeocoder>(sp => ResolveBing(sp))
