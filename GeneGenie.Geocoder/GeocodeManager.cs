@@ -19,7 +19,7 @@ namespace GeneGenie.Geocoder
     /// The main entry point for looking up an address.
     /// Handles selection of the next available geocoder and retrying other geocoders if the response is not usable.
     /// </summary>
-    public class GeocodeManager
+    public class GeocodeManager : IGeocodeManager
     {
         private readonly IGeocoderSelector geocoderSelector;
 

@@ -43,6 +43,7 @@ namespace GeneGenie.Geocoder.ExtensionMethods
                 .AddTransient<InMemoryGeocoderSelector>()
                 .AddTransient<ITimeProvider, TimeProvider>()
                 .AddTransient<IGeocoderHttpClient, GeocoderHttpClient>()
+                .AddTransient<IGeocodeManager, GeocodeManager>()
                 .AddTransient<GeocodeManager>()
                 .AddHttpClient();
         }

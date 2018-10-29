@@ -6,6 +6,7 @@
 namespace GeneGenie.Geocoder.Tests.GeocoderManagerTests
 {
     using System.Threading.Tasks;
+    using GeneGenie.Geocoder.Interfaces;
     using GeneGenie.Geocoder.Services;
     using GeneGenie.Geocoder.Tests.Setup;
     using Microsoft.Extensions.DependencyInjection;
@@ -16,11 +17,11 @@ namespace GeneGenie.Geocoder.Tests.GeocoderManagerTests
     /// </summary>
     public class FailoverTests
     {
-        private readonly GeocodeManager geocodeManager;
+        private readonly IGeocodeManager geocodeManager;
 
         public FailoverTests()
         {
-            geocodeManager = ConfigureDi.Services.GetRequiredService<GeocodeManager>();
+            geocodeManager = ConfigureDi.Services.GetRequiredService<IGeocodeManager>();
         }
 
         [Fact]
