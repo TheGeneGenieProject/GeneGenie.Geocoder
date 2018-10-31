@@ -6,6 +6,7 @@
 namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
 {
     using System.Collections.Generic;
+    using System.Net;
     using System.Threading.Tasks;
     using GeneGenie.Geocoder.ExtensionMethods;
     using GeneGenie.Geocoder.Interfaces;
@@ -24,7 +25,7 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
     public class LoggerTests
     {
         private readonly GoogleGeocoder googleGeocoder;
-        private readonly Fakelogger logger;
+        private readonly FakeLogger logger;
 
         public LoggerTests()
         {
@@ -35,21 +36,13 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
             var serviceProvider = new ServiceCollection()
                 .AddGeocoders(geocoderSettings)
                 .RemoveAll<ILogger<GoogleGeocoder>>()
-                .AddScoped<ILogger<GoogleGeocoder>, Fakelogger>()
+                .AddScoped<ILogger<GoogleGeocoder>, FakeLogger>()
                 .RemoveAll<IGeocoderHttpClient>()
                 .AddTransient<IGeocoderHttpClient, FakeGeocoderHttpClient>()
                 .BuildServiceProvider();
 
             googleGeocoder = serviceProvider.GetRequiredService<GoogleGeocoder>();
-            logger = serviceProvider.GetRequiredService<ILogger<GoogleGeocoder>>() as Fakelogger;
-        }
-
-        [Fact]
-        public async Task Exception_is_logged_for_null_request()
-        {
-            await googleGeocoder.GeocodeAddressAsync(null);
-
-            Assert.Contains(logger.LoggedEventIds, l => l.Id == (int)LogEventIds.GeocodeException);
+            logger = serviceProvider.GetRequiredService<ILogger<GoogleGeocoder>>() as FakeLogger;
         }
 
         [Fact]
@@ -73,16 +66,6 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
         }
 
         [Fact]
-        public async Task Missing_geometry_is_logged_when_not_returned()
-        {
-            var geocodeRequest = new GeocodeRequest { Address = "File=Google/MissingGeometry.json" };
-
-            await googleGeocoder.GeocodeAddressAsync(geocodeRequest);
-
-            Assert.Contains(logger.LoggedEventIds, l => l.Id == (int)LogEventIds.GeocoderMissingGeometry);
-        }
-
-        [Fact]
         public async Task Missing_bounds_is_not_logged_when_viewport_exists()
         {
             var geocodeRequest = new GeocodeRequest { Address = "File=Google/MissingBounds.json" };
@@ -103,33 +86,13 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
         }
 
         [Fact]
-        public async Task Missing_bounds_is_logged_when_bounds_and_viewport_do_not_exist()
-        {
-            var geocodeRequest = new GeocodeRequest { Address = "File=Google/MissingBoundsAndViewport.json" };
-
-            await googleGeocoder.GeocodeAddressAsync(geocodeRequest);
-
-            Assert.Contains(logger.LoggedEventIds, l => l.Id == (int)LogEventIds.GeocoderMissingBounds);
-        }
-
-        [Fact]
-        public async Task Missing_location_is_logged()
-        {
-            var geocodeRequest = new GeocodeRequest { Address = "File=Google/MissingLocation.json" };
-
-            await googleGeocoder.GeocodeAddressAsync(geocodeRequest);
-
-            Assert.Contains(logger.LoggedEventIds, l => l.Id == (int)LogEventIds.GeocoderMissingLocation);
-        }
-
-        [Fact]
         public async Task Valid_response_has_no_critical_log_messages()
         {
             var geocodeRequest = new GeocodeRequest { Address = "File=Google/Valid.json" };
 
             await googleGeocoder.GeocodeAddressAsync(geocodeRequest);
 
-            Assert.Equal(0, logger.Critical);
+            Assert.Equal(0, logger.CriticalCount);
         }
 
         [Fact]
@@ -139,7 +102,7 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
 
             await googleGeocoder.GeocodeAddressAsync(geocodeRequest);
 
-            Assert.Equal(0, logger.Error);
+            Assert.Equal(0, logger.ErrorCount);
         }
 
         [Fact]
@@ -149,27 +112,32 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
 
             await googleGeocoder.GeocodeAddressAsync(geocodeRequest);
 
-            Assert.Equal(0, logger.Warning);
+            Assert.Equal(0, logger.WarningCount);
         }
 
-        [Fact]
-        public async Task Geocoder_error_is_logged_when_receiving_permanent_error_from_google()
+        public static IEnumerable<object[]> ExpectedStatusResponseData =>
+            new List<object[]>
+            {
+                new object[] { $"HttpStatusCode={nameof(HttpStatusCode.ServiceUnavailable)}", LogEventIds.GeocoderError },
+                new object[] { $"HttpStatusCode={nameof(HttpStatusCode.InternalServerError)}", LogEventIds.GeocoderError },
+                new object[] { $"HttpStatusCode={nameof(HttpStatusCode.SeeOther)}", LogEventIds.GeocoderError },
+                new object[] { "File=Google/TemporaryError.json", LogEventIds.GeocoderError },
+                new object[] { "File=Google/PermanentError.json", LogEventIds.GeocoderError },
+                new object[] { "File=Google/MissingLocation.json", LogEventIds.GeocoderMissingLocation },
+                new object[] { "File=Google/MissingBoundsAndViewport.json", LogEventIds.GeocoderMissingBounds },
+                new object[] { "File=Google/MissingGeometry.json", LogEventIds.GeocoderMissingGeometry },
+                new object[] { null, LogEventIds.GeocodeException },
+            };
+
+        [Theory]
+        [MemberData(nameof(ExpectedStatusResponseData))]
+        public async Task Geocoder_status_is_logged_from_google(string address, LogEventIds expected)
         {
-            var geocodeRequest = new GeocodeRequest { Address = "File=Google/PermanentError.json" };
+            var geocodeRequest = new GeocodeRequest { Address = address };
 
             await googleGeocoder.GeocodeAddressAsync(geocodeRequest);
 
-            Assert.Contains(logger.LoggedEventIds, l => l.Id == (int)LogEventIds.GeocoderError);
-        }
-
-        [Fact]
-        public async Task Geocoder_error_is_logged_when_receiving_temporary_error_from_google()
-        {
-            var geocodeRequest = new GeocodeRequest { Address = "File=Google/TemporaryError.json" };
-
-            await googleGeocoder.GeocodeAddressAsync(geocodeRequest);
-
-            Assert.Contains(logger.LoggedEventIds, l => l.Id == (int)LogEventIds.GeocoderError);
+            Assert.Contains(logger.LoggedEventIds, l => l.Id == (int)expected);
         }
     }
 }

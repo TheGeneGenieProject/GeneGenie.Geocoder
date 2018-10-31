@@ -10,21 +10,21 @@ namespace GeneGenie.Geocoder.Tests.Fakes
     using GeneGenie.Geocoder.Services;
     using Microsoft.Extensions.Logging;
 
-    public class Fakelogger : ILogger<GoogleGeocoder>
+    public class FakeLogger : ILogger<GoogleGeocoder>
     {
-        public int Critical { get; set; }
+        public int CriticalCount { get; set; }
 
-        public int Debug { get; set; }
+        public int DebugCount { get; set; }
 
-        public int Error { get; set; }
+        public int ErrorCount { get; set; }
 
-        public int Information { get; set; }
+        public int InformationCount { get; set; }
 
-        public int None { get; set; }
+        public int NoneCount { get; set; }
 
-        public int Trace { get; set; }
+        public int TraceCount { get; set; }
 
-        public int Warning { get; set; }
+        public int WarningCount { get; set; }
 
         public List<EventId> LoggedEventIds { get; set; } = new List<EventId>();
 
@@ -42,31 +42,31 @@ namespace GeneGenie.Geocoder.Tests.Fakes
         {
             if (logLevel == LogLevel.Critical)
             {
-                Critical++;
+                CriticalCount++;
             }
             else if (logLevel == LogLevel.Debug)
             {
-                Debug++;
+                DebugCount++;
             }
             else if (logLevel == LogLevel.Error)
             {
-                Error++;
+                ErrorCount++;
             }
             else if (logLevel == LogLevel.Information)
             {
-                Information++;
+                InformationCount++;
             }
             else if (logLevel == LogLevel.Trace)
             {
-                Trace++;
+                TraceCount++;
             }
             else if (logLevel == LogLevel.Warning)
             {
-                Warning++;
+                WarningCount++;
             }
             else
             {
-                None++;
+                NoneCount++;
             }
 
             LoggedEventIds.Add(eventId);
