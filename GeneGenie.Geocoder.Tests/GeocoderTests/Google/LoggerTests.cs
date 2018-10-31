@@ -45,6 +45,20 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
             logger = serviceProvider.GetRequiredService<ILogger<GoogleGeocoder>>() as FakeLogger;
         }
 
+        public static IEnumerable<object[]> ExpectedStatusResponseData =>
+            new List<object[]>
+            {
+                new object[] { $"HttpStatusCode={nameof(HttpStatusCode.ServiceUnavailable)}", LogEventIds.GeocoderError },
+                new object[] { $"HttpStatusCode={nameof(HttpStatusCode.InternalServerError)}", LogEventIds.GeocoderError },
+                new object[] { $"HttpStatusCode={nameof(HttpStatusCode.SeeOther)}", LogEventIds.GeocoderError },
+                new object[] { "File=Google/TemporaryError.json", LogEventIds.GeocoderError },
+                new object[] { "File=Google/PermanentError.json", LogEventIds.GeocoderError },
+                new object[] { "File=Google/MissingLocation.json", LogEventIds.GeocoderMissingLocation },
+                new object[] { "File=Google/MissingBoundsAndViewport.json", LogEventIds.GeocoderMissingBounds },
+                new object[] { "File=Google/MissingGeometry.json", LogEventIds.GeocoderMissingGeometry },
+                new object[] { null, LogEventIds.GeocodeException },
+            };
+
         [Fact]
         public async Task Trace_output_is_logged()
         {
@@ -114,20 +128,6 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
 
             Assert.Equal(0, logger.WarningCount);
         }
-
-        public static IEnumerable<object[]> ExpectedStatusResponseData =>
-            new List<object[]>
-            {
-                new object[] { $"HttpStatusCode={nameof(HttpStatusCode.ServiceUnavailable)}", LogEventIds.GeocoderError },
-                new object[] { $"HttpStatusCode={nameof(HttpStatusCode.InternalServerError)}", LogEventIds.GeocoderError },
-                new object[] { $"HttpStatusCode={nameof(HttpStatusCode.SeeOther)}", LogEventIds.GeocoderError },
-                new object[] { "File=Google/TemporaryError.json", LogEventIds.GeocoderError },
-                new object[] { "File=Google/PermanentError.json", LogEventIds.GeocoderError },
-                new object[] { "File=Google/MissingLocation.json", LogEventIds.GeocoderMissingLocation },
-                new object[] { "File=Google/MissingBoundsAndViewport.json", LogEventIds.GeocoderMissingBounds },
-                new object[] { "File=Google/MissingGeometry.json", LogEventIds.GeocoderMissingGeometry },
-                new object[] { null, LogEventIds.GeocodeException },
-            };
 
         [Theory]
         [MemberData(nameof(ExpectedStatusResponseData))]
