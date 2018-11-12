@@ -129,6 +129,16 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
             Assert.Equal(0, logger.WarningCount);
         }
 
+        [Fact]
+        public async Task Valid_response_has_trace_log_message()
+        {
+            var geocodeRequest = new GeocodeRequest { Address = "File=Google/Valid.json" };
+
+            await googleGeocoder.GeocodeAddressAsync(geocodeRequest);
+
+            Assert.Contains(logger.LoggedEventIds, l => l.Id == (int)LogEventIds.Success);
+        }
+
         [Theory]
         [MemberData(nameof(ExpectedStatusResponseData))]
         public async Task Geocoder_status_is_logged_from_google(string address, LogEventIds expected)

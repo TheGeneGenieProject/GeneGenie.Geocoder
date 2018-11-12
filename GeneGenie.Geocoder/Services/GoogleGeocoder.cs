@@ -81,6 +81,7 @@ namespace GeneGenie.Geocoder.Services
                     return new GeocodeResponseDto(GeocodeStatus.Error);
                 }
 
+                logger.LogTrace((int)LogEventIds.Success, "Geocode completed successfully for {address}.", geocodeRequest.Address);
                 return new GeocodeResponseDto(GeocodeStatus.Success)
                 {
                     Locations = content
