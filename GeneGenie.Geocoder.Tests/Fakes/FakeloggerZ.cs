@@ -7,10 +7,13 @@ namespace GeneGenie.Geocoder.Tests.Fakes
 {
     using System;
     using System.Collections.Generic;
-    using GeneGenie.Geocoder.Services;
     using Microsoft.Extensions.Logging;
 
-    public class FakeLogger : ILogger<GoogleGeocoder>
+    /// <summary>
+    /// Generic test logger for checking what <see cref="EventId"/> codes get written.
+    /// </summary>
+    /// <typeparam name="T">The class that the logger is for.</typeparam>
+    public class FakeLogger<T> : ILogger<T>
     {
         public int CriticalCount { get; set; }
 

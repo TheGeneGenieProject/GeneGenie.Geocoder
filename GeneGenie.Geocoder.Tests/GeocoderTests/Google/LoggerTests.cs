@@ -25,7 +25,7 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
     public class LoggerTests
     {
         private readonly GoogleGeocoder googleGeocoder;
-        private readonly FakeLogger logger;
+        private readonly FakeLogger<GoogleGeocoder> logger;
 
         public LoggerTests()
         {
@@ -36,13 +36,13 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
             var serviceProvider = new ServiceCollection()
                 .AddGeocoders(geocoderSettings)
                 .RemoveAll<ILogger<GoogleGeocoder>>()
-                .AddScoped<ILogger<GoogleGeocoder>, FakeLogger>()
+                .AddScoped<ILogger<GoogleGeocoder>, FakeLogger<GoogleGeocoder>>()
                 .RemoveAll<IGeocoderHttpClient>()
                 .AddTransient<IGeocoderHttpClient, FakeGeocoderHttpClient>()
                 .BuildServiceProvider();
 
             googleGeocoder = serviceProvider.GetRequiredService<GoogleGeocoder>();
-            logger = serviceProvider.GetRequiredService<ILogger<GoogleGeocoder>>() as FakeLogger;
+            logger = serviceProvider.GetRequiredService<ILogger<GoogleGeocoder>>() as FakeLogger<GoogleGeocoder>;
         }
 
         public static IEnumerable<object[]> ExpectedStatusResponseData =>
