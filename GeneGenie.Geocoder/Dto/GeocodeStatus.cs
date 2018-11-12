@@ -10,6 +10,7 @@ namespace GeneGenie.Geocoder.Services
     /// </summary>
     public enum GeocodeStatus
     {
+        /// <summary>Should never return this status, it is here to catch code that does not initialise properly.</summary>
         NotSet,
 
         /// <summary>Indicates that the request could not be processed due to a server error. The request may succeed if you try again.</summary>

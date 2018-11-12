@@ -5,6 +5,9 @@
 
 namespace GeneGenie.Geocoder.Services
 {
+    /// <summary>
+    /// Events logged by the geocoders to the standard logging framework.
+    /// </summary>
     public enum LogEventIds
     {
         /// <summary>
@@ -17,10 +20,29 @@ namespace GeneGenie.Geocoder.Services
         /// </summary>
         Success = 1,
 
+        /// <summary>
+        /// The geocoder told us to slow down and stop querying it so fast.
+        /// </summary>
         GeocoderTooManyRequests = 1001,
+
+        /// <summary>
+        /// Diagnostic log event for detailing the data sent back from the geocoder.
+        /// </summary>
         GeocoderResponse = 1002,
+
+        /// <summary>
+        /// The geocoder service did not like what we sent it, more details in the log event.
+        /// </summary>
         GeocoderError = 1003,
+
+        /// <summary>
+        /// The geocoder service returned a valid response but indicated that no addresses could be found. Ask the user to check the input data.
+        /// </summary>
         GeocoderZeroResults = 1004,
+
+        /// <summary>
+        /// Something rather unexpected happened and we've not handled it well. If you see this, let the library authors know and we'll look into it.
+        /// </summary>
         GeocodeException = 1005,
 
         /// <summary>
