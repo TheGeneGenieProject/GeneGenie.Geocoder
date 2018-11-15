@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <Version>1.0.5</Version>
+        <Version>1.0.6</Version>
         <TargetFramework>netstandard2.0</TargetFramework>
         <Authors>Ryan O'Neill</Authors>
         <Company>GeneGenie.com</Company>
@@ -31,8 +31,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="..\LICENSE" Link="LICENSE" />
         <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="..\LICENSE" Link="LICENSE" />
     </ItemGroup>
 
     <ItemGroup>
@@ -49,6 +52,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta-63127-02" PrivateAssets="All"/>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta-63127-02" PrivateAssets="All" />
     </ItemGroup>
 </Project>
