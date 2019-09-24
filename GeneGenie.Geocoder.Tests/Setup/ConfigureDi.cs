@@ -42,7 +42,10 @@ namespace GeneGenie.Geocoder.Tests.Setup
             };
 
             var sc = new ServiceCollection()
-                .AddLogging()
+                .AddLogging(loggingBuilder =>
+                {
+                    loggingBuilder.AddConsole();
+                })
                 .AddGeocoders(geocoderSettings);
 
             // Remove the real geocoder interface registrations and replace with our fakes.
@@ -63,13 +66,7 @@ namespace GeneGenie.Geocoder.Tests.Setup
                 sc.AddTransient<ITimeProvider, FakeTimeProvider>();
             }
 
-            var serviceProvider = sc.BuildServiceProvider();
-
-            serviceProvider
-                .GetService<ILoggerFactory>()
-                .AddConsole(LogLevel.Debug);
-
-            return serviceProvider;
+            return sc.BuildServiceProvider();
         }
     }
 }
