@@ -11,7 +11,6 @@ namespace GeneGenie.Geocoder.Services.Selectors
     using System.Threading.Tasks;
     using GeneGenie.Geocoder.Interfaces;
     using GeneGenie.Geocoder.Models;
-    using GeneGenie.Geocoder.Services;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
