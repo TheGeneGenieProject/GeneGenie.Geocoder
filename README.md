@@ -1,10 +1,10 @@
 # GeneGenie.Geocoder
-A .Net standard geocoder library that can query multiple backend geocoders and rotate between them (briefly named Neocoder, GeneGenie.Geocoder is the new name for the project).
+A .Net geocoder library that can query multiple backend geocoders and rotate between them (briefly named Neocoder, GeneGenie.Geocoder is the new name for the project). **Currently no nuget releases available as being updated with breaking changes.**
 
 Currently supports Google and Bing geocoder APIs but more can be added if needed (can even be added from outside of the library).
 
-## Status
-[![AppVeyor branch](https://img.shields.io/appveyor/ci/RyanONeill1970/genegenie-geocoder/master.svg)](https://ci.appveyor.com/project/RyanONeill1970/genegenie-geocoder) [![NuGet](https://img.shields.io/nuget/v/GeneGenie.Geocoder.svg)](https://www.nuget.org/packages/GeneGenie.Geocoder) [![AppVeyor tests](https://img.shields.io/appveyor/tests/RyanONeill1970/genegenie-geocoder.svg)](https://ci.appveyor.com/project/RyanONeill1970/genegenie-geocoder/build/tests)
+## Build status
+[![Build and run tests](https://github.com/TheGeneGenieProject/GeneGenie.Geocoder/actions/workflows/sonar.yml/badge.svg)](https://github.com/TheGeneGenieProject/GeneGenie.Geocoder/actions/workflows/sonar.yml)
 
 ## Quickstart
 
@@ -67,9 +67,18 @@ var geocoded = await geocodeManager.GeocodeAddressAsync(address);
 If using this library in a multi-process environment (such as serverless functions or a webfarm) then you'll need to implement your own Geocoder selector with the interface IGeocoderSelector. The class you implement would need to figure out what geocoder to select next based on what was used previously by accessing a shared resource (Redis, database layer etc), This would typically involve a locking fetch / update on the resource. See InMemoryGeocoderSelector.cs for ideas.
 
 ### Code quality
-[![Maintainability](https://sonarcloud.io/api/project_badges/measure?project=GeneGenie.Geocoder&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=GeneGenie.Geocoder) [![Quality gate](https://sonarcloud.io/api/project_badges/measure?project=GeneGenie.Geocoder&metric=alert_status)](https://sonarcloud.io/dashboard?id=GeneGenie.Geocoder) [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=GeneGenie.Geocoder&metric=bugs)](https://sonarcloud.io/component_measures?id=GeneGenie.Geocoder&metric=Reliability) [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=GeneGenie.Geocoder&metric=vulnerabilities)](https://sonarcloud.io/component_measures?id=GeneGenie.Geocoder&metric=Security) [![Code smells](https://sonarcloud.io/api/project_badges/measure?project=GeneGenie.Geocoder&metric=code_smells)](https://sonarcloud.io/component_measures?id=GeneGenie.Geocoder&metric=Maintainability) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=GeneGenie.Geocoder&metric=coverage)](https://sonarcloud.io/component_measures?id=GeneGenie.Geocoder&metric=Coverage) [![Duplications](https://sonarcloud.io/api/project_badges/measure?project=GeneGenie.Geocoder&metric=duplicated_lines_density)](https://sonarcloud.io/component_measures?id=GeneGenie.Geocoder&metric=Duplications) [![Reliability](https://sonarcloud.io/api/project_badges/measure?project=GeneGenie.Geocoder&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=GeneGenie.Geocoder) [![Security](https://sonarcloud.io/api/project_badges/measure?project=GeneGenie.Geocoder&metric=security_rating)](https://sonarcloud.io/dashboard?id=GeneGenie.Geocoder) [![Security](https://sonarcloud.io/api/project_badges/measure?project=GeneGenie.Geocoder&metric=sqale_index)](https://sonarcloud.io/dashboard?id=GeneGenie.Geocoder) [![Lines of code](https://sonarcloud.io/api/project_badges/measure?project=GeneGenie.Geocoder&metric=ncloc)](https://sonarcloud.io/dashboard?id=GeneGenie.Geocoder)
-
-[![Build stats](https://buildstats.info/appveyor/chart/ryanoneill1970/genegenie-geocoder)](https://ci.appveyor.com/project/ryanoneill1970/genegenie-geocoder/history)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=GeneGenie.Geocoder&metric=bugs)](https://sonarcloud.io/summary/new_code?id=GeneGenie.Geocoder)
+[![CodeQL](https://github.com/TheGeneGenieProject/GeneGenie.Geocoder/actions/workflows/codeql.yml/badge.svg)](https://github.com/TheGeneGenieProject/GeneGenie.Geocoder/actions/workflows/codeql.yml)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=GeneGenie.Geocoder&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=GeneGenie.Geocoder)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=GeneGenie.Geocoder&metric=coverage)](https://sonarcloud.io/summary/new_code?id=GeneGenie.Geocoder)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=GeneGenie.Geocoder&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=GeneGenie.Geocoder)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=GeneGenie.Geocoder&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=GeneGenie.Geocoder)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=GeneGenie.Geocoder&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=GeneGenie.Geocoder)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=GeneGenie.Geocoder&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=GeneGenie.Geocoder)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=GeneGenie.Geocoder&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=GeneGenie.Geocoder)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=GeneGenie.Geocoder&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=GeneGenie.Geocoder)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=GeneGenie.Geocoder&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=GeneGenie.Geocoder)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=GeneGenie.Geocoder&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=GeneGenie.Geocoder)
 
 ## Contributing
 
