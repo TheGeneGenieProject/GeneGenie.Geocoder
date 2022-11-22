@@ -5,11 +5,7 @@ updates:
   schedule:
     interval: daily
   open-pull-requests-limit: 10
-  ignore:
-  - dependency-name: Microsoft.NET.Test.Sdk
-    versions:
-    - 16.8.3
-    - 16.9.1
-  - dependency-name: coverlet.msbuild
-    versions:
-    - 3.0.2
+- package-ecosystem: "github-actions"
+  directory: "/" # search in .github/workflows under root `/`
+  schedule:
+    interval: "weekly" # check for action update every week
