@@ -5,8 +5,8 @@
         <TargetFramework>netstandard2.0</TargetFramework>
         <Authors>Ryan O'Neill</Authors>
         <Company>GeneGenie.com</Company>
-        <PackageDescription>A .Net standard geocoder library that can query multiple backend geocoders and rotate between them (briefly named Neocoder, GeneGenie.Geocoder is the new name for the project).</PackageDescription>
-        <Description>A .Net standard geocoder library that can query multiple backend geocoders and rotate between them (briefly named Neocoder, GeneGenie.Geocoder is the new name for the project).</Description>
+        <PackageDescription>A .Net geocoder library that can query multiple backend geocoders and rotate between them (briefly named Neocoder, GeneGenie.Geocoder is the new name for the project).</PackageDescription>
+        <Description>A .Net geocoder library that can query multiple backend geocoders and rotate between them (briefly named Neocoder, GeneGenie.Geocoder is the new name for the project).</Description>
         <Copyright>Ryan O'Neill</Copyright>
         <PackageLicenseUrl>https://github.com/TheGeneGenieProject/GeneGenie.Geocoder/blob/master/LICENSE</PackageLicenseUrl>
         <PackageProjectUrl>https://github.com/TheGeneGenieProject/GeneGenie.Geocoder</PackageProjectUrl>
