@@ -3,15 +3,34 @@
     <PropertyGroup>
 		<TargetFramework>net7.0</TargetFramework>
 		<IsPackable>false</IsPackable>
-    </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<Description>Tests for GeneGenie.Geocoder</Description>
+
+		<Copyright>GeneGenie.com</Copyright>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DocumentationFile>GeneGenie.DataQuality.Tests.xml</DocumentationFile>
+		<CodeAnalysisRuleSet></CodeAnalysisRuleSet>
+		<WarningLevel>9999</WarningLevel>
+		<NoWarn />
+		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
         <LangVersion>latest</LangVersion>
         <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
         <WarningsAsErrors />
     </PropertyGroup>
 
-    <ItemGroup>
+	<PropertyGroup>
+		<AnalysisMode>All</AnalysisMode>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+
+	<ItemGroup>
         <None Remove="Data\Bing\ErrorDetails.json" />
         <None Remove="Data\Bing\NoData.json" />
         <None Remove="Data\Bing\TemporaryError.json" />
@@ -32,21 +51,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Include="..\GlobalSuppressions.cs" Link="GlobalSuppressions.cs" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
-    </ItemGroup>
-
-    <ItemGroup>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.0" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
         <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="7.0.0" />
-        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-        </PackageReference>
         <PackageReference Include="xunit" Version="2.4.2" />
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
             <PrivateAssets>all</PrivateAssets>
@@ -74,6 +81,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <None Include="..\.editorconfig" Link=".editorconfig" />
         <None Include="..\LICENSE" Link="LICENSE" />
     </ItemGroup>
 
@@ -81,4 +89,8 @@
         <ProjectReference Include="..\GeneGenie.Geocoder\GeneGenie.Geocoder.csproj" />
     </ItemGroup>
 
+	<ItemGroup>
+	  <Using Include="Xunit" />
+	</ItemGroup>
+	
 </Project>

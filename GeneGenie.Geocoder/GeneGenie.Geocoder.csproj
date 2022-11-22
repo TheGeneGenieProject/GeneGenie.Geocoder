@@ -16,7 +16,6 @@
         <PackageId>GeneGenie.Geocoder</PackageId>
         <Product>GeneGenie.Geocoder</Product>
         <SignAssembly>true</SignAssembly>
-        <AssemblyOriginatorKeyFile>StrongNameKey.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -27,15 +26,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="..\GlobalSuppressions.cs" Link="GlobalSuppressions.cs" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Include="..\LICENSE" Link="LICENSE" />
+        <None Include="..\.editorconfig" Link=".editorconfig" />
+        <None Include="..\LICENSE" Link="LICENSE" />
     </ItemGroup>
 
     <ItemGroup>
@@ -44,10 +36,6 @@
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
         <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-        </PackageReference>
         <PackageReference Include="System.Net.Http" Version="4.3.4" />
     </ItemGroup>
 </Project>
