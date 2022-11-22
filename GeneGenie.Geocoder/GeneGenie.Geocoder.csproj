@@ -5,8 +5,8 @@
         <TargetFramework>netstandard2.0</TargetFramework>
         <Authors>Ryan O'Neill</Authors>
         <Company>GeneGenie.com</Company>
-        <PackageDescription>A .Net standard geocoder library that can query multiple backend geocoders and rotate between them (briefly named Neocoder, GeneGenie.Geocoder is the new name for the project).</PackageDescription>
-        <Description>A .Net standard geocoder library that can query multiple backend geocoders and rotate between them (briefly named Neocoder, GeneGenie.Geocoder is the new name for the project).</Description>
+        <PackageDescription>A .Net geocoder library that can query multiple backend geocoders and rotate between them (briefly named Neocoder, GeneGenie.Geocoder is the new name for the project).</PackageDescription>
+        <Description>A .Net geocoder library that can query multiple backend geocoders and rotate between them (briefly named Neocoder, GeneGenie.Geocoder is the new name for the project).</Description>
         <Copyright>Ryan O'Neill</Copyright>
         <PackageLicenseUrl>https://github.com/TheGeneGenieProject/GeneGenie.Geocoder/blob/master/LICENSE</PackageLicenseUrl>
         <PackageProjectUrl>https://github.com/TheGeneGenieProject/GeneGenie.Geocoder</PackageProjectUrl>
@@ -43,7 +43,7 @@
         <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
         <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
-        <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
