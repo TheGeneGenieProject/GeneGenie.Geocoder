@@ -8,12 +8,13 @@ namespace GeneGenie.Geocoder.Tests.ExtensionMethods
     using System.IO;
     using System.Reflection;
 
-    public static class ResourceReader
+    internal static class ResourceReader
     {
         public static string ReadEmbeddedFile(string resourceName)
         {
             var assembly = typeof(ResourceReader).GetTypeInfo().Assembly;
             var fileName = resourceName.Replace("/", ".");
+
             using (var stream = assembly.GetManifestResourceStream(fileName))
             {
                 if (stream == null)
