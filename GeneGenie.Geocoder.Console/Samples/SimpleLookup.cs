@@ -7,6 +7,7 @@ namespace GeneGenie.Geocoder.Console.Samples
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using GeneGenie.Geocoder.Models;
 
@@ -25,9 +26,18 @@ namespace GeneGenie.Geocoder.Console.Samples
             // Define the API keys for the geocoders we'll be using.
             var geocoderSettings = new List<GeocoderSettings>
             {
-                new GeocoderSettings { ApiKey = "Your Bing API key (best practice is to put this in a config file, not in source)", GeocoderName = Services.GeocoderNames.Bing },
-                new GeocoderSettings { ApiKey = "Your Google API key (best practice is to put this in a config file, not in source)", GeocoderName = Services.GeocoderNames.Google },
+                // The following is where we populate the API keys. Best practice is to put these in config files, not in source.
+                // Your Bing API key goes in the next line.
+                new GeocoderSettings { ApiKey = "", GeocoderName = Services.GeocoderNames.Bing },
+                // Your Google API key goes in the next line.
+                new GeocoderSettings { ApiKey = "", GeocoderName = Services.GeocoderNames.Google },
             };
+
+            if (geocoderSettings.Any(gs => string.IsNullOrWhiteSpace(gs.ApiKey)))
+            {
+                Console.WriteLine("API keys are blank, you need to provide the API keys from Google and Bing.");
+                return;
+            }
 
             // Instead of doing 'var g = new GeocodeManager' we use a factory method which initialises the library.
             var geocodeManager = GeocodeManager.Create(geocoderSettings);

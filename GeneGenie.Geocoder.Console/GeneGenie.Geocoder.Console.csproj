@@ -15,6 +15,9 @@
     <ItemGroup>
         <None Include="..\.editorconfig" Link=".editorconfig" />
         <Content Include="..\LICENSE" Link="LICENSE" />
+        <None Update="appsettings.development.json">
+          <DependentUpon>appsettings.json</DependentUpon>
+        </None>
     </ItemGroup>
 
     <ItemGroup>
