@@ -24,12 +24,14 @@ namespace GeneGenie.Geocoder.Services.Selectors
     public class InMemoryGeocoderSelector : IGeocoderSelector
     {
         private readonly List<GeocoderNames> emptyList = new List<GeocoderNames>();
+        private readonly List<GeocoderSettings> geocoderSettings;
         private readonly IServiceProvider serviceProvider;
         private readonly ITimeProvider timeProvider;
         private List<GeocoderState> currentGeocoderStates;
 
-        public InMemoryGeocoderSelector(IServiceProvider serviceProvider, ITimeProvider timeProvider)
+        public InMemoryGeocoderSelector(List<GeocoderSettings> geocoderSettings, IServiceProvider serviceProvider, ITimeProvider timeProvider)
         {
+            this.geocoderSettings = geocoderSettings;
             this.serviceProvider = serviceProvider;
             this.timeProvider = timeProvider;
             ResetState();
@@ -71,11 +73,13 @@ namespace GeneGenie.Geocoder.Services.Selectors
         public void ResetState()
         {
             var yesterday = timeProvider.UtcNow().AddDays(-1);
-            currentGeocoderStates = new List<GeocoderState>
-            {
-                new GeocoderState { DoNotUseBefore = yesterday, GeocoderId = GeocoderNames.Bing },
-                new GeocoderState { DoNotUseBefore = yesterday, GeocoderId = GeocoderNames.Google },
-            };
+            currentGeocoderStates = geocoderSettings
+                .Select(gs => new GeocoderState
+                {
+                    DoNotUseBefore = yesterday,
+                    GeocoderId = gs.GeocoderName
+                })
+                .ToList();
         }
 
         /// <summary>

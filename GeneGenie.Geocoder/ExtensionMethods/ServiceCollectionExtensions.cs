@@ -35,10 +35,8 @@ namespace GeneGenie.Geocoder.ExtensionMethods
             }
 
             return serviceCollection
-                .AddTransient(sp => ResolveBing(sp))
-                .AddTransient(sp => ResolveGoogle(sp))
-                .AddTransient<IGeocoder, BingGeocoder>(sp => ResolveBing(sp))
-                .AddTransient<IGeocoder, GoogleGeocoder>(sp => ResolveGoogle(sp))
+                .AddBingServices(geocoderSettings)
+                .AddGoogleServices(geocoderSettings)
                 .AddTransient<IGeocoderSelector, InMemoryGeocoderSelector>()
                 .AddTransient<InMemoryGeocoderSelector>()
                 .AddTransient<ITimeProvider, TimeProvider>()
@@ -46,6 +44,38 @@ namespace GeneGenie.Geocoder.ExtensionMethods
                 .AddTransient<IGeocodeManager, GeocodeManager>()
                 .AddTransient<GeocodeManager>()
                 .AddHttpClient();
+        }
+
+        private static IServiceCollection AddBingServices(this IServiceCollection sc, List<GeocoderSettings> geocoderSettings)
+        {
+            var settings = geocoderSettings
+                .FirstOrDefault(g => g.GeocoderName == GeocoderNames.Bing);
+
+            if (settings is null)
+            {
+                // We don't have any settings for Bing, exiting here will not register it.
+                return sc;
+            }
+
+            return sc
+                .AddTransient(ResolveBing)
+                .AddTransient<IGeocoder, BingGeocoder>(ResolveBing);
+        }
+
+        private static IServiceCollection AddGoogleServices(this IServiceCollection sc, List<GeocoderSettings> geocoderSettings)
+        {
+            var settings = geocoderSettings
+                .FirstOrDefault(g => g.GeocoderName == GeocoderNames.Google);
+
+            if (settings is null)
+            {
+                // We don't have any settings for Google, exiting here will not register it.
+                return sc;
+            }
+
+            return sc
+                .AddTransient(ResolveGoogle)
+                .AddTransient<IGeocoder, GoogleGeocoder>(ResolveGoogle);
         }
 
         private static BingGeocoder ResolveBing(IServiceProvider sp)

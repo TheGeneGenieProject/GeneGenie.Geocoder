@@ -34,7 +34,7 @@ namespace GeneGenie.Geocoder
         }
 
         /// <summary>
-        /// Creates an instance of <see cref="GeocodeManager"/> and if this is the first time called initialise the library with the passed
+        /// Creates an instance of <see cref="GeocodeManager"/> and if this is the first time called initialises the library with the passed
         /// geocoder settings.
         /// </summary>
         /// <param name="geocoderSettings">A list of API keys for the different geocoder services.</param>
