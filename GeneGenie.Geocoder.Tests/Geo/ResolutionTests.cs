@@ -10,14 +10,20 @@ namespace GeneGenie.Geocoder.Tests.Geo
     /// </summary>
     public class ResolutionTests
     {
+        /// <summary>
+        /// Checks the Google geocoder service can be resolved without error.
+        /// </summary>
         [Fact]
-        public void Google_geocoder_can_be_resolved()
+        public void Google_conrete_geocoder_can_be_resolved()
         {
             var geocoder = ConfigureDi.Services.GetRequiredService<GoogleGeocoder>();
 
             Assert.Equal(typeof(GoogleGeocoder), geocoder.GetType());
         }
 
+        /// <summary>
+        /// Checks the Bing geocoder service can be resolved without error.
+        /// </summary>
         [Fact]
         public void Bing_concrete_geocoder_can_be_resolved()
         {
@@ -26,6 +32,9 @@ namespace GeneGenie.Geocoder.Tests.Geo
             Assert.Equal(typeof(BingGeocoder), geocoder.GetType());
         }
 
+        /// <summary>
+        /// Checks the Google geocoder service can be resolved by interface definition.
+        /// </summary>
         [Fact]
         public void Google_concrete_geocoder_is_resolved_by_interface_when_not_using_test_injection()
         {
@@ -42,6 +51,9 @@ namespace GeneGenie.Geocoder.Tests.Geo
             Assert.Contains(geocoders, g => g.GetType() == typeof(GoogleGeocoder));
         }
 
+        /// <summary>
+        /// Checks the Bing geocoder service can be resolved by interface definition.
+        /// </summary>
         [Fact]
         public void Bing_concrete_geocoder_is_resolved_by_interface_when_not_using_test_injection()
         {
@@ -58,6 +70,9 @@ namespace GeneGenie.Geocoder.Tests.Geo
             Assert.Contains(geocoders, g => g.GetType() == typeof(BingGeocoder));
         }
 
+        /// <summary>
+        /// Checks that our fake unit testable Google geocoder service can be resolved by interface definition.
+        /// </summary>
         [Fact]
         public void Google_fake_geocoder_is_registered_against_interface()
         {
@@ -66,6 +81,9 @@ namespace GeneGenie.Geocoder.Tests.Geo
             Assert.Contains(geocoders, g => g.GeocoderId == GeocoderNames.Google);
         }
 
+        /// <summary>
+        /// Checks that our fake unit testable Bing geocoder service can be resolved by interface definition.
+        /// </summary>
         [Fact]
         public void Bing_fake_geocoder_is_registered_against_interface()
         {
