@@ -18,13 +18,13 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Bing
         }
 
         [Fact]
-        public async Task Error_is_returned_for_empty_request()
+        public async Task Invalid_request_is_returned_for_empty_request()
         {
             var geocodeRequest = new GeocodeRequest();
 
             var response = await bingGeocoder.GeocodeAddressAsync(geocodeRequest);
 
-            Assert.Equal(GeocodeStatus.Error, response.ResponseStatus);
+            Assert.Equal(GeocodeStatus.InvalidRequest, response.ResponseStatus);
         }
 
         [Fact]

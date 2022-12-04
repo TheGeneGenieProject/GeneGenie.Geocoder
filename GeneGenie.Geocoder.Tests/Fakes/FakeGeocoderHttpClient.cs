@@ -6,7 +6,8 @@
 namespace GeneGenie.Geocoder.Tests.Fakes
 {
     /// <summary>
-    /// Fake for testing the <see cref="GoogleGeocoder"/> class without causing any network traffic.
+    /// Fake for testing geocoder classes that implement <see cref="IGeocoder"/> and make network calls.
+    /// This class replaces those network calls and does not cause any network traffic.
     /// </summary>
     public class FakeGeocoderHttpClient : IGeocoderHttpClient
     {
@@ -14,7 +15,7 @@ namespace GeneGenie.Geocoder.Tests.Fakes
         {
             var response = new HttpResponseMessage
             {
-                Content = new StringContent("Invalid response"),
+                Content = new StringContent(""),
             };
 
             if (url.Contains("NULL"))

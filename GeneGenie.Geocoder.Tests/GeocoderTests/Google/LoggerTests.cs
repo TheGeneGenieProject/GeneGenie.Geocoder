@@ -43,7 +43,7 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
                 new object[] { "File=Google/MissingBoundsAndViewport.json", LogEventIds.GeocoderMissingBounds },
                 new object[] { "File=Google/MissingGeometry.json", LogEventIds.GeocoderMissingGeometry },
                 new object[] { "File=Google/ZeroResults.json", LogEventIds.GeocoderZeroResults },
-                new object[] { null, LogEventIds.GeocodeException },
+                new object[] { null, LogEventIds.GeocoderInputEmpty },
             };
 
         [Fact]

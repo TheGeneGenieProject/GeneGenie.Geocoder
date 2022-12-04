@@ -64,5 +64,10 @@ namespace GeneGenie.Geocoder.Services
         /// Missing location from geocoder response.
         /// </summary>
         GeocoderMissingLocation = 2005,
+
+        /// <summary>
+        /// Data passed to geocoder is null or whitespace and could not be used.
+        /// </summary>
+        GeocoderInputEmpty = 2006,
     }
 }

@@ -48,6 +48,12 @@ namespace GeneGenie.Geocoder.Services
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(geocodeRequest.Address))
+                {
+                    logger.LogWarning((int)LogEventIds.GeocoderInputEmpty, "Data passed to geocoder was empty.");
+                    return new GeocodeResponseDto(GeocodeStatus.InvalidRequest);
+                }
+
                 var response = await MakeApiRequestAsync(geocodeRequest);
 
                 var httpStatus = ValidateHttpResponse(response);

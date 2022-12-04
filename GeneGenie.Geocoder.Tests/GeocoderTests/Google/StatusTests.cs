@@ -12,19 +12,22 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
     {
         private readonly GoogleGeocoder googleGeocoder;
 
+        /// <summary>
+        /// Creates a new test instance. Called by xunit only.
+        /// </summary>
         public StatusTests()
         {
             googleGeocoder = ConfigureDi.Services.GetRequiredService<GoogleGeocoder>();
         }
 
         [Fact]
-        public async Task Error_is_returned_for_empty_request()
+        public async Task Invalid_request_is_returned_for_empty_request()
         {
             var geocodeRequest = new GeocodeRequest();
 
             var response = await googleGeocoder.GeocodeAddressAsync(geocodeRequest);
 
-            Assert.Equal(GeocodeStatus.Error, response.ResponseStatus);
+            Assert.Equal(GeocodeStatus.InvalidRequest, response.ResponseStatus);
         }
 
         [Fact]
