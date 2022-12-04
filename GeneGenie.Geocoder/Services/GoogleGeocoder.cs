@@ -30,7 +30,7 @@ namespace GeneGenie.Geocoder.Services
             new GeocoderStatusMapping { IsPermanentError = false, IsTemporaryError = true, StatusText = "OVER_QUERY_LIMIT", Status = GeocodeStatus.TooManyRequests },
             new GeocoderStatusMapping { IsPermanentError = false, IsTemporaryError = false, StatusText = "REQUEST_DENIED", Status = GeocodeStatus.RequestDenied },
             new GeocoderStatusMapping { IsPermanentError = false, IsTemporaryError = true, StatusText = "UNKNOWN_ERROR", Status = GeocodeStatus.Error },
-            new GeocoderStatusMapping { IsPermanentError = true, IsTemporaryError = false, StatusText = "ZERO_RESULTS", Status = GeocodeStatus.ZeroResults },
+            new GeocoderStatusMapping { IsPermanentError = false, IsTemporaryError = false, StatusText = "ZERO_RESULTS", Status = GeocodeStatus.ZeroResults },
         };
 
         private readonly IGeocoderHttpClient geocoderHttpClient;
@@ -168,6 +168,13 @@ namespace GeneGenie.Geocoder.Services
         {
             if (root == null || root.Results == null || !root.Results.Any())
             {
+                if (root?.Status == "ZERO_RESULTS")
+                {
+                    // Technically, the call worked as far as the API is concerned. There were just no results.
+                    logger.LogInformation((int)LogEventIds.GeocoderZeroResults, "Zero results received from Google geocode");
+                    return GeocodeStatus.ZeroResults;
+                }
+
                 logger.LogCritical((int)LogEventIds.GeocoderReturnedNull, "Results missing from Google geocode");
                 return GeocodeStatus.Error;
             }
