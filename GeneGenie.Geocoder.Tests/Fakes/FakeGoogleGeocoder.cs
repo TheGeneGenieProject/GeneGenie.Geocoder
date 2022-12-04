@@ -12,10 +12,20 @@ namespace GeneGenie.Geocoder.Tests.Fakes
     using GeneGenie.Geocoder.Models.Geo;
     using GeneGenie.Geocoder.Services;
 
+    /// <summary>
+    /// A fake Google geocoder for unit testing.
+    /// </summary>
     public class FakeGoogleGeocoder : FakeGeocoderBase, IGeocoder
     {
-        public GeocoderNames GeocoderId { get => GeocoderNames.Google; }
+        /// <inheritdoc/>
+        public override GeocoderNames GeocoderId { get => GeocoderNames.Google; }
 
+        /// <summary>
+        /// Parses test input from fake geocoders and returns a result based on that input.
+        /// Used to simulate a geocoder without any lookups.
+        /// </summary>
+        /// <param name="geocodeRequest"></param>
+        /// <returns></returns>
         public Task<GeocodeResponseDto> GeocodeAddressAsync(GeocodeRequest geocodeRequest)
         {
             var requiredStatusList = ExtractStatusFromAddress(geocodeRequest.Address);

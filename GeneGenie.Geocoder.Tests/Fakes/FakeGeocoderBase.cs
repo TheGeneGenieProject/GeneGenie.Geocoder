@@ -9,8 +9,17 @@ namespace GeneGenie.Geocoder.Tests.Fakes
     using System.Collections.Generic;
     using GeneGenie.Geocoder.Services;
 
-    public class FakeGeocoderBase
+    /// <summary>
+    /// Common base class for fake geocoders.
+    /// Only used by unit tests.
+    /// </summary>
+    public abstract class FakeGeocoderBase
     {
+        /// <summary>
+        /// The name of the geocoder we are faking.
+        /// </summary>
+        public abstract GeocoderNames GeocoderId { get; }
+
         internal Dictionary<GeocoderNames, GeocodeStatus> ExtractStatusFromAddress(string address)
         {
             var statusList = new Dictionary<GeocoderNames, GeocodeStatus>();
