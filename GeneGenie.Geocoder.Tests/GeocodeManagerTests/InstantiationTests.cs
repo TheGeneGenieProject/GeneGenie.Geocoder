@@ -5,10 +5,6 @@
 
 namespace GeneGenie.Geocoder.Tests.GeocodeManagerTests
 {
-    using System.Collections.Generic;
-    using GeneGenie.Geocoder.Models;
-    using Xunit;
-
     /// <summary>
     /// Tests to check that the library can 'self register' and returns an instance of a <see cref="GeocodeManager"/>.
     /// </summary>

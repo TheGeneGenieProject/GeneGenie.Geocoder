@@ -5,13 +5,6 @@
 
 namespace GeneGenie.Geocoder.Tests.Fakes
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using GeneGenie.Geocoder.Dto;
-    using GeneGenie.Geocoder.Interfaces;
-    using GeneGenie.Geocoder.Models.Geo;
-    using GeneGenie.Geocoder.Services;
-
     /// <summary>
     /// A fake Bing geocoder for unit testing.
     /// </summary>

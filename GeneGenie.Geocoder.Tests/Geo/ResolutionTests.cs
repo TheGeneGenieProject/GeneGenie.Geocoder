@@ -5,16 +5,6 @@
 
 namespace GeneGenie.Geocoder.Tests.Geo
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using GeneGenie.Geocoder.ExtensionMethods;
-    using GeneGenie.Geocoder.Interfaces;
-    using GeneGenie.Geocoder.Models;
-    using GeneGenie.Geocoder.Services;
-    using GeneGenie.Geocoder.Tests.Setup;
-    using Microsoft.Extensions.DependencyInjection;
-    using Xunit;
-
     /// <summary>
     /// Tests to ensure that fake and concrete classes have been registered for the geocoders and can all be resolved.
     /// </summary>

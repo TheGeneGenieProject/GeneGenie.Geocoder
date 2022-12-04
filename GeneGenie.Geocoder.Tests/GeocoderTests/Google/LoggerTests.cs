@@ -5,20 +5,6 @@
 
 namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
 {
-    using System.Collections.Generic;
-    using System.Net;
-    using System.Threading.Tasks;
-    using GeneGenie.Geocoder.ExtensionMethods;
-    using GeneGenie.Geocoder.Interfaces;
-    using GeneGenie.Geocoder.Models;
-    using GeneGenie.Geocoder.Models.Geo;
-    using GeneGenie.Geocoder.Services;
-    using GeneGenie.Geocoder.Tests.Fakes;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.DependencyInjection.Extensions;
-    using Microsoft.Extensions.Logging;
-    using Xunit;
-
     /// <summary>
     /// Tests to check that all log points are called.
     /// </summary>

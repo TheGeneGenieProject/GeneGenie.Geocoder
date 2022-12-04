@@ -5,16 +5,6 @@
 
 namespace GeneGenie.Geocoder.Tests.GeocoderSelectorTests
 {
-    using System;
-    using System.Threading.Tasks;
-    using GeneGenie.Geocoder.Interfaces;
-    using GeneGenie.Geocoder.Services;
-    using GeneGenie.Geocoder.Services.Selectors;
-    using GeneGenie.Geocoder.Tests.Fakes;
-    using GeneGenie.Geocoder.Tests.Setup;
-    using Microsoft.Extensions.DependencyInjection;
-    using Xunit;
-
     public class ThrottleTests
     {
         private readonly InMemoryGeocoderSelector geocoderSelector;

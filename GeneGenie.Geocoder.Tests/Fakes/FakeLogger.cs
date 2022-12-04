@@ -5,10 +5,6 @@
 
 namespace GeneGenie.Geocoder.Tests.Fakes
 {
-    using System;
-    using System.Collections.Generic;
-    using Microsoft.Extensions.Logging;
-
     /// <summary>
     /// Generic test logger for checking what <see cref="EventId"/> codes get written.
     /// </summary>

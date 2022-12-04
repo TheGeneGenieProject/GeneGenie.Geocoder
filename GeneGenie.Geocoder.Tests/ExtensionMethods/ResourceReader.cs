@@ -5,9 +5,6 @@
 
 namespace GeneGenie.Geocoder.Tests.ExtensionMethods
 {
-    using System.IO;
-    using System.Reflection;
-
     internal static class ResourceReader
     {
         public static string ReadEmbeddedFile(string resourceName)

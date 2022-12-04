@@ -5,13 +5,6 @@
 
 namespace GeneGenie.Geocoder.Tests.GeocoderTests.Bing
 {
-    using System.Threading.Tasks;
-    using GeneGenie.Geocoder.Models.Geo;
-    using GeneGenie.Geocoder.Services;
-    using GeneGenie.Geocoder.Tests.Setup;
-    using Microsoft.Extensions.DependencyInjection;
-    using Xunit;
-
     /// <summary>
     /// Tests to check that all error conditions are returned as such.
     /// </summary>

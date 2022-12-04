@@ -5,17 +5,6 @@
 
 namespace GeneGenie.Geocoder.Tests.Setup
 {
-    using System;
-    using System.Collections.Generic;
-    using GeneGenie.Geocoder.ExtensionMethods;
-    using GeneGenie.Geocoder.Interfaces;
-    using GeneGenie.Geocoder.Models;
-    using GeneGenie.Geocoder.Services;
-    using GeneGenie.Geocoder.Tests.Fakes;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.DependencyInjection.Extensions;
-    using Microsoft.Extensions.Logging;
-
     public static class ConfigureDi
     {
         private static IServiceProvider services;

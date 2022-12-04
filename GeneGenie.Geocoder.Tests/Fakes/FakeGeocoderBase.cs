@@ -5,10 +5,6 @@
 
 namespace GeneGenie.Geocoder.Tests.Fakes
 {
-    using System;
-    using System.Collections.Generic;
-    using GeneGenie.Geocoder.Services;
-
     /// <summary>
     /// Common base class for fake geocoders.
     /// Only used by unit tests.

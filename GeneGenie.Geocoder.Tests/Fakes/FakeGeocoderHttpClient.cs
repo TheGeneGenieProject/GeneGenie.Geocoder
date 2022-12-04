@@ -5,14 +5,6 @@
 
 namespace GeneGenie.Geocoder.Tests.Fakes
 {
-    using System;
-    using System.Linq;
-    using System.Net;
-    using System.Net.Http;
-    using System.Threading.Tasks;
-    using GeneGenie.Geocoder.Interfaces;
-    using GeneGenie.Geocoder.Tests.ExtensionMethods;
-
     /// <summary>
     /// Fake for testing the <see cref="GoogleGeocoder"/> class without causing any network traffic.
     /// </summary>

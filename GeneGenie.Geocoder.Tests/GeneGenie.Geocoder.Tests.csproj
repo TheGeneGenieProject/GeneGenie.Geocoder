@@ -92,9 +92,5 @@
     <ItemGroup>
         <ProjectReference Include="..\GeneGenie.Geocoder\GeneGenie.Geocoder.csproj" />
     </ItemGroup>
-
-	<ItemGroup>
-	  <Using Include="Xunit" />
-	</ItemGroup>
 	
 </Project>

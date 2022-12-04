@@ -5,12 +5,6 @@
 
 namespace GeneGenie.Geocoder.Tests.Geo
 {
-    using System.Collections.Generic;
-    using GeneGenie.Geocoder.Services;
-    using GeneGenie.Geocoder.Tests.Setup;
-    using Microsoft.Extensions.DependencyInjection;
-    using Xunit;
-
     public class GoogleStatusParsingTests
     {
         private readonly GoogleGeocoder geocoder;

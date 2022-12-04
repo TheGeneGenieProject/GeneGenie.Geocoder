@@ -5,9 +5,6 @@
 
 namespace GeneGenie.Geocoder.Tests.Fakes
 {
-    using System;
-    using GeneGenie.Geocoder.Interfaces;
-
     /// <summary>
     /// Wrapper around DateTimeOffset which can be changed for unit testing.
     /// </summary>

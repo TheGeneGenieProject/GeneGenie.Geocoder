@@ -5,14 +5,6 @@
 
 namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
 {
-    using System.Linq;
-    using System.Threading.Tasks;
-    using GeneGenie.Geocoder.Models.Geo;
-    using GeneGenie.Geocoder.Services;
-    using GeneGenie.Geocoder.Tests.Setup;
-    using Microsoft.Extensions.DependencyInjection;
-    using Xunit;
-
     /// <summary>
     /// Tests to check how valid responses are parsed.
     /// </summary>

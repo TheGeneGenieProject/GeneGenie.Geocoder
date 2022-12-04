@@ -5,13 +5,6 @@
 
 namespace GeneGenie.Geocoder.Tests.GeocoderManagerTests
 {
-    using System.Threading.Tasks;
-    using GeneGenie.Geocoder.Interfaces;
-    using GeneGenie.Geocoder.Services;
-    using GeneGenie.Geocoder.Tests.Setup;
-    using Microsoft.Extensions.DependencyInjection;
-    using Xunit;
-
     /// <summary>
     /// Tests for ensuring that the geocoders fail over to each other if they can't look up an address.
     /// </summary>

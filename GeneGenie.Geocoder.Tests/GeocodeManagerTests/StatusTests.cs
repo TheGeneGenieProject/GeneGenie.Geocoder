@@ -5,14 +5,6 @@
 
 namespace GeneGenie.Geocoder.Tests.GeocoderManagerTests
 {
-    using System.Threading.Tasks;
-    using GeneGenie.Geocoder.Interfaces;
-    using GeneGenie.Geocoder.Models.Geo;
-    using GeneGenie.Geocoder.Services;
-    using GeneGenie.Geocoder.Tests.Setup;
-    using Microsoft.Extensions.DependencyInjection;
-    using Xunit;
-
     /// <summary>
     /// Tests for ensuring that the geocoder manager reports the correct status of a lookup depending on
     /// how many lookups failed or succeeded.
