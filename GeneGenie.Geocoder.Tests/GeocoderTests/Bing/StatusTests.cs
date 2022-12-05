@@ -12,11 +12,17 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Bing
     {
         private readonly BingGeocoder bingGeocoder;
 
+        /// <summary>
+        /// Creates a new test instance. Called by xunit only.
+        /// </summary>
         public StatusTests()
         {
             bingGeocoder = ConfigureDi.Services.GetRequiredService<BingGeocoder>();
         }
 
+        /// <summary>
+        /// Tests that when we pass the Bing geocoder an empty request it returns the correct status.
+        /// </summary>
         [Fact]
         public async Task Invalid_request_is_returned_for_empty_request()
         {
@@ -27,6 +33,9 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Bing
             Assert.Equal(GeocodeStatus.InvalidRequest, response.ResponseStatus);
         }
 
+        /// <summary>
+        /// Tests that the Bing geocoder returns the correct status for no results.
+        /// </summary>
         [Fact]
         public async Task Error_is_returned_when_bing_returns_empty_response()
         {
