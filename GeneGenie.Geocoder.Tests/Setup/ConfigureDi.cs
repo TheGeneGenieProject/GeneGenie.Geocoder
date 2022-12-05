@@ -5,23 +5,26 @@
 
 namespace GeneGenie.Geocoder.Tests.Setup
 {
+    /// <summary>
+    /// Set up dependencies for unit tests.
+    /// </summary>
     public static class ConfigureDi
     {
         private static IServiceProvider services;
 
+        /// <summary>
+        /// Builds services for test on first access.
+        /// </summary>
         public static IServiceProvider Services
         {
-            get
-            {
-                if (services == null)
-                {
-                    services = BuildDi();
-                }
-
-                return services;
-            }
+            get => services ??= BuildDi();
         }
 
+        /// <summary>
+        /// Builds the unit test dependencies.
+        /// </summary>
+        /// <param name="systemTimeIsSingleton">Pass as true to use a unit testable system time provider.</param>
+        /// <returns>A service provider for resolving dependencies.</returns>
         public static IServiceProvider BuildDi(bool systemTimeIsSingleton = false)
         {
             var geocoderSettings = new List<GeocoderSettings>
