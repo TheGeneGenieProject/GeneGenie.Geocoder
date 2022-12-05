@@ -6,7 +6,7 @@
 namespace GeneGenie.Geocoder.Dto
 {
     /// <summary>
-    /// Holds the response from the common address lookup code <see cref="GeocoderAddressLookup"/> when passing it back to the
+    /// Holds the response from the common address lookup code when passing it back to the
     /// geocoder for further processing.
     /// </summary>
     /// <typeparam name="T">The C# type equivalent of the JSON response, unique to each external API.</typeparam>

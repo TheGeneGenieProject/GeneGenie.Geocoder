@@ -17,7 +17,6 @@ namespace GeneGenie.Geocoder
         /// Initializes a new instance of the <see cref="GeocodeManager"/> class.
         /// </summary>
         /// <param name="geocoderSelector">An instance of <see cref="IGeocoderSelector"/> that is responsible for returning the next available geocoder.</param>
-        /// <param name="keyComposer">An instance of <see cref="KeyComposer"/> used to construct a unique code per address looked up.</param>
         public GeocodeManager(IGeocoderSelector geocoderSelector)
         {
             this.geocoderSelector = geocoderSelector;

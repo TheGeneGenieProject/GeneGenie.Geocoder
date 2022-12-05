@@ -77,7 +77,7 @@ namespace GeneGenie.Geocoder.Services
 
         /// <summary>
         /// Validates the HTTP level response (the status code and headers).
-        /// Does not validate the message itself which is handled by <see cref="ValidateResponse(Response)"/>.
+        /// Does not validate the message itself which is handled by <see cref="ValidateResponse"/>.
         /// </summary>
         /// <param name="response">The HTTP response to validate.</param>
         /// <returns>Returns <see cref="GeocodeStatus.Success"/> if all OK, otherwise returns an error code.</returns>
