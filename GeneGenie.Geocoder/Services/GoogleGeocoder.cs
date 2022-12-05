@@ -84,7 +84,7 @@ namespace GeneGenie.Geocoder.Services
                 if (status.IsTemporaryError)
                 {
                     logger.LogWarning((int)LogEventIds.GeocoderError, "Geocoder returned temporary error for {address} with status of {status} and error detail of {error}", geocodeRequest.Address, status.Status, content.Error_message);
-                    return new GeocodeResponseDto(GeocodeStatus.Error);
+                    return new GeocodeResponseDto(GeocodeStatus.TemporaryError);
                 }
 
                 logger.LogTrace((int)LogEventIds.Success, "Geocode completed successfully for {address}.", geocodeRequest.Address);

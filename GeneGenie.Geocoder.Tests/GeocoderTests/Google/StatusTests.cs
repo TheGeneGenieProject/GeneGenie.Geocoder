@@ -51,13 +51,13 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
         }
 
         [Fact]
-        public async Task Error_is_returned_when_receiving_temporary_error_from_google()
+        public async Task Temporary_error_is_returned_when_receiving_temporary_error_from_google()
         {
             var geocodeRequest = new GeocodeRequest { Address = "File=Google/TemporaryError.json" };
 
             var response = await googleGeocoder.GeocodeAddressAsync(geocodeRequest);
 
-            Assert.Equal(GeocodeStatus.Error, response.ResponseStatus);
+            Assert.Equal(GeocodeStatus.TemporaryError, response.ResponseStatus);
         }
 
         [Fact]
