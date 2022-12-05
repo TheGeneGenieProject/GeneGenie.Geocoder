@@ -5,8 +5,6 @@
 
 namespace GeneGenie.Geocoder.Dto.Google
 {
-    using System.Collections.Generic;
-
     public class Result
     {
         public List<AddressComponent> Address_components { get; set; }

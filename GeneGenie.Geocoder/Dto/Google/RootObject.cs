@@ -5,8 +5,6 @@
 
 namespace GeneGenie.Geocoder.Dto.Google
 {
-    using System.Collections.Generic;
-
     /// <summary>
     /// The root of an address lookup response from the Google API.
     /// </summary>

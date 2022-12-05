@@ -5,8 +5,6 @@
 
 namespace GeneGenie.Geocoder.Models
 {
-    using GeneGenie.Geocoder.Services;
-
     public class GeocoderSettings
     {
         /// <summary>

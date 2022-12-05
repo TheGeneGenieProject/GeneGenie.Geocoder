@@ -16,6 +16,7 @@
         <PackageId>GeneGenie.Geocoder</PackageId>
         <Product>GeneGenie.Geocoder</Product>
         <SignAssembly>true</SignAssembly>
+        <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

@@ -5,8 +5,6 @@
 
 namespace GeneGenie.Geocoder.Dto
 {
-    using GeneGenie.Geocoder.Models.Geo;
-
     public class GeocodeLocationDto
     {
         public Bounds Bounds { get; set; }

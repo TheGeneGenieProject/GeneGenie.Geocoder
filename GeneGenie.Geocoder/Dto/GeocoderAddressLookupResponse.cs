@@ -5,8 +5,6 @@
 
 namespace GeneGenie.Geocoder.Dto
 {
-    using GeneGenie.Geocoder.Services;
-
     /// <summary>
     /// Holds the response from the common address lookup code <see cref="GeocoderAddressLookup"/> when passing it back to the
     /// geocoder for further processing.

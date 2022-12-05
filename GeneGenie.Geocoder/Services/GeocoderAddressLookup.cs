@@ -5,14 +5,6 @@
 
 namespace GeneGenie.Geocoder.Services
 {
-    using GeneGenie.Geocoder.Dto;
-    using GeneGenie.Geocoder.Interfaces;
-    using GeneGenie.Geocoder.Models.Geo;
-    using Microsoft.Extensions.Logging;
-    using Newtonsoft.Json;
-    using System;
-    using System.Threading.Tasks;
-
     /// <summary>
     /// Contains code that is common to geocoders for making the call to the external API
     /// and handling the response.

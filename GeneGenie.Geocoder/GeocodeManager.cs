@@ -5,16 +5,6 @@
 
 namespace GeneGenie.Geocoder
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using GeneGenie.Geocoder.ExtensionMethods;
-    using GeneGenie.Geocoder.Interfaces;
-    using GeneGenie.Geocoder.Models;
-    using GeneGenie.Geocoder.Models.Geo;
-    using GeneGenie.Geocoder.Services;
-    using Microsoft.Extensions.DependencyInjection;
-
     /// <summary>
     /// The main entry point for looking up an address.
     /// Handles selection of the next available geocoder and retrying other geocoders if the response is not usable.

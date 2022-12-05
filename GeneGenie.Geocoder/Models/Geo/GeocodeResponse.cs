@@ -5,9 +5,6 @@
 
 namespace GeneGenie.Geocoder.Models.Geo
 {
-    using System.Collections.Generic;
-    using GeneGenie.Geocoder.Services;
-
     public class GeocodeResponse
     {
         public List<GeocodeResponseLocation> Locations { get; set; } = new List<GeocodeResponseLocation>();

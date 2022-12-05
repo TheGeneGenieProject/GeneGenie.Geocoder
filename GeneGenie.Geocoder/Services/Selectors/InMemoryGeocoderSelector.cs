@@ -5,14 +5,6 @@
 
 namespace GeneGenie.Geocoder.Services.Selectors
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using GeneGenie.Geocoder.Interfaces;
-    using GeneGenie.Geocoder.Models;
-    using Microsoft.Extensions.DependencyInjection;
-
     /// <summary>
     /// A geocode selector (finds the next available geocoder) that stores the current state of the
     /// geocoders in-memory.

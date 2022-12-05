@@ -5,19 +5,6 @@
 
 namespace GeneGenie.Geocoder.Services
 {
-    using GeneGenie.Geocoder.Dto;
-    using GeneGenie.Geocoder.Dto.Bing;
-    using GeneGenie.Geocoder.Interfaces;
-    using GeneGenie.Geocoder.Models;
-    using GeneGenie.Geocoder.Models.Geo;
-    using Microsoft.AspNetCore.WebUtilities;
-    using Microsoft.Extensions.Logging;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Net;
-    using System.Net.Http;
-    using System.Threading.Tasks;
-
     public class BingGeocoder : IGeocoder, IGeocoderAddressProcessor<Response>
     {
         private const int MaxResults = 25;

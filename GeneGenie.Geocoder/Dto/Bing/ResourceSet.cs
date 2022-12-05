@@ -5,8 +5,6 @@
 
 namespace GeneGenie.Geocoder.Dto.Bing
 {
-    using System.Collections.Generic;
-
     public class ResourceSet
     {
         public long EstimatedTotal { get; set; }

@@ -5,9 +5,6 @@
 
 namespace GeneGenie.Geocoder.Dto.Bing
 {
-    using System.Collections.Generic;
-    using Newtonsoft.Json;
-
     public class Resource
     {
         public Address Address { get; set; }

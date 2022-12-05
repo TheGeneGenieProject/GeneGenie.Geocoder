@@ -5,10 +5,6 @@
 
 namespace GeneGenie.Geocoder.Services.Selectors
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using GeneGenie.Geocoder.Interfaces;
-
     internal class DocumentDbGeocoderSelector : IGeocoderSelector
     {
         public Task<IGeocoder> SelectNextGeocoderAsync()

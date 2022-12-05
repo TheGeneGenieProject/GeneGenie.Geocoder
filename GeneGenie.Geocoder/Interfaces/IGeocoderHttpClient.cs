@@ -5,9 +5,6 @@
 
 namespace GeneGenie.Geocoder.Interfaces
 {
-    using System.Net.Http;
-    using System.Threading.Tasks;
-
     /// <summary>
     /// An interface used to remove the geocoder dependency on HttpClient so that they can be
     /// tested without making calls to the real geocoders (Google, Bing etc. would ban us pretty

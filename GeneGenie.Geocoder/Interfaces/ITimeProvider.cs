@@ -5,8 +5,6 @@
 
 namespace GeneGenie.Geocoder.Interfaces
 {
-    using System;
-
     public interface ITimeProvider
     {
         DateTimeOffset UtcNow();

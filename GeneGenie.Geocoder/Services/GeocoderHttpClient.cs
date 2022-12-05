@@ -5,10 +5,6 @@
 
 namespace GeneGenie.Geocoder.Services
 {
-    using System.Net.Http;
-    using System.Threading.Tasks;
-    using GeneGenie.Geocoder.Interfaces;
-
     /// <summary>
     /// Plugs in to the geocoder classes so that they can make API calls to Google, Bing etc.
     /// Implements <see cref="IGeocoderHttpClient"/> so that unit tests can swap it out.

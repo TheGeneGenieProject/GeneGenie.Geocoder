@@ -5,11 +5,6 @@
 
 namespace GeneGenie.Geocoder.Interfaces
 {
-    using GeneGenie.Geocoder.Models.Geo;
-    using GeneGenie.Geocoder.Services;
-    using System.Net.Http;
-    using System.Threading.Tasks;
-
     /// <summary>
     /// Common address validation, parsing and API calls that are used across multiple Geocoders.
     /// The geocoder implements this interface so that it can be called from geocoder agnostic code

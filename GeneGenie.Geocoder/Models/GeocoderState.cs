@@ -5,9 +5,6 @@
 
 namespace GeneGenie.Geocoder.Models
 {
-    using System;
-    using GeneGenie.Geocoder.Services;
-
     public class GeocoderState
     {
         public DateTimeOffset DoNotUseBefore { get; set; }

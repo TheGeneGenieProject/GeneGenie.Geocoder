@@ -5,8 +5,6 @@
 
 namespace GeneGenie.Geocoder.Dto.Bing
 {
-    using System.Collections.Generic;
-
     public class Point
     {
         public List<double> BoundingBox { get; set; }

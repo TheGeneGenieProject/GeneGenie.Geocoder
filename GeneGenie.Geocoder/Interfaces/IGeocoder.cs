@@ -5,11 +5,6 @@
 
 namespace GeneGenie.Geocoder.Interfaces
 {
-    using System.Threading.Tasks;
-    using GeneGenie.Geocoder.Dto;
-    using GeneGenie.Geocoder.Models.Geo;
-    using GeneGenie.Geocoder.Services;
-
     public interface IGeocoder
     {
         GeocoderNames GeocoderId { get; }

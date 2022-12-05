@@ -5,9 +5,6 @@
 
 namespace GeneGenie.Geocoder.Interfaces
 {
-    using System.Threading.Tasks;
-    using GeneGenie.Geocoder.Models.Geo;
-
     /// <summary>
     /// Interface for the main usage point of the geocoder library so that it can be swapped out for testing.
     /// This resolves to <see cref="GeocodeManager"/> in normal system use and is only used by internal tests.

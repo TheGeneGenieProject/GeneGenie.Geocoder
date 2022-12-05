@@ -5,9 +5,6 @@
 
 namespace GeneGenie.Geocoder
 {
-    using System;
-    using GeneGenie.Geocoder.Interfaces;
-
     /// <summary>
     /// Implementation of <see cref="ITimeProvider"/> for live system use.
     /// </summary>

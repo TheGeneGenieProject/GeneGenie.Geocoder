@@ -5,9 +5,6 @@
 
 namespace GeneGenie.Geocoder.Dto
 {
-    using System.Collections.Generic;
-    using GeneGenie.Geocoder.Services;
-
     public class GeocodeResponseDto
     {
         public GeocodeResponseDto(GeocodeStatus responseStatus)

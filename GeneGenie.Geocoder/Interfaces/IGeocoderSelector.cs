@@ -5,10 +5,6 @@
 
 namespace GeneGenie.Geocoder.Interfaces
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using GeneGenie.Geocoder.Services;
-
     /// <summary>
     /// A instance of <see cref="IGeocoderSelector"/> is used to request the next available geocoder
     /// (<see cref="IGeocoder"/>).
