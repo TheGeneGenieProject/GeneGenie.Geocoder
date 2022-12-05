@@ -21,6 +21,7 @@ namespace GeneGenie.Geocoder.Services
             new GeocoderStatusMapping { IsPermanentError = false, IsTemporaryError = false, StatusText = "ZERO_RESULTS", Status = GeocodeStatus.ZeroResults },
         };
 
+        private readonly GeocoderAddressLookup<RootObject> geocoderAddressLookup;
         private readonly IGeocoderHttpClient geocoderHttpClient;
         private readonly GeocoderSettings geocoderSettings;
         private readonly ILogger logger;
@@ -30,14 +31,13 @@ namespace GeneGenie.Geocoder.Services
             this.geocoderHttpClient = geocoderHttpClient;
             this.geocoderSettings = geocoderSettings;
             this.logger = logger;
+            geocoderAddressLookup = new GeocoderAddressLookup<RootObject>(this, logger);
         }
 
         public GeocoderNames GeocoderId { get => GeocoderNames.Google; }
 
         public async Task<GeocodeResponseDto> GeocodeAddressAsync(GeocodeRequest geocodeRequest)
         {
-            var geocoderAddressLookup = new GeocoderAddressLookup<RootObject>(this, logger);
-
             var response = await geocoderAddressLookup.GeocodeAddressAsync(geocodeRequest);
 
             if (response.ResponseStatus == GeocodeStatus.Success)
@@ -198,22 +198,7 @@ namespace GeneGenie.Geocoder.Services
                 { "sensor", "false" },
             };
 
-            if (!string.IsNullOrWhiteSpace(geocodeRequest.Language))
-            {
-                parameters.Add("language", geocodeRequest.Language);
-            }
-
-            if (!string.IsNullOrWhiteSpace(geocodeRequest.Region))
-            {
-                parameters.Add("region", geocodeRequest.Region);
-            }
-
-            if (geocodeRequest.BoundsHint != null)
-            {
-                var sw = $"{geocodeRequest.BoundsHint.SouthWest.Latitude},{geocodeRequest.BoundsHint.SouthWest.Longitude}";
-                var ne = $"{geocodeRequest.BoundsHint.NorthEast.Latitude},{geocodeRequest.BoundsHint.NorthEast.Longitude}";
-                parameters.Add("bounds", $"{sw}|{ne}");
-            }
+            geocoderAddressLookup.AddUrlParameters(geocodeRequest, parameters, "language", "region", "bounds");
 
             return QueryHelpers.AddQueryString(GoogleRestApiEndpoint, parameters);
         }

@@ -17,6 +17,7 @@ namespace GeneGenie.Geocoder.Services
             new GeocoderStatusMapping { IsPermanentError = false, IsTemporaryError = true, StatusText = "Service Unavailable", Status = GeocodeStatus.TemporaryError },
         };
 
+        private readonly GeocoderAddressLookup<Response> geocoderAddressLookup;
         private readonly IGeocoderHttpClient geocoderHttpClient;
         private readonly GeocoderSettings geocoderSettings;
         private readonly ILogger logger;
@@ -26,14 +27,13 @@ namespace GeneGenie.Geocoder.Services
             this.geocoderHttpClient = geocoderHttpClient;
             this.geocoderSettings = geocoderSettings;
             this.logger = logger;
+            geocoderAddressLookup = new GeocoderAddressLookup<Response>(this, logger);
         }
 
         public GeocoderNames GeocoderId { get => GeocoderNames.Bing; }
 
         public async Task<GeocodeResponseDto> GeocodeAddressAsync(GeocodeRequest geocodeRequest)
         {
-            var geocoderAddressLookup = new GeocoderAddressLookup<Response>(this, logger);
-
             var response = await geocoderAddressLookup.GeocodeAddressAsync(geocodeRequest);
 
             if (response.ResponseStatus == GeocodeStatus.Success)
@@ -163,22 +163,7 @@ namespace GeneGenie.Geocoder.Services
                 { "maxResults", MaxResults.ToString() },
             };
 
-            if (!string.IsNullOrWhiteSpace(geocodeRequest.Locale))
-            {
-                parameters.Add("c", geocodeRequest.Locale);
-            }
-
-            if (!string.IsNullOrWhiteSpace(geocodeRequest.Region))
-            {
-                parameters.Add("userRegion", geocodeRequest.Region);
-            }
-
-            if (geocodeRequest.BoundsHint != null)
-            {
-                var sw = $"{geocodeRequest.BoundsHint.SouthWest.Latitude},{geocodeRequest.BoundsHint.SouthWest.Longitude}";
-                var ne = $"{geocodeRequest.BoundsHint.NorthEast.Latitude},{geocodeRequest.BoundsHint.NorthEast.Longitude}";
-                parameters.Add("userMapView", $"{sw},{ne}");
-            }
+            geocoderAddressLookup.AddUrlParameters(geocodeRequest, parameters, "c", "userRegion", "userMapView");
 
             return QueryHelpers.AddQueryString(BingRestApiEndpoint, parameters);
         }
