@@ -11,6 +11,12 @@ namespace GeneGenie.Geocoder.Tests.Fakes
     /// </summary>
     public class FakeGeocoderHttpClient : IGeocoderHttpClient
     {
+        /// <summary>
+        /// Simulates a HTTP call to an external geocoding service and returns a result based on the
+        /// test parameters passed in.
+        /// </summary>
+        /// <param name="url">Parameterised tokens representing the output the calling test would like to see.</param>
+        /// <returns>Simulated HTTP response as defined by the test input parameters.</returns>
         public async Task<HttpResponseMessage> MakeApiRequestAsync(string url)
         {
             var response = new HttpResponseMessage
