@@ -1,4 +1,4 @@
-﻿// <copyright file="StatusTests.cs" company="GeneGenie.com">
+﻿// <copyright file="AddressStatusTests.cs" company="GeneGenie.com">
 // Copyright (c) GeneGenie.com. All Rights Reserved.
 // Licensed under the GNU Affero General Public License v3.0. See LICENSE in the project root for license information.
 // </copyright>
@@ -8,14 +8,14 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
     /// <summary>
     /// Tests to check that all error conditions are returned as such.
     /// </summary>
-    public class StatusTests
+    public class AddressStatusTests
     {
         private readonly GoogleGeocoder googleGeocoder;
 
         /// <summary>
         /// Creates a new test instance. Called by xunit only.
         /// </summary>
-        public StatusTests()
+        public AddressStatusTests()
         {
             googleGeocoder = ConfigureDi.Services.GetRequiredService<GoogleGeocoder>();
         }

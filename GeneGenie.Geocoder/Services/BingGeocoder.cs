@@ -5,11 +5,6 @@
 
 namespace GeneGenie.Geocoder.Services
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Net.Http;
-    using System.Threading.Tasks;
     using GeneGenie.Geocoder.Dto;
     using GeneGenie.Geocoder.Dto.Bing;
     using GeneGenie.Geocoder.Interfaces;
@@ -17,9 +12,13 @@ namespace GeneGenie.Geocoder.Services
     using GeneGenie.Geocoder.Models.Geo;
     using Microsoft.AspNetCore.WebUtilities;
     using Microsoft.Extensions.Logging;
-    using Newtonsoft.Json;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Threading.Tasks;
 
-    public class BingGeocoder : IGeocoder
+    public class BingGeocoder : IGeocoder, IGeocoderAddressProcessor<Response>
     {
         private const int MaxResults = 25;
         private const string BingRestApiEndpoint = "https://dev.virtualearth.net/REST/v1/Locations";
@@ -46,49 +45,15 @@ namespace GeneGenie.Geocoder.Services
 
         public async Task<GeocodeResponseDto> GeocodeAddressAsync(GeocodeRequest geocodeRequest)
         {
-            try
+            var geocoderAddressLookup = new GeocoderAddressLookup<Response>(this, logger);
+
+            var response = await geocoderAddressLookup.GeocodeAddressAsync(geocodeRequest);
+
+            if (response.ResponseStatus == GeocodeStatus.Success)
             {
-                if (string.IsNullOrWhiteSpace(geocodeRequest.Address))
-                {
-                    logger.LogWarning((int)LogEventIds.GeocoderInputEmpty, "Data passed to geocoder was empty.");
-                    return new GeocodeResponseDto(GeocodeStatus.InvalidRequest);
-                }
-
-                var response = await MakeApiRequestAsync(geocodeRequest);
-
-                var httpStatus = ValidateHttpResponse(response);
-                if (httpStatus != GeocodeStatus.Success)
-                {
-                    return new GeocodeResponseDto(httpStatus);
-                }
-
-                var json = await response.Content.ReadAsStringAsync();
-                logger.LogTrace((int)LogEventIds.GeocoderResponse, json);
-                var content = JsonConvert.DeserializeObject<Response>(json);
-
-                var statusCode = ValidateResponse(content);
-                if (statusCode != GeocodeStatus.Success)
-                {
-                    return new GeocodeResponseDto(statusCode);
-                }
-
-                var status = ExtractStatus(content.StatusDescription);
-                if (status.IsPermanentError)
-                {
-                    logger.LogWarning((int)LogEventIds.GeocoderError, "Geocoder returned permanent error for {address} with status of {status} and error detail of {error}", geocodeRequest.Address, status.Status, content.StatusDescription);
-                    return new GeocodeResponseDto(GeocodeStatus.Error);
-                }
-
-                if (status.IsTemporaryError)
-                {
-                    logger.LogWarning((int)LogEventIds.GeocoderError, "Geocoder returned temporary error for {address} with status of {status} and error detail of {error}", geocodeRequest.Address, status.Status, content.StatusDescription);
-                    return new GeocodeResponseDto(GeocodeStatus.TemporaryError);
-                }
-
-                logger.LogTrace((int)LogEventIds.Success, "Geocode completed successfully for {address}.", geocodeRequest.Address);
                 return new GeocodeResponseDto(GeocodeStatus.Success)
                 {
-                    Locations = content
+                    Locations = response.Content
                         .ResourceSets
                         .SelectMany(rs => rs
                             .Resources
@@ -101,24 +66,29 @@ namespace GeneGenie.Geocoder.Services
                         .ToList(),
                 };
             }
-            catch (Exception ex)
-            {
-                logger.LogError((int)LogEventIds.GeocodeException, ex, "Call to geocoder failed for {address}", geocodeRequest.Address);
-                return new GeocodeResponseDto(GeocodeStatus.Error);
-            }
+
+            return new GeocodeResponseDto(response.ResponseStatus);
         }
 
-        public GeocoderStatusMapping ExtractStatus(string statusText)
+        public GeocoderStatusMapping ExtractStatus(Response content)
         {
-            if (string.IsNullOrWhiteSpace(statusText))
+            if (string.IsNullOrWhiteSpace(content.StatusDescription))
             {
-                return BingStatusMappings.First(s => s.Status == GeocodeStatus.Error);
+                return new GeocoderStatusMapping
+                {
+                    Status = GeocodeStatus.Error,
+                    StatusText = "Empty status received from Bing, unable to parse response.",
+                };
             }
 
-            var statusRow = BingStatusMappings.FirstOrDefault(s => s.StatusText == statusText.Trim());
+            var statusRow = BingStatusMappings.FirstOrDefault(s => s.StatusText == content.StatusDescription.Trim());
             if (statusRow == null)
             {
-                return BingStatusMappings.First(s => s.Status == GeocodeStatus.Error);
+                statusRow = new GeocoderStatusMapping
+                {
+                    Status = GeocodeStatus.Error,
+                    StatusText = content.StatusDescription,
+                };
             }
 
             return statusRow;
@@ -130,15 +100,15 @@ namespace GeneGenie.Geocoder.Services
         /// </summary>
         /// <param name="response">The HTTP response to validate.</param>
         /// <returns>Returns <see cref="GeocodeStatus.Success"/> if all OK, otherwise returns an error code.</returns>
-        private GeocodeStatus ValidateHttpResponse(HttpResponseMessage response)
+        public GeocodeStatus ValidateHttpResponse(HttpResponseMessage response)
         {
-            if (response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable)
+            if (response.StatusCode == HttpStatusCode.ServiceUnavailable)
             {
                 logger.LogWarning((int)LogEventIds.GeocoderError, "Service unavailable");
                 return GeocodeStatus.TemporaryError;
             }
 
-            if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+            if (response.StatusCode == HttpStatusCode.InternalServerError)
             {
                 logger.LogWarning((int)LogEventIds.GeocoderError, "Service error");
                 return GeocodeStatus.Error;
@@ -152,7 +122,7 @@ namespace GeneGenie.Geocoder.Services
                 return GeocodeStatus.TooManyRequests;
             }
 
-            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+            if (response.StatusCode != HttpStatusCode.OK)
             {
                 logger.LogWarning((int)LogEventIds.GeocoderError, "Service error, status code {statusCode}", response.StatusCode);
                 return GeocodeStatus.Error;
@@ -161,13 +131,13 @@ namespace GeneGenie.Geocoder.Services
             return GeocodeStatus.Success;
         }
 
-        private async Task<HttpResponseMessage> MakeApiRequestAsync(GeocodeRequest geocodeRequest)
+        public async Task<HttpResponseMessage> MakeApiRequestAsync(GeocodeRequest geocodeRequest)
         {
             var url = BuildUrl(geocodeRequest);
             return await geocoderHttpClient.MakeApiRequestAsync(url);
         }
 
-        private GeocodeStatus ValidateResponse(Response content)
+        public GeocodeStatus ValidateResponse(Response content)
         {
             if (content.ErrorDetails != null && content.ErrorDetails.Any())
             {
@@ -180,6 +150,12 @@ namespace GeneGenie.Geocoder.Services
                 // TODO: See how we can associate this with a request ID so we can see why.
                 logger.LogInformation((int)LogEventIds.GeocoderZeroResults, "Zero results received.");
                 return GeocodeStatus.ZeroResults;
+            }
+
+            if (content.StatusCode != (int)HttpStatusCode.OK)
+            {
+                logger.LogInformation((int)LogEventIds.GeocoderZeroResults, "Results received but status code was not 'OK', it was instead '{statusCode}'.", content.StatusCode);
+                return GeocodeStatus.Error;
             }
 
             return GeocodeStatus.Success;

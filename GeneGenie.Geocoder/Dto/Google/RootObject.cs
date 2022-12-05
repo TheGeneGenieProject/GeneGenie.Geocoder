@@ -7,7 +7,10 @@ namespace GeneGenie.Geocoder.Dto.Google
 {
     using System.Collections.Generic;
 
-    internal class RootObject
+    /// <summary>
+    /// The root of an address lookup response from the Google API.
+    /// </summary>
+    public class RootObject
     {
         public string Error_message { get; set; }
 

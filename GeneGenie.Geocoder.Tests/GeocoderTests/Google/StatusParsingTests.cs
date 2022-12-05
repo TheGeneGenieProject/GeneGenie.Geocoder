@@ -1,15 +1,17 @@
-﻿// <copyright file="GoogleStatusParsingTests.cs" company="GeneGenie.com">
+﻿// <copyright file="StatusParsingTests.cs" company="GeneGenie.com">
 // Copyright (c) GeneGenie.com. All Rights Reserved.
 // Licensed under the GNU Affero General Public License v3.0. See LICENSE in the project root for license information.
 // </copyright>
 
-namespace GeneGenie.Geocoder.Tests.Geo
+namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
 {
-    public class GoogleStatusParsingTests
+    using GeneGenie.Geocoder.Dto.Google;
+
+    public class StatusParsingTests
     {
         private readonly GoogleGeocoder geocoder;
 
-        public GoogleStatusParsingTests()
+        public StatusParsingTests()
         {
             geocoder = ConfigureDi.Services.GetRequiredService<GoogleGeocoder>();
         }
@@ -47,7 +49,7 @@ namespace GeneGenie.Geocoder.Tests.Geo
         [MemberData(nameof(GoogleStatusWhitespaceData))]
         public void Whitespace_and_non_data_values_are_treated_as_errors(string source)
         {
-            var response = geocoder.ExtractStatus(source);
+            var response = geocoder.ExtractStatus(new RootObject { Status = source });
 
             Assert.Equal(GeocodeStatus.Error, response.Status);
         }
@@ -56,7 +58,7 @@ namespace GeneGenie.Geocoder.Tests.Geo
         [MemberData(nameof(SpacePaddedData))]
         public void Status_code_are_translated_whilst_ignoring_leading_and_trailing_spaces(string source, GeocodeStatus expected)
         {
-            var response = geocoder.ExtractStatus(source);
+            var response = geocoder.ExtractStatus(new RootObject { Status = source });
 
             Assert.Equal(expected, response.Status);
         }
@@ -65,7 +67,7 @@ namespace GeneGenie.Geocoder.Tests.Geo
         [MemberData(nameof(CorrectResponseData))]
         public void Expected_google_status_codes_can_be_parsed(string source, GeocodeStatus expected)
         {
-            var response = geocoder.ExtractStatus(source);
+            var response = geocoder.ExtractStatus(new RootObject { Status = source });
 
             Assert.Equal(expected, response.Status);
         }
