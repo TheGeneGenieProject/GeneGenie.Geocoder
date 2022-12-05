@@ -139,6 +139,12 @@ namespace GeneGenie.Geocoder.Services
 
         public GeocodeStatus ValidateResponse(Response content)
         {
+            if (content is null)
+            {
+                logger.LogWarning((int)LogEventIds.GeocoderNullResponse, "Null response received from API.");
+                return GeocodeStatus.Error;
+            }
+
             if (content.ErrorDetails != null && content.ErrorDetails.Any())
             {
                 content.ErrorDetails.ForEach(e => logger.LogWarning((int)LogEventIds.GeocoderError, e));
