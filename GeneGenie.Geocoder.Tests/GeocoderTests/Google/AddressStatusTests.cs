@@ -13,7 +13,7 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
         private readonly GoogleGeocoder googleGeocoder;
 
         /// <summary>
-        /// Creates a new test instance. Called by xunit only.
+        /// Sets up test dependencies. Called by xunit only.
         /// </summary>
         public AddressStatusTests()
         {

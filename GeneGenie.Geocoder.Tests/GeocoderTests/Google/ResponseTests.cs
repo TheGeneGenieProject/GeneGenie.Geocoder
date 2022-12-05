@@ -12,6 +12,9 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
     {
         private readonly GoogleGeocoder googleGeocoder;
 
+        /// <summary>
+        /// Sets up test dependencies. Called by xunit only.
+        /// </summary>
         public ResponseTests()
         {
             googleGeocoder = ConfigureDi.Services.GetRequiredService<GoogleGeocoder>();
