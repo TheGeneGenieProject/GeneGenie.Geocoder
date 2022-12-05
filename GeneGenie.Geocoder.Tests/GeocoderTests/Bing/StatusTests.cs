@@ -46,6 +46,9 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Bing
             Assert.Equal(GeocodeStatus.Error, response.ResponseStatus);
         }
 
+        /// <summary>
+        /// Checks that we can parse the Bing back-off response.
+        /// </summary>
         [Fact]
         public async Task Too_many_requests_is_returned_when_receiving_back_off_response_from_bing()
         {
@@ -56,6 +59,9 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Bing
             Assert.Equal(GeocodeStatus.TooManyRequests, response.ResponseStatus);
         }
 
+        /// <summary>
+        /// Checks that error responses are parsed from Bing and returned to the caller.
+        /// </summary>
         [Fact]
         public async Task Error_is_returned_when_error_details_returned_from_bing()
         {
@@ -66,6 +72,9 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Bing
             Assert.Equal(GeocodeStatus.Error, response.ResponseStatus);
         }
 
+        /// <summary>
+        /// Checks that new status codes are logged as errors.
+        /// </summary>
         [Fact]
         public async Task Unknown_status_codes_are_treated_as_errors_when_returned_from_bing()
         {
@@ -76,6 +85,9 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Bing
             Assert.Equal(GeocodeStatus.Error, response.ResponseStatus);
         }
 
+        /// <summary>
+        /// Checks that Bing being offline for a while returns a temporary error rather than permanent.
+        /// </summary>
         [Fact]
         public async Task Service_unavailable_is_returned_as_temporary_error()
         {
@@ -86,6 +98,9 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Bing
             Assert.Equal(GeocodeStatus.TemporaryError, response.ResponseStatus);
         }
 
+        /// <summary>
+        /// Ensures 'zero results' status code is passed back to the caller.
+        /// </summary>
         [Fact]
         public async Task Zero_results_is_returned_when_zero_results_returned_from_bing()
         {
@@ -96,6 +111,9 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Bing
             Assert.Equal(GeocodeStatus.ZeroResults, response.ResponseStatus);
         }
 
+        /// <summary>
+        /// Ensures 'zero results' status code is passed back to the caller.
+        /// </summary>
         [Fact]
         public async Task Success_is_returned_on_valid_response()
         {
