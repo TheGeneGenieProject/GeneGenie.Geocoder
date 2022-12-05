@@ -5,11 +5,17 @@
 
 namespace GeneGenie.Geocoder.Tests.GeocoderSelectorTests
 {
+    /// <summary>
+    /// Tests to ensure we can throttle geocoder requests back.
+    /// </summary>
     public class ThrottleTests
     {
         private readonly InMemoryGeocoderSelector geocoderSelector;
         private readonly ITimeProvider timeProvider;
 
+        /// <summary>
+        /// Sets up test dependencies. Called by xunit only.
+        /// </summary>
         public ThrottleTests()
         {
             var sp = ConfigureDi.BuildDi(true);
@@ -17,6 +23,9 @@ namespace GeneGenie.Geocoder.Tests.GeocoderSelectorTests
             timeProvider = sp.GetRequiredService<ITimeProvider>();
         }
 
+        /// <summary>
+        /// Checks that the throttling does not return any geocoders if all are throttled.
+        /// </summary>
         [Fact]
         public async Task No_geocoders_are_returned_when_they_are_all_set_as_throttled()
         {
@@ -30,6 +39,9 @@ namespace GeneGenie.Geocoder.Tests.GeocoderSelectorTests
             Assert.Null(geocoder);
         }
 
+        /// <summary>
+        /// Checks that Bing is returned if Google is marked as throttled.
+        /// </summary>
         [Fact]
         public async Task Bing_is_repeatedly_resolved_when_google_is_set_as_throttled()
         {
@@ -43,6 +55,9 @@ namespace GeneGenie.Geocoder.Tests.GeocoderSelectorTests
             Assert.Equal(GeocoderNames.Bing, (await geocoderSelector.SelectNextGeocoderAsync()).GeocoderId);
         }
 
+        /// <summary>
+        /// Checks that Google is returned if Bing is marked as throttled.
+        /// </summary>
         [Fact]
         public async Task Google_is_repeatedly_resolved_when_bing_is_marked_as_failing()
         {

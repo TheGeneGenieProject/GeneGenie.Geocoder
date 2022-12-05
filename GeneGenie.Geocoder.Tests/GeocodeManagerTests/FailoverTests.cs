@@ -12,11 +12,17 @@ namespace GeneGenie.Geocoder.Tests.GeocoderManagerTests
     {
         private readonly IGeocodeManager geocodeManager;
 
+        /// <summary>
+        /// Sets up test dependencies. Called by xunit only.
+        /// </summary>
         public FailoverTests()
         {
             geocodeManager = ConfigureDi.Services.GetRequiredService<IGeocodeManager>();
         }
 
+        /// <summary>
+        /// Checks that Google is used when Bing returns 'no results'.
+        /// </summary>
         [Fact]
         public async Task Bing_is_repeatedly_used_when_google_fails_to_return_a_result()
         {
@@ -27,6 +33,10 @@ namespace GeneGenie.Geocoder.Tests.GeocoderManagerTests
             Assert.Equal(GeocoderNames.Bing, (await geocodeManager.GeocodeAddressAsync(address)).GeocoderId);
         }
 
+        /// <summary>
+        /// Checks that Bing is used when Google returns 'no results'.
+        /// </summary>
+        /// <returns></returns>
         [Fact]
         public async Task Google_is_repeatedly_used_when_bing_fails_to_return_a_result()
         {
@@ -37,6 +47,10 @@ namespace GeneGenie.Geocoder.Tests.GeocoderManagerTests
             Assert.Equal(GeocoderNames.Google, (await geocodeManager.GeocodeAddressAsync(address)).GeocoderId);
         }
 
+        /// <summary>
+        /// Checks that none of the geocoders is marked as returning data when they all return nothing.
+        /// </summary>
+        /// <returns></returns>
         [Fact]
         public async Task Address_is_not_geocoded_when_all_geocoders_fail_to_return_a_result()
         {

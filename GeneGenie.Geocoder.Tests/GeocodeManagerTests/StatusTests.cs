@@ -13,11 +13,17 @@ namespace GeneGenie.Geocoder.Tests.GeocoderManagerTests
     {
         private readonly IGeocodeManager geocodeManager;
 
+        /// <summary>
+        /// Sets up test dependencies. Called by xunit only.
+        /// </summary>
         public StatusTests()
         {
             geocodeManager = ConfigureDi.Services.GetRequiredService<IGeocodeManager>();
         }
 
+        /// <summary>
+        /// Checks that failing over from Google to Bing is possible when Google returns 0 results.
+        /// </summary>
         [Fact]
         public async Task Status_is_geocoded_when_google_returns_zero_but_bing_returns_data()
         {
@@ -28,6 +34,9 @@ namespace GeneGenie.Geocoder.Tests.GeocoderManagerTests
             Assert.Equal(AddressLookupStatus.Geocoded, result.Status);
         }
 
+        /// <summary>
+        /// Checks that failing over from Bing to Google is possible when Bing returns 0 results.
+        /// </summary>
         [Fact]
         public async Task Status_is_geocoded_when_bing_returns_zero_but_google_returns_data()
         {
@@ -38,6 +47,9 @@ namespace GeneGenie.Geocoder.Tests.GeocoderManagerTests
             Assert.Equal(AddressLookupStatus.Geocoded, result.Status);
         }
 
+        /// <summary>
+        /// Checks that 'zero results' is passed back if all geocoders return 'zero results'.
+        /// </summary>
         [Fact]
         public async Task Status_is_zero_results_when_all_geocoders_return_zero_results()
         {
@@ -48,6 +60,9 @@ namespace GeneGenie.Geocoder.Tests.GeocoderManagerTests
             Assert.Equal(AddressLookupStatus.ZeroResults, result.Status);
         }
 
+        /// <summary>
+        /// Checks if all geocoders return a permanent error, that error is passed back to the caller.
+        /// </summary>
         [Fact]
         public async Task Status_is_permanent_error_when_all_geocoders_return_permanent_error()
         {
@@ -58,6 +73,9 @@ namespace GeneGenie.Geocoder.Tests.GeocoderManagerTests
             Assert.Equal(AddressLookupStatus.PermanentGeocodeError, result.Status);
         }
 
+        /// <summary>
+        /// Checks that a mix of errors returns a temporary error so the caller can try again later.
+        /// </summary>
         [Fact]
         public async Task Status_is_temporary_error_with_mix_of_permanent_and_temporary_errors()
         {
@@ -68,6 +86,9 @@ namespace GeneGenie.Geocoder.Tests.GeocoderManagerTests
             Assert.Equal(AddressLookupStatus.TemporaryGeocodeError, result.Status);
         }
 
+        /// <summary>
+        /// Checks that we return 'multiple issues' if the geocoders have mixed errors.
+        /// </summary>
         [Fact]
         public async Task Status_is_multiple_issues_with_mix_of_permanent_error_and_zero_results()
         {
