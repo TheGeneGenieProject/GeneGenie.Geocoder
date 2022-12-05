@@ -14,11 +14,22 @@ namespace GeneGenie.Geocoder.Tests.Geo
         /// Checks the Google geocoder service can be resolved without error.
         /// </summary>
         [Fact]
-        public void Google_conrete_geocoder_can_be_resolved()
+        public void Google_concrete_geocoder_can_be_resolved()
         {
             var geocoder = ConfigureDi.Services.GetRequiredService<GoogleGeocoder>();
 
             Assert.Equal(typeof(GoogleGeocoder), geocoder.GetType());
+        }
+
+        /// <summary>
+        /// Checks the Google geocoder has the correct id set.
+        /// </summary>
+        [Fact]
+        public void Google_concrete_geocoder_has_correct_id()
+        {
+            var geocoder = ConfigureDi.Services.GetRequiredService<GoogleGeocoder>();
+
+            Assert.Equal(GeocoderNames.Google, geocoder.GeocoderId);
         }
 
         /// <summary>
@@ -30,6 +41,17 @@ namespace GeneGenie.Geocoder.Tests.Geo
             var geocoder = ConfigureDi.Services.GetRequiredService<BingGeocoder>();
 
             Assert.Equal(typeof(BingGeocoder), geocoder.GetType());
+        }
+
+        /// <summary>
+        /// Checks the Bing geocoder has the correct id set.
+        /// </summary>
+        [Fact]
+        public void Bing_concrete_geocoder_has_correct_id()
+        {
+            var geocoder = ConfigureDi.Services.GetRequiredService<BingGeocoder>();
+
+            Assert.Equal(GeocoderNames.Bing, geocoder.GeocoderId);
         }
 
         /// <summary>
