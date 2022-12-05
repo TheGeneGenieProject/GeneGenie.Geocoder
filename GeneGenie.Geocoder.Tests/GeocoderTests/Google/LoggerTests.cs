@@ -13,6 +13,9 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
         private readonly GoogleGeocoder googleGeocoder;
         private readonly FakeLogger<GoogleGeocoder> logger;
 
+        /// <summary>
+        /// Tests for ensuring that log points in the code are hit correctly.
+        /// </summary>
         public LoggerTests()
         {
             var geocoderSettings = new List<GeocoderSettings>
@@ -31,6 +34,9 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
             logger = serviceProvider.GetRequiredService<ILogger<GoogleGeocoder>>() as FakeLogger<GoogleGeocoder>;
         }
 
+        /// <summary>
+        /// Unit test data for faking HTTP responses when the geocoder is called.
+        /// </summary>
         public static IEnumerable<object[]> ExpectedStatusResponseData =>
             new List<object[]>
             {
@@ -46,6 +52,9 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
                 new object[] { null, LogEventIds.GeocoderInputEmpty },
             };
 
+        /// <summary>
+        /// Checks that the trace level output for the geocoder response is logged.
+        /// </summary>
         [Fact]
         public async Task Trace_output_is_logged()
         {
@@ -56,6 +65,9 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
             Assert.Contains(logger.LoggedEventIds, l => l.Id == (int)LogEventIds.GeocoderResponse);
         }
 
+        /// <summary>
+        /// Checks that if a weird null response is received, we log it.
+        /// </summary>
         [Fact]
         public async Task Empty_result_from_google_is_logged()
         {
@@ -66,6 +78,9 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
             Assert.Contains(logger.LoggedEventIds, l => l.Id == (int)LogEventIds.GeocoderReturnedNull);
         }
 
+        /// <summary>
+        /// Checks that a missing bounds message is not logged if a viewport is received in the response.
+        /// </summary>
         [Fact]
         public async Task Missing_bounds_is_not_logged_when_viewport_exists()
         {
@@ -76,6 +91,9 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
             Assert.DoesNotContain(logger.LoggedEventIds, l => l.Id == (int)LogEventIds.GeocoderMissingBounds);
         }
 
+        /// <summary>
+        /// Checks that we don't inadvertently log missing bounds if it exists in the result.
+        /// </summary>
         [Fact]
         public async Task Missing_bounds_is_not_logged_when_bounds_exist_and_viewport_does_not()
         {
@@ -86,6 +104,9 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
             Assert.DoesNotContain(logger.LoggedEventIds, l => l.Id == (int)LogEventIds.GeocoderMissingBounds);
         }
 
+        /// <summary>
+        /// Checks that critical errors are not logged for a successful operation.
+        /// </summary>
         [Fact]
         public async Task Valid_response_has_no_critical_log_messages()
         {
@@ -96,6 +117,9 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
             Assert.Equal(0, logger.CriticalCount);
         }
 
+        /// <summary>
+        /// Checks that errors are not logged for a successful operation.
+        /// </summary>
         [Fact]
         public async Task Valid_response_has_no_error_log_messages()
         {
@@ -106,6 +130,9 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
             Assert.Equal(0, logger.ErrorCount);
         }
 
+        /// <summary>
+        /// Checks that warnings are not logged for a successful operation.
+        /// </summary>
         [Fact]
         public async Task Valid_response_has_no_warning_log_messages()
         {
@@ -116,6 +143,9 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
             Assert.Equal(0, logger.WarningCount);
         }
 
+        /// <summary>
+        /// Checks that trace logs are logged for a successful operation.
+        /// </summary>
         [Fact]
         public async Task Valid_response_has_trace_log_message()
         {
@@ -126,6 +156,11 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
             Assert.Contains(logger.LoggedEventIds, l => l.Id == (int)LogEventIds.Success);
         }
 
+        /// <summary>
+        /// Passes varying data through the geocoder to test that event ids are logged.
+        /// </summary>
+        /// <param name="address">Instruction that the fake HTTP client uses to emulate a response.</param>
+        /// <param name="expected">The expected event id that should be logged.</param>
         [Theory]
         [MemberData(nameof(ExpectedStatusResponseData))]
         public async Task Geocoder_status_is_logged_from_google(string address, LogEventIds expected)
