@@ -7,6 +7,9 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
 {
     using GeneGenie.Geocoder.Dto.Google;
 
+    /// <summary>
+    /// Tests for to ensure response parsing from Google handles all of the known status.
+    /// </summary>
     public class StatusParsingTests
     {
         private readonly GoogleGeocoder geocoder;
