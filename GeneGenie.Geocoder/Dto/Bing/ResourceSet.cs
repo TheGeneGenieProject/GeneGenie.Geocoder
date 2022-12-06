@@ -5,10 +5,19 @@
 
 namespace GeneGenie.Geocoder.Dto.Bing
 {
+    /// <summary>
+    /// Holds the resources returned by the Bing location search.
+    /// </summary>
     public class ResourceSet
     {
+        /// <summary>
+        /// An estimate of the total number of resources in the ResourceSet.
+        /// </summary>
         public long EstimatedTotal { get; set; }
 
+        /// <summary>
+        /// A collection of resources returned, which in this case are location API results.
+        /// </summary>
         public List<Resource> Resources { get; set; }
     }
 }
