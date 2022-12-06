@@ -29,7 +29,6 @@ namespace GeneGenie.Geocoder.Dto.Google
         /// </summary>
         public List<Result> Results { get; set; }
 
-
         /// <summary>
         /// From the Google docs:
         /// The "status" field within the Geocoding response object contains the status of the request, and may contain debugging information
