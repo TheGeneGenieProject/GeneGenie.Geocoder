@@ -1,4 +1,4 @@
-﻿// <copyright file="Response.cs" company="GeneGenie.com">
+﻿// <copyright file="RootResponse.cs" company="GeneGenie.com">
 // Copyright (c) GeneGenie.com. All Rights Reserved.
 // Licensed under the GNU Affero General Public License v3.0. See LICENSE in the project root for license information.
 // </copyright>
@@ -8,7 +8,7 @@ namespace GeneGenie.Geocoder.Dto.Bing
     /// <summary>
     /// The root object returned by Bing in response to a location API request.
     /// </summary>
-    public class Response
+    public class RootResponse
     {
         /// <summary>
         /// A status code that offers additional information about authentication success or failure.

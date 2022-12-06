@@ -5,7 +5,7 @@
 
 namespace GeneGenie.Geocoder.Services
 {
-    public class BingGeocoder : IGeocoder, IGeocoderAddressProcessor<Response>
+    public class BingGeocoder : IGeocoder, IGeocoderAddressProcessor<RootResponse>
     {
         private const int MaxResults = 25;
         private const string BingRestApiEndpoint = "https://dev.virtualearth.net/REST/v1/Locations";
@@ -17,7 +17,7 @@ namespace GeneGenie.Geocoder.Services
             new GeocoderStatusMapping { IsPermanentError = false, IsTemporaryError = true, StatusText = "Service Unavailable", Status = GeocodeStatus.TemporaryError },
         };
 
-        private readonly GeocoderAddressLookup<Response> geocoderAddressLookup;
+        private readonly GeocoderAddressLookup<RootResponse> geocoderAddressLookup;
         private readonly IGeocoderHttpClient geocoderHttpClient;
         private readonly GeocoderSettings geocoderSettings;
         private readonly ILogger logger;
@@ -27,7 +27,7 @@ namespace GeneGenie.Geocoder.Services
             this.geocoderHttpClient = geocoderHttpClient;
             this.geocoderSettings = geocoderSettings;
             this.logger = logger;
-            geocoderAddressLookup = new GeocoderAddressLookup<Response>(this, logger);
+            geocoderAddressLookup = new GeocoderAddressLookup<RootResponse>(this, logger);
         }
 
         public GeocoderNames GeocoderId { get => GeocoderNames.Bing; }
@@ -57,7 +57,7 @@ namespace GeneGenie.Geocoder.Services
             return new GeocodeResponseDto(response.ResponseStatus);
         }
 
-        public GeocoderStatusMapping ExtractStatus(Response content)
+        public GeocoderStatusMapping ExtractStatus(RootResponse content)
         {
             if (string.IsNullOrWhiteSpace(content.StatusDescription))
             {
@@ -83,7 +83,7 @@ namespace GeneGenie.Geocoder.Services
 
         /// <summary>
         /// Validates the HTTP level response (the status code and headers).
-        /// Does not validate the message itself which is handled by <see cref="ValidateResponse(Response)"/>.
+        /// Does not validate the message itself which is handled by <see cref="ValidateResponse(RootResponse)"/>.
         /// </summary>
         /// <param name="response">The HTTP response to validate.</param>
         /// <returns>Returns <see cref="GeocodeStatus.Success"/> if all OK, otherwise returns an error code.</returns>
@@ -124,7 +124,7 @@ namespace GeneGenie.Geocoder.Services
             return await geocoderHttpClient.MakeApiRequestAsync(url);
         }
 
-        public GeocodeStatus ValidateResponse(Response content)
+        public GeocodeStatus ValidateResponse(RootResponse content)
         {
             if (content is null)
             {
