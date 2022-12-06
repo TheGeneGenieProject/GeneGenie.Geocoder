@@ -20,6 +20,9 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
             googleGeocoder = ConfigureDi.Services.GetRequiredService<GoogleGeocoder>();
         }
 
+        /// <summary>
+        /// Tests that an empty request returns an invalid request status code.
+        /// </summary>
         [Fact]
         public async Task Invalid_request_is_returned_for_empty_request()
         {
@@ -30,6 +33,9 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
             Assert.Equal(GeocodeStatus.InvalidRequest, response.ResponseStatus);
         }
 
+        /// <summary>
+        /// Tests that an empty response from Google is treated as an error.
+        /// </summary>
         [Fact]
         public async Task Error_is_returned_when_google_returns_empty_response()
         {
@@ -40,6 +46,9 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
             Assert.Equal(GeocodeStatus.Error, response.ResponseStatus);
         }
 
+        /// <summary>
+        /// Tests that we receive an error when Google has a permanent error.
+        /// </summary>
         [Fact]
         public async Task Error_is_returned_when_receiving_permanent_error_from_google()
         {
@@ -50,6 +59,9 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
             Assert.Equal(GeocodeStatus.Error, response.ResponseStatus);
         }
 
+        /// <summary>
+        /// Tests that the Google geocoder passes back the temporary error to the caller.
+        /// </summary>
         [Fact]
         public async Task Temporary_error_is_returned_when_receiving_temporary_error_from_google()
         {
@@ -60,6 +72,9 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
             Assert.Equal(GeocodeStatus.TemporaryError, response.ResponseStatus);
         }
 
+        /// <summary>
+        /// Tests that the Google geocoder passes back success to the caller when the geocoding works.
+        /// </summary>
         [Fact]
         public async Task Success_is_returned_on_valid_response()
         {
