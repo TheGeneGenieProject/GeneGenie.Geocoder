@@ -5,10 +5,19 @@
 
 namespace GeneGenie.Geocoder.Dto.Google
 {
+    /// <summary>
+    /// A pair of coordinates that identify a point on the earths surface.
+    /// </summary>
     public class LocationPair
     {
+        /// <summary>
+        /// The latitude of this location.
+        /// </summary>
         public double Lat { get; set; }
 
+        /// <summary>
+        /// The longitude of this location.
+        /// </summary>
         public double Lng { get; set; }
     }
 }

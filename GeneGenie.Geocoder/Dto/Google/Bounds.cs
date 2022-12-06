@@ -5,10 +5,21 @@
 
 namespace GeneGenie.Geocoder.Dto.Google
 {
+    /// <summary>
+    /// The bounding box which can fully contain a returned result.
+    /// 
+    /// Note that these bounds may not match the recommended viewport.
+    /// </summary>
     public class Bounds
     {
+        /// <summary>
+        /// The North East point of this bounding box.
+        /// </summary>
         public LocationPair NorthEast { get; set; }
 
+        /// <summary>
+        /// The South West point of this bounding box.
+        /// </summary>
         public LocationPair SouthWest { get; set; }
     }
 }
