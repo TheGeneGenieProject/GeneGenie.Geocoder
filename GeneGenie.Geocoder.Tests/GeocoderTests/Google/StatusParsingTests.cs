@@ -68,7 +68,7 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
         [MemberData(nameof(GoogleStatusWhitespaceData))]
         public void Whitespace_and_non_data_values_are_treated_as_errors(string source)
         {
-            var response = geocoder.ExtractStatus(new RootObject { Status = source });
+            var response = geocoder.ExtractStatus(new RootResponse { Status = source });
 
             Assert.Equal(GeocodeStatus.Error, response.Status);
         }
@@ -82,7 +82,7 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
         [MemberData(nameof(SpacePaddedData))]
         public void Status_code_are_translated_whilst_ignoring_leading_and_trailing_spaces(string source, GeocodeStatus expected)
         {
-            var response = geocoder.ExtractStatus(new RootObject { Status = source });
+            var response = geocoder.ExtractStatus(new RootResponse { Status = source });
 
             Assert.Equal(expected, response.Status);
         }
@@ -96,7 +96,7 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
         [MemberData(nameof(CorrectResponseData))]
         public void Expected_google_status_codes_can_be_parsed(string source, GeocodeStatus expected)
         {
-            var response = geocoder.ExtractStatus(new RootObject { Status = source });
+            var response = geocoder.ExtractStatus(new RootResponse { Status = source });
 
             Assert.Equal(expected, response.Status);
         }

@@ -7,7 +7,7 @@ namespace GeneGenie.Geocoder.Services
 {
     using GeneGenie.Geocoder.Dto.Google;
 
-    public class GoogleGeocoder : IGeocoder, IGeocoderAddressProcessor<RootObject>
+    public class GoogleGeocoder : IGeocoder, IGeocoderAddressProcessor<RootResponse>
     {
         private const string GoogleRestApiEndpoint = "https://maps.googleapis.com/maps/api/geocode/json";
 
@@ -21,7 +21,7 @@ namespace GeneGenie.Geocoder.Services
             new GeocoderStatusMapping { IsPermanentError = false, IsTemporaryError = false, StatusText = "ZERO_RESULTS", Status = GeocodeStatus.ZeroResults },
         };
 
-        private readonly GeocoderAddressLookup<RootObject> geocoderAddressLookup;
+        private readonly GeocoderAddressLookup<RootResponse> geocoderAddressLookup;
         private readonly IGeocoderHttpClient geocoderHttpClient;
         private readonly GeocoderSettings geocoderSettings;
         private readonly ILogger logger;
@@ -31,7 +31,7 @@ namespace GeneGenie.Geocoder.Services
             this.geocoderHttpClient = geocoderHttpClient;
             this.geocoderSettings = geocoderSettings;
             this.logger = logger;
-            geocoderAddressLookup = new GeocoderAddressLookup<RootObject>(this, logger);
+            geocoderAddressLookup = new GeocoderAddressLookup<RootResponse>(this, logger);
         }
 
         public GeocoderNames GeocoderId { get => GeocoderNames.Google; }
@@ -59,7 +59,7 @@ namespace GeneGenie.Geocoder.Services
             return new GeocodeResponseDto(response.ResponseStatus);
         }
 
-        public GeocoderStatusMapping ExtractStatus(RootObject content)
+        public GeocoderStatusMapping ExtractStatus(RootResponse content)
         {
             if (string.IsNullOrWhiteSpace(content.Status))
             {
@@ -110,7 +110,7 @@ namespace GeneGenie.Geocoder.Services
             return await geocoderHttpClient.MakeApiRequestAsync(url);
         }
 
-        public GeocodeStatus ValidateResponse(RootObject root)
+        public GeocodeStatus ValidateResponse(RootResponse root)
         {
             var statusCode = ValidateResults(root);
             if (statusCode != GeocodeStatus.Success)
@@ -121,7 +121,7 @@ namespace GeneGenie.Geocoder.Services
             return ValidateGeometry(root.Results);
         }
 
-        public GeocodeStatus ValidateResults(RootObject root)
+        public GeocodeStatus ValidateResults(RootResponse root)
         {
             if (root == null || root.Results == null || !root.Results.Any())
             {
