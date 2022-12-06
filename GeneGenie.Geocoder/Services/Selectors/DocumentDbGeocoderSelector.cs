@@ -9,12 +9,12 @@ namespace GeneGenie.Geocoder.Services.Selectors
     {
         public Task<IGeocoder> SelectNextGeocoderAsync()
         {
-            throw new System.NotImplementedException("This is where we would call a DocumentDB/CosmosDB sp and request the next geocoder atomically.");
+            throw new NotImplementedException("This is where we would call a DocumentDB/CosmosDB sp and request the next geocoder atomically.");
         }
 
         public Task<IGeocoder> SelectNextGeocoderAsync(List<GeocoderNames> excludeGeocoders)
         {
-            throw new System.NotImplementedException("This is where we would call a DocumentDB/CosmosDB sp and request the next geocoder atomically.");
+            throw new NotImplementedException("This is where we would call a DocumentDB/CosmosDB sp and request the next geocoder atomically.");
         }
     }
 }

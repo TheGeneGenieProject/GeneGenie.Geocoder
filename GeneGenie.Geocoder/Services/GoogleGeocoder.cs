@@ -83,19 +83,19 @@ namespace GeneGenie.Geocoder.Services
         /// <returns>Returns <see cref="GeocodeStatus.Success"/> if all OK, otherwise returns an error code.</returns>
         public GeocodeStatus ValidateHttpResponse(HttpResponseMessage response)
         {
-            if (response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable)
+            if (response.StatusCode == HttpStatusCode.ServiceUnavailable)
             {
                 logger.LogWarning((int)LogEventIds.GeocoderError, "Service unavailable");
                 return GeocodeStatus.TemporaryError;
             }
 
-            if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+            if (response.StatusCode == HttpStatusCode.InternalServerError)
             {
                 logger.LogWarning((int)LogEventIds.GeocoderError, "Service error");
                 return GeocodeStatus.Error;
             }
 
-            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+            if (response.StatusCode != HttpStatusCode.OK)
             {
                 logger.LogWarning((int)LogEventIds.GeocoderError, "Service error, status code {statusCode}", response.StatusCode);
                 return GeocodeStatus.Error;
@@ -162,7 +162,7 @@ namespace GeneGenie.Geocoder.Services
             return GeocodeStatus.Success;
         }
 
-        private Models.Geo.LocationPair ConvertLocation(Dto.Google.LocationPair locationPair)
+        private Models.Geo.LocationPair ConvertLocation(LocationPair locationPair)
         {
             return new Models.Geo.LocationPair
             {
