@@ -20,6 +20,9 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
             googleGeocoder = ConfigureDi.Services.GetRequiredService<GoogleGeocoder>();
         }
 
+        /// <summary>
+        /// Tests that bounds are preferred when both bounds and viewport exist in the response.
+        /// </summary>
         [Fact]
         public async Task Bounds_are_preferred_over_viewport_when_both_are_present()
         {
@@ -31,6 +34,9 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
             Assert.Equal(1.1, bounds.NorthEast.Latitude);
         }
 
+        /// <summary>
+        /// Tests that the viewport property is used when Google does not return bounds.
+        /// </summary>
         [Fact]
         public async Task Viewport_is_used_when_bounds_are_null()
         {
