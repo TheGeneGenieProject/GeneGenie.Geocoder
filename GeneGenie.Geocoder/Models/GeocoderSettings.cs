@@ -12,6 +12,9 @@ namespace GeneGenie.Geocoder.Models
         /// </summary>
         public string ApiKey { get; set; }
 
+        /// <summary>
+        /// The unique geocoder id.
+        /// </summary>
         public GeocoderNames GeocoderName { get; set; }
     }
 }
