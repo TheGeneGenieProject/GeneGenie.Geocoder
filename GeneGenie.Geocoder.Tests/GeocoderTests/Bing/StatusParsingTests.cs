@@ -3,23 +3,24 @@
 // Licensed under the GNU Affero General Public License v3.0. See LICENSE in the project root for license information.
 // </copyright>
 
-namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
+namespace GeneGenie.Geocoder.Tests.GeocoderTests.Bing
 {
-    using GeneGenie.Geocoder.Dto.Google;
+    using GeneGenie.Geocoder.Dto.Bing;
 
     /// <summary>
-    /// Tests to ensure response parsing from Google handles all of the known status codes.
+    /// Tests to ensure response parsing from Bing handles all of the known status codes.
     /// </summary>
+
     public class StatusParsingTests
     {
-        private readonly GoogleGeocoder geocoder;
+        private readonly BingGeocoder geocoder;
 
         /// <summary>
         /// Sets up test dependencies. Called by xunit only.
         /// </summary>
         public StatusParsingTests()
         {
-            geocoder = ConfigureDi.Services.GetRequiredService<GoogleGeocoder>();
+            geocoder = ConfigureDi.Services.GetRequiredService<BingGeocoder>();
         }
 
         /// <summary>
@@ -34,7 +35,7 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
         [InlineData("\t")]
         public void Whitespace_and_non_data_values_are_treated_as_errors(string source)
         {
-            var response = geocoder.ExtractStatus(new RootResponse { Status = source });
+            var response = geocoder.ExtractStatus(new RootResponse { StatusDescription = source });
 
             Assert.Equal(GeocodeStatus.Error, response.Status);
         }
@@ -46,19 +47,14 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
         /// <param name="expected">The expected status after parsing.</param>
         [Theory]
         [InlineData(" OK ", GeocodeStatus.Success)]
-        [InlineData(" ZERO_RESULTS ", GeocodeStatus.ZeroResults)]
-        [InlineData("Invalid_Request", GeocodeStatus.InvalidRequest)]
+        [InlineData(" Unauthorized ", GeocodeStatus.RequestDenied)]
+        [InlineData(" Service UnAvaIlaBle ", GeocodeStatus.TemporaryError)]
         [InlineData("OK", GeocodeStatus.Success)]
-        [InlineData("ZERO_RESULTS", GeocodeStatus.ZeroResults)]
-        [InlineData("xxxxx", GeocodeStatus.Error)]
-        [InlineData("INVALID_REQUEST", GeocodeStatus.InvalidRequest)]
-        [InlineData("OVER_DAILY_LIMIT", GeocodeStatus.TooManyRequests)]
-        [InlineData("OVER_QUERY_LIMIT", GeocodeStatus.TooManyRequests)]
-        [InlineData("REQUEST_DENIED", GeocodeStatus.RequestDenied)]
-        [InlineData("UNKNOWN_ERROR", GeocodeStatus.TemporaryError)]
-        public void Expected_google_status_codes_can_be_parsed(string source, GeocodeStatus expected)
+        [InlineData("Unauthorized", GeocodeStatus.RequestDenied)]
+        [InlineData("Service Unavailable", GeocodeStatus.TemporaryError)]
+        public void Expected_bing_status_codes_can_be_parsed(string source, GeocodeStatus expected)
         {
-            var response = geocoder.ExtractStatus(new RootResponse { Status = source });
+            var response = geocoder.ExtractStatus(new RootResponse { StatusDescription = source });
 
             Assert.Equal(expected, response.Status);
         }

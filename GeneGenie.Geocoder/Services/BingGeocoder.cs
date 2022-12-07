@@ -13,8 +13,9 @@ namespace GeneGenie.Geocoder.Services
         private static readonly List<GeocoderStatusMapping> BingStatusMappings = new List<GeocoderStatusMapping>
         {
             new GeocoderStatusMapping { IsPermanentError = false, IsTemporaryError = false, StatusText = "OK", Status = GeocodeStatus.Success },
-            new GeocoderStatusMapping { IsPermanentError = true, IsTemporaryError = false, StatusText = "Unauthorized", Status = GeocodeStatus.Error },
+            new GeocoderStatusMapping { IsPermanentError = true, IsTemporaryError = false, StatusText = "Unauthorized", Status = GeocodeStatus.RequestDenied },
             new GeocoderStatusMapping { IsPermanentError = false, IsTemporaryError = true, StatusText = "Service Unavailable", Status = GeocodeStatus.TemporaryError },
+            new GeocoderStatusMapping { IsPermanentError = true, IsTemporaryError = true, StatusText = "Unparseable error", Status = GeocodeStatus.Error },
         };
 
         private readonly GeocoderAddressLookup<RootResponse> geocoderAddressLookup;
@@ -68,14 +69,11 @@ namespace GeneGenie.Geocoder.Services
                 };
             }
 
-            var statusRow = BingStatusMappings.FirstOrDefault(s => s.StatusText == content.StatusDescription.Trim());
+            var statusRow = BingStatusMappings
+                .FirstOrDefault(s => string.Compare(s.StatusText, content.StatusDescription.Trim(), true) == 0);
             if (statusRow == null)
             {
-                statusRow = new GeocoderStatusMapping
-                {
-                    Status = GeocodeStatus.Error,
-                    StatusText = content.StatusDescription,
-                };
+                return BingStatusMappings.First(s => s.Status == GeocodeStatus.Error);
             }
 
             return statusRow;

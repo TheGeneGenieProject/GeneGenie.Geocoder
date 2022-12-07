@@ -15,10 +15,12 @@ namespace GeneGenie.Geocoder.Services
         {
             new GeocoderStatusMapping { IsPermanentError = false, IsTemporaryError = false, StatusText = "OK", Status = GeocodeStatus.Success },
             new GeocoderStatusMapping { IsPermanentError = true, IsTemporaryError = false, StatusText = "INVALID_REQUEST", Status = GeocodeStatus.InvalidRequest },
+            new GeocoderStatusMapping { IsPermanentError = false, IsTemporaryError = true, StatusText = "OVER_DAILY_LIMIT", Status = GeocodeStatus.TooManyRequests },
             new GeocoderStatusMapping { IsPermanentError = false, IsTemporaryError = true, StatusText = "OVER_QUERY_LIMIT", Status = GeocodeStatus.TooManyRequests },
             new GeocoderStatusMapping { IsPermanentError = false, IsTemporaryError = false, StatusText = "REQUEST_DENIED", Status = GeocodeStatus.RequestDenied },
-            new GeocoderStatusMapping { IsPermanentError = false, IsTemporaryError = true, StatusText = "UNKNOWN_ERROR", Status = GeocodeStatus.Error },
+            new GeocoderStatusMapping { IsPermanentError = false, IsTemporaryError = true, StatusText = "UNKNOWN_ERROR", Status = GeocodeStatus.TemporaryError },
             new GeocoderStatusMapping { IsPermanentError = false, IsTemporaryError = false, StatusText = "ZERO_RESULTS", Status = GeocodeStatus.ZeroResults },
+            new GeocoderStatusMapping { IsPermanentError = true, IsTemporaryError = true, StatusText = "Unparseable error", Status = GeocodeStatus.Error },
         };
 
         private readonly GeocoderAddressLookup<RootResponse> geocoderAddressLookup;
@@ -66,7 +68,8 @@ namespace GeneGenie.Geocoder.Services
                 return GoogleStatusMappings.First(s => s.Status == GeocodeStatus.Error);
             }
 
-            var statusRow = GoogleStatusMappings.FirstOrDefault(s => s.StatusText == content.Status.Trim());
+            var statusRow = GoogleStatusMappings
+                .FirstOrDefault(s => string.Compare(s.StatusText, content.Status.Trim(), true) == 0);
             if (statusRow == null)
             {
                 return GoogleStatusMappings.First(s => s.Status == GeocodeStatus.Error);
