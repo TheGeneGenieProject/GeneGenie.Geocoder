@@ -5,10 +5,25 @@
 
 namespace GeneGenie.Geocoder.Services
 {
+    /// <summary>
+    /// All currently implemented geocoders.
+    /// </summary>
     public enum GeocoderNames
     {
+        /// <summary>
+        /// Not a valid state, if a usage of this enum returns this status
+        /// then your geocoder has an issue which needs addressing.
+        /// </summary>
         NotSet,
+        
+        /// <summary>
+        /// Geocodes against the Microsoft Bing Location API.
+        /// </summary>
         Bing = 1,
+        
+        /// <summary>
+        /// Geocodes against the Google Places API.
+        /// </summary>
         Google = 2,
     }
 }
