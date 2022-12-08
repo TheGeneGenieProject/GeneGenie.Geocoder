@@ -52,6 +52,7 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Bing
         [InlineData("OK", GeocodeStatus.Success)]
         [InlineData("Unauthorized", GeocodeStatus.RequestDenied)]
         [InlineData("Service Unavailable", GeocodeStatus.TemporaryError)]
+        [InlineData(" made up status code ", GeocodeStatus.Error)]
         public void Expected_bing_status_codes_can_be_parsed(string source, GeocodeStatus expected)
         {
             var response = geocoder.ExtractStatus(new RootResponse { StatusDescription = source });

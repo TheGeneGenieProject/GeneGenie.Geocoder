@@ -41,7 +41,7 @@
         <EmbeddedResource Include="Data\Google\ZeroResults.json" />
         <EmbeddedResource Include="Data\Google\MissingBoundsAndViewport.json" />
         <EmbeddedResource Include="Data\Google\MissingGeometry.json" />
-        <EmbeddedResource Include="Data\Google\Empty.json" />
+        <EmbeddedResource Include="Data\Empty.json" />
         <EmbeddedResource Include="Data\Google\BoundsExist.json" />
         <EmbeddedResource Include="Data\Google\MissingLocation.json" />
         <EmbeddedResource Include="Data\Google\HasBoundsAndViewport.json" />

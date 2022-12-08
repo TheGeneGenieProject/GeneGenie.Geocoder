@@ -3,15 +3,15 @@
 // Licensed under the GNU Affero General Public License v3.0. See LICENSE in the project root for license information.
 // </copyright>
 
-namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
+namespace GeneGenie.Geocoder.Tests.GeocoderTests.Bing
 {
     /// <summary>
     /// Tests to check that all log points are called.
     /// </summary>
     public class LoggerTests
     {
-        private readonly GoogleGeocoder geocoder;
-        private readonly FakeLogger<GoogleGeocoder> logger;
+        private readonly BingGeocoder geocoder;
+        private readonly FakeLogger<BingGeocoder> logger;
 
         /// <summary>
         /// Tests for ensuring that log points in the code are hit correctly.
@@ -20,18 +20,18 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
         {
             var geocoderSettings = new List<GeocoderSettings>
             {
-                new GeocoderSettings { GeocoderName = GeocoderNames.Google },
+                new GeocoderSettings { GeocoderName = GeocoderNames.Bing },
             };
             var serviceProvider = new ServiceCollection()
                 .AddGeocoders(geocoderSettings)
-                .RemoveAll<ILogger<GoogleGeocoder>>()
-                .AddScoped<ILogger<GoogleGeocoder>, FakeLogger<GoogleGeocoder>>()
+                .RemoveAll<ILogger<BingGeocoder>>()
+                .AddScoped<ILogger<BingGeocoder>, FakeLogger<BingGeocoder>>()
                 .RemoveAll<IGeocoderHttpClient>()
                 .AddTransient<IGeocoderHttpClient, FakeGeocoderHttpClient>()
                 .BuildServiceProvider();
 
-            geocoder = serviceProvider.GetRequiredService<GoogleGeocoder>();
-            logger = serviceProvider.GetRequiredService<ILogger<GoogleGeocoder>>() as FakeLogger<GoogleGeocoder>;
+            geocoder = serviceProvider.GetRequiredService<BingGeocoder>();
+            logger = serviceProvider.GetRequiredService<ILogger<BingGeocoder>>() as FakeLogger<BingGeocoder>;
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
         /// Checks that if a weird null response is received, we log it.
         /// </summary>
         [Fact]
-        public async Task Empty_result_from_google_is_logged()
+        public async Task Empty_result_from_bing_is_logged()
         {
             var geocodeRequest = new GeocodeRequest { Address = "File=Empty.json" };
 
@@ -66,7 +66,7 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
         [Fact]
         public async Task Missing_bounds_is_not_logged_when_viewport_exists()
         {
-            var geocodeRequest = new GeocodeRequest { Address = "File=Google/MissingBounds.json" };
+            var geocodeRequest = new GeocodeRequest { Address = "File=Bing/MissingBounds.json" };
 
             await geocoder.GeocodeAddressAsync(geocodeRequest);
 
@@ -79,7 +79,7 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
         [Fact]
         public async Task Missing_bounds_is_not_logged_when_bounds_exist_and_viewport_does_not()
         {
-            var geocodeRequest = new GeocodeRequest { Address = "File=Google/BoundsExist.json" };
+            var geocodeRequest = new GeocodeRequest { Address = "File=Bing/BoundsExist.json" };
 
             await geocoder.GeocodeAddressAsync(geocodeRequest);
 
@@ -92,7 +92,7 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
         [Fact]
         public async Task Valid_response_has_no_critical_log_messages()
         {
-            var geocodeRequest = new GeocodeRequest { Address = "File=Google/Valid.json" };
+            var geocodeRequest = new GeocodeRequest { Address = "File=Bing/Valid.json" };
 
             await geocoder.GeocodeAddressAsync(geocodeRequest);
 
@@ -105,7 +105,7 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
         [Fact]
         public async Task Valid_response_has_no_error_log_messages()
         {
-            var geocodeRequest = new GeocodeRequest { Address = "File=Google/Valid.json" };
+            var geocodeRequest = new GeocodeRequest { Address = "File=Bing/Valid.json" };
 
             await geocoder.GeocodeAddressAsync(geocodeRequest);
 
@@ -118,7 +118,7 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
         [Fact]
         public async Task Valid_response_has_no_warning_log_messages()
         {
-            var geocodeRequest = new GeocodeRequest { Address = "File=Google/Valid.json" };
+            var geocodeRequest = new GeocodeRequest { Address = "File=Bing/Valid.json" };
 
             await geocoder.GeocodeAddressAsync(geocodeRequest);
 
@@ -131,7 +131,7 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
         [Fact]
         public async Task Valid_response_has_trace_log_message()
         {
-            var geocodeRequest = new GeocodeRequest { Address = "File=Google/Valid.json" };
+            var geocodeRequest = new GeocodeRequest { Address = "File=Bing/Valid.json" };
 
             await geocoder.GeocodeAddressAsync(geocodeRequest);
 
@@ -147,14 +147,14 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
         [InlineData($"HttpStatusCode={nameof(HttpStatusCode.ServiceUnavailable)}", LogEventIds.GeocoderError)]
         [InlineData($"HttpStatusCode={nameof(HttpStatusCode.InternalServerError)}", LogEventIds.GeocoderError)]
         [InlineData($"HttpStatusCode={nameof(HttpStatusCode.SeeOther)}", LogEventIds.GeocoderError)]
-        [InlineData("File=Google/TemporaryError.json", LogEventIds.GeocoderError)]
-        [InlineData("File=Google/PermanentError.json", LogEventIds.GeocoderError)]
-        [InlineData("File=Google/MissingLocation.json", LogEventIds.GeocoderMissingLocation)]
-        [InlineData("File=Google/MissingBoundsAndViewport.json", LogEventIds.GeocoderMissingBounds)]
-        [InlineData("File=Google/MissingGeometry.json", LogEventIds.GeocoderMissingGeometry)]
-        [InlineData("File=Google/ZeroResults.json", LogEventIds.GeocoderZeroResults)]
-        [InlineData(null, LogEventIds.GeocoderInputEmpty)]
-        public async Task Geocoder_status_is_logged_from_google(string address, LogEventIds expected)
+        [InlineData("File=Bing/TemporaryError.json", LogEventIds.GeocoderError)]
+     // xx [InlineData("File=Bing/PermanentError.json", LogEventIds.GeocoderError)]
+     // xx [InlineData("File=Bing/MissingLocation.json", LogEventIds.GeocoderMissingLocation)]
+     // xx [InlineData("File=Bing/MissingBoundsAndViewport.json", LogEventIds.GeocoderMissingBounds)]
+     // xx [InlineData("File=Bing/MissingGeometry.json", LogEventIds.GeocoderMissingGeometry)]
+     // xx [InlineData("File=Bing/ZeroResults.json", LogEventIds.GeocoderZeroResults)]
+        //[InlineData(null, LogEventIds.GeocoderInputEmpty)]
+        public async Task Geocoder_status_is_logged_from_bing(string address, LogEventIds expected)
         {
             var geocodeRequest = new GeocodeRequest { Address = address };
 

@@ -49,10 +49,17 @@ namespace GeneGenie.Geocoder.Tests.Fakes
             var urlParams = url.Substring(url.IndexOf("?") + 1);
             var keyvalues = urlParams.Split("&");
 
+            // Google uses 'address' for the parameter.
             var address = keyvalues.FirstOrDefault(k => k.StartsWith("address"));
             if (string.IsNullOrWhiteSpace(address))
             {
-                return HttpStatusCode.NotImplemented;
+                // Could not find 'address', check if this is a Bing fake query.
+                address = keyvalues.FirstOrDefault(k => k.StartsWith("query"));
+                if (string.IsNullOrWhiteSpace(address))
+                {
+                    // Could not find 'address', check if this is a Bing fake query.
+                    return HttpStatusCode.NotImplemented;
+                }
             }
 
             // String is of the form address=httpstatuscode=value.

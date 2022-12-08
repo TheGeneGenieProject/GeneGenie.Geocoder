@@ -69,10 +69,5 @@ namespace GeneGenie.Geocoder.Services
         /// Data passed to geocoder is null or whitespace and could not be used.
         /// </summary>
         GeocoderInputEmpty = 2006,
-
-        /// <summary>
-        /// The external geocoder API returned null and unusable data.
-        /// </summary>
-        GeocoderNullResponse = 2007,
     }
 }

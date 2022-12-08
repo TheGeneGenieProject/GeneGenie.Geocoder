@@ -139,7 +139,7 @@ namespace GeneGenie.Geocoder.Services
         {
             if (content is null)
             {
-                logger.LogWarning((int)LogEventIds.GeocoderNullResponse, "Null response received from API.");
+                logger.LogWarning((int)LogEventIds.GeocoderReturnedNull, "Null response received from API.");
                 return GeocodeStatus.Error;
             }
 
