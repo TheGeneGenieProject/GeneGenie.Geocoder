@@ -5,10 +5,6 @@
 
 namespace GeneGenie.Geocoder.Console.Setup
 {
-    using System;
-    using System.IO;
-    using Microsoft.Extensions.Configuration;
-
     /// <summary>
     /// Creates a config builder which loads the configuration from the various files or environment variables.
     /// </summary>

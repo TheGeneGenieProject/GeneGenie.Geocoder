@@ -5,9 +5,6 @@
 
 namespace GeneGenie.Geocoder.Console
 {
-    using System.Collections.Generic;
-    using GeneGenie.Geocoder.Models;
-
     /// <summary>
     /// Settings for the sample app, loaded from appsettings.json, appsettings.development.json
     /// or environment variables.

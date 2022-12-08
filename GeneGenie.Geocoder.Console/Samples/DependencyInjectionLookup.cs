@@ -5,13 +5,6 @@
 
 namespace GeneGenie.Geocoder.Console.Samples
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using GeneGenie.Geocoder.Console.Setup;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Logging;
-
     /// <summary>
     /// Sample of how to use the geocoder in a .Net Core environment with Dependency Injection.
     /// </summary>

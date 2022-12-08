@@ -5,12 +5,6 @@
 
 namespace GeneGenie.Geocoder.Console.Samples
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using GeneGenie.Geocoder.Models;
-
     /// <summary>
     /// Sample of how to use the geocoder in .Net Core without doing the whole Dependency Injection dance (it is handled internally by the library).
     /// </summary>
@@ -35,7 +29,7 @@ namespace GeneGenie.Geocoder.Console.Samples
 
             if (geocoderSettings.Any(gs => string.IsNullOrWhiteSpace(gs.ApiKey)))
             {
-                Console.WriteLine("API keys are blank, you need to provide the API keys from Google and Bing.");
+                System.Console.WriteLine("API keys are blank, you need to provide the API keys from Google and Bing.");
                 return;
             }
 
@@ -44,18 +38,18 @@ namespace GeneGenie.Geocoder.Console.Samples
 
             // This first lookup will be handled by Bing (unless it fails to resolve the address, which will then fail over to Google).
             var firstResult = await geocodeManager.GeocodeAddressAsync("10 Downing St., London, UK");
-            Console.WriteLine($"Result of first lookup, used {firstResult.GeocoderId}, status of {firstResult.Status} with {firstResult.Locations.Count} results.");
+            System.Console.WriteLine($"Result of first lookup, used {firstResult.GeocoderId}, status of {firstResult.Status} with {firstResult.Locations.Count} results.");
             foreach (var foundLocation in firstResult.Locations)
             {
-                Console.WriteLine($"Address of {foundLocation.FormattedAddress} has a location of {foundLocation.Location.Latitude} / {foundLocation.Location.Longitude}");
+                System.Console.WriteLine($"Address of {foundLocation.FormattedAddress} has a location of {foundLocation.Location.Latitude} / {foundLocation.Location.Longitude}");
             }
 
             // The following lookup then uses the other geocoder service.
             var secondResult = await geocodeManager.GeocodeAddressAsync("The Acropolis, Greece");
-            Console.WriteLine($"Result of second lookup, used {secondResult.GeocoderId}, status of {secondResult.Status} with {secondResult.Locations.Count} results.");
+            System.Console.WriteLine($"Result of second lookup, used {secondResult.GeocoderId}, status of {secondResult.Status} with {secondResult.Locations.Count} results.");
             foreach (var foundLocation in secondResult.Locations)
             {
-                Console.WriteLine($"Address of {foundLocation.FormattedAddress} has a location of {foundLocation.Location.Latitude} / {foundLocation.Location.Longitude}");
+                System.Console.WriteLine($"Address of {foundLocation.FormattedAddress} has a location of {foundLocation.Location.Latitude} / {foundLocation.Location.Longitude}");
             }
         }
     }

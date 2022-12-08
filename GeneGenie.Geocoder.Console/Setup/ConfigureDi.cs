@@ -5,12 +5,6 @@
 
 namespace GeneGenie.Geocoder.Console.Setup
 {
-    using System;
-    using GeneGenie.Geocoder.ExtensionMethods;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Logging;
-
     /// <summary>
     /// Set up dependency injection for this sample app.
     /// </summary>

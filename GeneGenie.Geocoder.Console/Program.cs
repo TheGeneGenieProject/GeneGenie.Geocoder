@@ -5,10 +5,6 @@
 
 namespace GeneGenie.Geocoder.Console
 {
-    using System;
-    using System.Threading.Tasks;
-    using GeneGenie.Geocoder.Console.Samples;
-
     /// <summary>
     /// Console app demonstrating varying uses of the <see cref="GeocodeManager"/> class which is the main method used to geocode addresses.
     /// </summary>
@@ -41,24 +37,24 @@ namespace GeneGenie.Geocoder.Console
                     await diLookup.ExecuteAsync(args);
                     break;
                 default:
-                    Console.WriteLine("Could not figure out selection, exiting.");
+                    System.Console.WriteLine("Could not figure out selection, exiting.");
                     break;
             }
 
-            Console.WriteLine("Complete, press a key to quit");
-            Console.ReadKey();
+            System.Console.WriteLine("Complete, press a key to quit");
+            System.Console.ReadKey();
         }
 
         private static SampleChoice RenderAndSelectSampleChoice()
         {
-            Console.WriteLine("GeneGenie.Geocoder samples");
-            Console.WriteLine();
-            Console.WriteLine("1. Use the simplest lookup (lets the library auto-wire itself up).");
-            Console.WriteLine("2. Use with .Net Core Dependency Injection.");
-            Console.WriteLine();
+            System.Console.WriteLine("GeneGenie.Geocoder samples");
+            System.Console.WriteLine();
+            System.Console.WriteLine("1. Use the simplest lookup (lets the library auto-wire itself up).");
+            System.Console.WriteLine("2. Use with .Net Core Dependency Injection.");
+            System.Console.WriteLine();
 
-            var pressed = Console.ReadKey(true);
-            Console.WriteLine();
+            var pressed = System.Console.ReadKey(true);
+            System.Console.WriteLine();
 
             switch (pressed.Key)
             {
