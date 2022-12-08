@@ -5,15 +5,28 @@
 
 namespace GeneGenie.Geocoder.Dto
 {
+    /// <summary>
+    /// Holds the result of an address geocode passed through one of the geocoder engines.
+    /// </summary>
     public class GeocodeResponseDto
     {
+        /// <summary>
+        /// Creates a new response from the geocoder with the passed status.
+        /// </summary>
+        /// <param name="responseStatus">The status of the lookup to be returned to the caller.</param>
         public GeocodeResponseDto(GeocodeStatus responseStatus)
         {
             this.ResponseStatus = responseStatus;
         }
 
+        /// <summary>
+        /// A list of possible locations for the address searched.
+        /// </summary>
         public List<GeocodeLocationDto> Locations { get; set; } = new List<GeocodeLocationDto>();
 
+        /// <summary>
+        /// The status of the geocode lookup.
+        /// </summary>
         public GeocodeStatus ResponseStatus { get; set; }
     }
 }

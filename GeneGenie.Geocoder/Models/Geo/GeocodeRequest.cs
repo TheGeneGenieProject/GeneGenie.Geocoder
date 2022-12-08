@@ -5,6 +5,9 @@
 
 namespace GeneGenie.Geocoder.Models.Geo
 {
+    /// <summary>
+    /// Contains the search text and hints for geocoding an address.
+    /// </summary>
     public class GeocodeRequest
     {
         /// <summary>

@@ -12,6 +12,18 @@ namespace GeneGenie.Geocoder.Interfaces
     /// </summary>
     public interface IGeocoderHttpClient
     {
+        /// <summary>
+        /// For real geocoders this will make an API call via REST.
+        /// For unit tested geocoders the url passed in would be examined
+        /// in order to simulate a specific response.
+        /// </summary>
+        /// <param name="url">
+        /// The full URL with parameters for an address geocode attempt, normally via GET.
+        /// 
+        /// Fake unit test geocoders receive specific values here which determines the results
+        /// they'll pass back for simulation.
+        /// </param>
+        /// <returns>A HTTP response with the response from the API call.</returns>
         Task<HttpResponseMessage> MakeApiRequestAsync(string url);
     }
 }

@@ -5,8 +5,17 @@
 
 namespace GeneGenie.Geocoder.Interfaces
 {
+    /// <summary>
+    /// A pluggable way to replace the system clock when testing.
+    /// In production, will resolve to a concrete type that wraps
+    /// the real system clock.
+    /// </summary>
     public interface ITimeProvider
     {
+        /// <summary>
+        /// Retrieve the current system date and time. Used by unit tests to return a known time.
+        /// </summary>
+        /// <returns>A DateTimeOffset representing the current system time.</returns>
         DateTimeOffset UtcNow();
     }
 }

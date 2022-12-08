@@ -5,6 +5,9 @@
 
 namespace GeneGenie.Geocoder.Models
 {
+    /// <summary>
+    /// Holds the API key for each geocoder.
+    /// </summary>
     public class GeocoderSettings
     {
         /// <summary>

@@ -5,12 +5,25 @@
 
 namespace GeneGenie.Geocoder.Dto
 {
+    /// <summary>
+    /// A geocoded address lookup response.
+    /// </summary>
     public class GeocodeLocationDto
     {
+        /// <summary>
+        /// A bounding box around the address found.
+        /// </summary>
         public Bounds Bounds { get; set; }
 
+        /// <summary>
+        /// A formatted address as returned from the geocoder service.
+        /// This format is for display to the end user as it is abbreviated and therefore lossy.
+        /// </summary>
         public string FormattedAddress { get; set; }
 
+        /// <summary>
+        /// The map point of the address lookup.
+        /// </summary>
         public LocationPair Location { get; set; }
     }
 }

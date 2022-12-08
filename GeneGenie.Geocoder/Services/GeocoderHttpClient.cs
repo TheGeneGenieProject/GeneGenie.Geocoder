@@ -13,11 +13,20 @@ namespace GeneGenie.Geocoder.Services
     {
         private readonly IHttpClientFactory httpClientFactory;
 
+        /// <summary>
+        /// Creates a new instance of the geocoder client that wraps a HTTP client factory.
+        /// </summary>
+        /// <param name="httpClientFactory">An HTTP client factory from which we'll create connections.</param>
         public GeocoderHttpClient(IHttpClientFactory httpClientFactory)
         {
             this.httpClientFactory = httpClientFactory;
         }
 
+        /// <summary>
+        /// Makes an API call from the geocoder class to a HTTP API.
+        /// </summary>
+        /// <param name="url">The full URL to issue a GET request to.</param>
+        /// <returns>The HTTP response from the API.</returns>
         public async Task<HttpResponseMessage> MakeApiRequestAsync(string url)
         {
             var client = httpClientFactory.CreateClient();
