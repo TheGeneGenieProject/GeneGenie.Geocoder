@@ -21,6 +21,15 @@ namespace GeneGenie.Geocoder.Services.Selectors
         private readonly ITimeProvider timeProvider;
         private List<GeocoderState> currentGeocoderStates;
 
+        /// <summary>
+        /// Creates an instance of the geocoder manager to track multiple geocoding attempts across different geocoders.
+        /// </summary>
+        /// <param name="geocoderSettings">A list of geocoder settings, one for each active geocoder.</param>
+        /// <param name="serviceProvider">A service provider so we can retrieve the registered geocoders without requiring a hard reference.</param>
+        /// <param name="timeProvider">
+        /// A class the tells us the current system time in order to handle throttling of API requests.
+        /// Handled this way so that we can unit test this class with specific times.
+        /// </param>
         public InMemoryGeocoderSelector(List<GeocoderSettings> geocoderSettings, IServiceProvider serviceProvider, ITimeProvider timeProvider)
         {
             this.geocoderSettings = geocoderSettings;
@@ -29,11 +38,20 @@ namespace GeneGenie.Geocoder.Services.Selectors
             ResetState();
         }
 
+        /// <summary>
+        /// Select the next geocoder from a list based on previous usage.
+        /// </summary>
+        /// <returns>An instance of a geocoder that can be used to geocode an address.</returns>
         public async Task<IGeocoder> SelectNextGeocoderAsync()
         {
             return await SelectNextGeocoderAsync(emptyList);
         }
 
+        /// <summary>
+        /// Select the next geocoder from a list based on previous usage, excluding the passed geocoders which may have been throttled.
+        /// </summary>
+        /// <param name="excludeGeocoders">A list of geocoder ids to avoid calling for now.</param>
+        /// <returns>An instance of a geocoder that can be used to geocode an address.</returns>
         public async Task<IGeocoder> SelectNextGeocoderAsync(List<GeocoderNames> excludeGeocoders)
         {
             var nextGeocoder = RoundRobin(excludeGeocoders);
@@ -62,7 +80,7 @@ namespace GeneGenie.Geocoder.Services.Selectors
                 .FirstOrDefault(g => g.GeocoderId == geocoderId);
         }
 
-        public void ResetState()
+        private void ResetState()
         {
             var yesterday = timeProvider.UtcNow().AddDays(-1);
             currentGeocoderStates = geocoderSettings

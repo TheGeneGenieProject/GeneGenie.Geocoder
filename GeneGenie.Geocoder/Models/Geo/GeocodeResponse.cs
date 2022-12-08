@@ -11,11 +11,20 @@ namespace GeneGenie.Geocoder.Models.Geo
     /// </summary>
     public class GeocodeResponse
     {
-
+        /// <summary>
+        /// If this geocode call succeeded then this will contain a list of possible locations to present to the user.
+        /// </summary>
         public List<GeocodeResponseLocation> Locations { get; set; } = new List<GeocodeResponseLocation>();
 
+        /// <summary>
+        /// The unique id of the geocoder that generated this response.
+        /// When you use the geocode manager you might get any one of the registered geocoders.
+        /// </summary>
         public GeocoderNames GeocoderId { get; set; }
 
+        /// <summary>
+        /// Holds the status of an address lookup.
+        /// </summary>
         public AddressLookupStatus Status { get; set; }
     }
 }
