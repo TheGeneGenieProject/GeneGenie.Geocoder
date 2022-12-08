@@ -5,8 +5,13 @@
 
 namespace GeneGenie.Geocoder.Models.Geo
 {
+    /// <summary>
+    /// A response to a geocode call that hides the implementation details of the geocoders
+    /// so you don't have to worry about the different output formats.
+    /// </summary>
     public class GeocodeResponse
     {
+
         public List<GeocodeResponseLocation> Locations { get; set; } = new List<GeocodeResponseLocation>();
 
         public GeocoderNames GeocoderId { get; set; }

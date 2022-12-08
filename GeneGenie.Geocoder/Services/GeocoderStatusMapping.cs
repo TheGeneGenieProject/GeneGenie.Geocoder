@@ -11,12 +11,24 @@ namespace GeneGenie.Geocoder.Services
     /// </summary>
     public class GeocoderStatusMapping
     {
+        /// <summary>
+        /// The API call was broken in such a way that it's not worth repeating. Possibly a missing API key.
+        /// </summary>
         public bool IsPermanentError { get; set; }
 
+        /// <summary>
+        /// The geocoders returned a temporary error and you should try again later.
+        /// </summary>
         public bool IsTemporaryError { get; set; }
 
+        /// <summary>
+        /// The status code for the geocode request such as 'over API limit' or 'OK'.
+        /// </summary>
         public GeocodeStatus Status { get; set; }
 
+        /// <summary>
+        /// The status text returned from the geocoder API, useful for troubleshooting.
+        /// </summary>
         public string StatusText { get; set; }
     }
 }

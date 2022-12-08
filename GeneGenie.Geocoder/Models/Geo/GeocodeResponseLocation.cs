@@ -5,12 +5,25 @@
 
 namespace GeneGenie.Geocoder.Models.Geo
 {
+    /// <summary>
+    /// A geocoder agnostic result to an address geocode call.
+    /// </summary>
     public class GeocodeResponseLocation
     {
+        /// <summary>
+        /// A latitude and longitude based rectangle defining the map region for the results.
+        /// </summary>
         public Bounds Bounds { get; set; }
 
+        /// <summary>
+        /// A formatted address as returned from the geocoder service.
+        /// This format is for display to the end user as it is abbreviated and therefore lossy.
+        /// </summary>
         public string FormattedAddress { get; set; }
 
+        /// <summary>
+        /// The map point of the address geocode.
+        /// </summary>
         public LocationPair Location { get; set; }
     }
 }

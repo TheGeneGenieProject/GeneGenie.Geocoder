@@ -22,7 +22,7 @@ namespace GeneGenie.Geocoder.Dto
         public string FormattedAddress { get; set; }
 
         /// <summary>
-        /// The map point of the address lookup.
+        /// The map point of the address geocode.
         /// </summary>
         public LocationPair Location { get; set; }
     }
