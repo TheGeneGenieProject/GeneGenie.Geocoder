@@ -11,8 +11,16 @@ namespace GeneGenie.Geocoder.Console.Setup
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
 
+    /// <summary>
+    /// Set up dependency injection for this sample app.
+    /// </summary>
     public static class ConfigureDi
     {
+        /// <summary>
+        /// Register the geocoders based on the settings loaded from appsetttings.
+        /// </summary>
+        /// <param name="configuration"></param>
+        /// <returns></returns>
         public static IServiceProvider BuildDi(IConfigurationRoot configuration)
         {
             var appSettings = configuration.GetSection("App").Get<AppSettings>();

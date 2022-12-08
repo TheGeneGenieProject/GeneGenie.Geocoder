@@ -8,8 +8,15 @@ namespace GeneGenie.Geocoder.Console
     using System.Collections.Generic;
     using GeneGenie.Geocoder.Models;
 
+    /// <summary>
+    /// Settings for the sample app, loaded from appsettings.json, appsettings.development.json
+    /// or environment variables.
+    /// </summary>
     public class AppSettings
     {
+        /// <summary>
+        /// A list of enabled geocoders and their API keys for the demo.
+        /// </summary>
         public List<GeocoderSettings> GeocoderSettings { get; set; }
     }
 }

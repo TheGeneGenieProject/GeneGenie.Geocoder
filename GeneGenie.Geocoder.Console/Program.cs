@@ -60,15 +60,15 @@ namespace GeneGenie.Geocoder.Console
             var pressed = Console.ReadKey(true);
             Console.WriteLine();
 
-            if (int.TryParse(pressed.KeyChar.ToString(), out var choice))
+            switch (pressed.Key)
             {
-                if (Enum.IsDefined(typeof(SampleChoice), choice))
-                {
-                    return (SampleChoice)choice;
-                }
+                case ConsoleKey.D1:
+                    return SampleChoice.SimpleLookup;
+                case ConsoleKey.D2:
+                    return SampleChoice.DependencyInjection;
+                default:
+                    return SampleChoice.Exit;
             }
-
-            return SampleChoice.Exit;
         }
     }
 }

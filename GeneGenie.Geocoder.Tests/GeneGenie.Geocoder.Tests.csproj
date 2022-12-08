@@ -10,23 +10,13 @@
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<CodeAnalysisRuleSet></CodeAnalysisRuleSet>
-		<WarningLevel>9999</WarningLevel>
-        <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
-        <WarningsAsErrors />
-        <NoWarn />
-    </PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	<PropertyGroup>
+        <WarningLevel>9999</WarningLevel>
         <LangVersion>latest</LangVersion>
         <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
         <WarningsAsErrors />
         <NoWarn />
-    </PropertyGroup>
-
-	<PropertyGroup>
-		<AnalysisMode>All</AnalysisMode>
+        <AnalysisMode>All</AnalysisMode>
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
