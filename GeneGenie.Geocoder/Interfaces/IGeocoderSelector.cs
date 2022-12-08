@@ -12,8 +12,8 @@ namespace GeneGenie.Geocoder.Interfaces
     /// selections, hence it requires storage. This interface enables the plugging in of
     /// different selectors that use different storage (database or memory).
     /// For example, local testing and single process apps can use <see cref="InMemoryGeocoderSelector"/>
-    /// whilst multi-instance cloud based functions use <see cref="DocumentDbGeocoderSelector"/>
-    /// which uses a stored procedure in the database to make the selector decision.
+    /// whilst multi-instance cloud based functions should implement a custom geocoder selector that
+    /// is backed by multi-access safe storage to make the selector decision.
     /// </summary>
     public interface IGeocoderSelector
     {
