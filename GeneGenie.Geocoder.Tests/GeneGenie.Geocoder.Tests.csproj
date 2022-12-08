@@ -11,17 +11,16 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<DocumentationFile>GeneGenie.DataQuality.Tests.xml</DocumentationFile>
 		<CodeAnalysisRuleSet></CodeAnalysisRuleSet>
 		<WarningLevel>9999</WarningLevel>
-		<NoWarn />
-		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
-		<WarningsAsErrors />
-	</PropertyGroup>
+        <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+        <WarningsAsErrors />
+        <NoWarn />
+    </PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
         <LangVersion>latest</LangVersion>
-        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+        <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
         <WarningsAsErrors />
         <NoWarn />
     </PropertyGroup>
@@ -31,27 +30,6 @@
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
-
-	<ItemGroup>
-        <None Remove="Data\Bing\ErrorDetails.json" />
-        <None Remove="Data\Bing\NoData.json" />
-        <None Remove="Data\Bing\TemporaryError.json" />
-        <None Remove="Data\Bing\UnknownError.json" />
-        <None Remove="Data\Bing\Valid.json" />
-        <None Remove="Data\BoundsExist.json" />
-        <None Remove="Data\Empty.json" />
-        <None Remove="Data\Google\MixedCase.json" />
-        <None Remove="Data\Google\ZeroResults.json" />
-        <None Remove="Data\HasBoundsAndViewport.json" />
-        <None Remove="Data\MissingBounds.json" />
-        <None Remove="Data\MissingBoundsAndViewport.json" />
-        <None Remove="Data\MissingGeometry.json" />
-        <None Remove="Data\MissingLocation.json" />
-        <None Remove="Data\PermanentError.json" />
-        <None Remove="Data\TemporaryError.json" />
-        <None Remove="Data\Valid.json" />
-        <None Remove="Ryan%27s family tree.csv" />
-    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.0" />

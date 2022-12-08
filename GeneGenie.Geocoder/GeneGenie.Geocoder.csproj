@@ -20,12 +20,22 @@
         <GenerateDocumentationFile>True</GenerateDocumentationFile>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <CodeAnalysisRuleSet></CodeAnalysisRuleSet>
+        <WarningLevel>9999</WarningLevel>
+        <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+        <WarningsAsErrors />
+        <NoWarn />
+    </PropertyGroup>
+
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
         <LangVersion>latest</LangVersion>
-        <NoWarn />
-        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+        <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
         <WarningsAsErrors />
+        <NoWarn />
     </PropertyGroup>
+
+
 
     <ItemGroup>
         <None Include="..\.editorconfig" Link=".editorconfig" />
