@@ -114,7 +114,6 @@ namespace GeneGenie.Geocoder.Services
             // Bing sends back this header instead of HTTP status 429 (back-off) when too many requests.
             if (response.Headers.Any(h => h.Key == "X-MS-BM-WS-INFO" && h.Value.Any(v => v == "1")))
             {
-                // TODO: Need to tie the address being backed off from in via some kind of correlation ID.
                 logger.LogWarning((int)LogEventIds.GeocoderTooManyRequests, "Backoff received from geocoder");
                 return GeocodeStatus.TooManyRequests;
             }
@@ -152,7 +151,6 @@ namespace GeneGenie.Geocoder.Services
 
             if (content.ResourceSets == null || !content.ResourceSets.Any() || content.ResourceSets.Sum(rs => rs.EstimatedTotal) == 0)
             {
-                // TODO: See how we can associate this with a request ID so we can see why.
                 logger.LogInformation((int)LogEventIds.GeocoderZeroResults, "Zero results received.");
                 return GeocodeStatus.ZeroResults;
             }
