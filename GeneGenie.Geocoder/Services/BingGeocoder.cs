@@ -5,6 +5,9 @@
 
 namespace GeneGenie.Geocoder.Services
 {
+    /// <summary>
+    /// A geocoder that calls the Bing locations API to generate coordinates for an address.
+    /// </summary>
     public class BingGeocoder : IGeocoder, IGeocoderAddressProcessor<RootResponse>
     {
         private const int MaxResults = 25;
@@ -23,6 +26,12 @@ namespace GeneGenie.Geocoder.Services
         private readonly GeocoderSettings geocoderSettings;
         private readonly ILogger logger;
 
+        /// <summary>
+        /// Creates an instance of the Bing geocoder.
+        /// </summary>
+        /// <param name="geocoderHttpClient">A class for making HTTP requests that can be swapped out in test.</param>
+        /// <param name="geocoderSettings">The settings for this geocoder.</param>
+        /// <param name="logger">A logger for creating diagnostic logs.</param>
         public BingGeocoder(IGeocoderHttpClient geocoderHttpClient, GeocoderSettings geocoderSettings, ILogger<BingGeocoder> logger)
         {
             this.geocoderHttpClient = geocoderHttpClient;
@@ -31,8 +40,10 @@ namespace GeneGenie.Geocoder.Services
             geocoderAddressLookup = new GeocoderAddressLookup<RootResponse>(this, logger);
         }
 
+        /// <inheritdoc/>
         public GeocoderNames GeocoderId { get => GeocoderNames.Bing; }
 
+        /// <inheritdoc/>
         public async Task<GeocodeResponseDto> GeocodeAddressAsync(GeocodeRequest geocodeRequest)
         {
             var response = await geocoderAddressLookup.GeocodeAddressAsync(geocodeRequest);
@@ -58,6 +69,7 @@ namespace GeneGenie.Geocoder.Services
             return new GeocodeResponseDto(response.ResponseStatus);
         }
 
+        /// <inheritdoc/>
         public GeocoderStatusMapping ExtractStatus(RootResponse content)
         {
             if (string.IsNullOrWhiteSpace(content.StatusDescription))
@@ -116,12 +128,14 @@ namespace GeneGenie.Geocoder.Services
             return GeocodeStatus.Success;
         }
 
+        /// <inheritdoc/>
         public async Task<HttpResponseMessage> MakeApiRequestAsync(GeocodeRequest geocodeRequest)
         {
             var url = BuildUrl(geocodeRequest);
             return await geocoderHttpClient.MakeApiRequestAsync(url);
         }
 
+        /// <inheritdoc/>
         public GeocodeStatus ValidateResponse(RootResponse content)
         {
             if (content is null)

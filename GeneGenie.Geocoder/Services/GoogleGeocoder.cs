@@ -7,6 +7,9 @@ namespace GeneGenie.Geocoder.Services
 {
     using GeneGenie.Geocoder.Dto.Google;
 
+    /// <summary>
+    /// A geocoder that calls the Google places API to generate coordinates for an address.
+    /// </summary>
     public class GoogleGeocoder : IGeocoder, IGeocoderAddressProcessor<RootResponse>
     {
         private const string GoogleRestApiEndpoint = "https://maps.googleapis.com/maps/api/geocode/json";
@@ -28,6 +31,12 @@ namespace GeneGenie.Geocoder.Services
         private readonly GeocoderSettings geocoderSettings;
         private readonly ILogger logger;
 
+        /// <summary>
+        /// Creates an instance of the Google geocoder.
+        /// </summary>
+        /// <param name="geocoderHttpClient">A class for making HTTP requests that can be swapped out in test.</param>
+        /// <param name="geocoderSettings">The settings for this geocoder.</param>
+        /// <param name="logger">A logger for creating diagnostic logs.</param>
         public GoogleGeocoder(IGeocoderHttpClient geocoderHttpClient, GeocoderSettings geocoderSettings, ILogger<GoogleGeocoder> logger)
         {
             this.geocoderHttpClient = geocoderHttpClient;
@@ -36,8 +45,10 @@ namespace GeneGenie.Geocoder.Services
             geocoderAddressLookup = new GeocoderAddressLookup<RootResponse>(this, logger);
         }
 
+        /// <inheritdoc/>
         public GeocoderNames GeocoderId { get => GeocoderNames.Google; }
 
+        /// <inheritdoc/>
         public async Task<GeocodeResponseDto> GeocodeAddressAsync(GeocodeRequest geocodeRequest)
         {
             var response = await geocoderAddressLookup.GeocodeAddressAsync(geocodeRequest);
@@ -61,6 +72,7 @@ namespace GeneGenie.Geocoder.Services
             return new GeocodeResponseDto(response.ResponseStatus);
         }
 
+        /// <inheritdoc/>
         public GeocoderStatusMapping ExtractStatus(RootResponse content)
         {
             if (string.IsNullOrWhiteSpace(content.Status))
@@ -107,12 +119,14 @@ namespace GeneGenie.Geocoder.Services
             return GeocodeStatus.Success;
         }
 
+        /// <inheritdoc/>
         public async Task<HttpResponseMessage> MakeApiRequestAsync(GeocodeRequest geocodeRequest)
         {
             var url = BuildUrl(geocodeRequest);
             return await geocoderHttpClient.MakeApiRequestAsync(url);
         }
 
+        /// <inheritdoc/>
         public GeocodeStatus ValidateResponse(RootResponse root)
         {
             var statusCode = ValidateResults(root);
@@ -124,7 +138,7 @@ namespace GeneGenie.Geocoder.Services
             return ValidateGeometry(root.Results);
         }
 
-        public GeocodeStatus ValidateResults(RootResponse root)
+        private GeocodeStatus ValidateResults(RootResponse root)
         {
             if (root == null || root.Results == null || !root.Results.Any())
             {
