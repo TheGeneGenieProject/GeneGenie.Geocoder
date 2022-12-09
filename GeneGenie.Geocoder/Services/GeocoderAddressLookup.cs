@@ -45,7 +45,7 @@ namespace GeneGenie.Geocoder.Services
                 }
 
                 var json = await response.Content.ReadAsStringAsync();
-                logger.LogTrace((int)LogEventIds.GeocoderResponse, json);
+                logger.LogTrace((int)LogEventIds.GeocoderResponse, "Geocoder response was - {json}", json);
                 var content = JsonConvert.DeserializeObject<T>(json);
 
                 var statusCode = geocoderAddressProcessor.ValidateResponse(content);
