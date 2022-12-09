@@ -18,7 +18,7 @@ namespace GeneGenie.Geocoder.Console.Samples
         /// can be picked up and used to select an alternative configuration file, as per usual .Net Core configuration.
         /// </param>
         /// <returns>A <see cref="Task"/> that should be awaited.</returns>
-        internal async Task ExecuteAsync(string[] args)
+        internal static async Task ExecuteAsync(string[] args)
         {
             var configuration = ConfigureSettings.Build(args);
             var serviceProvider = ConfigureDi.BuildDi(configuration);

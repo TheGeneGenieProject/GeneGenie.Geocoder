@@ -29,12 +29,10 @@ namespace GeneGenie.Geocoder.Console
             switch (choice)
             {
                 case SampleChoice.SimpleLookup:
-                    var simpleLookup = new SimpleLookup();
-                    await simpleLookup.ExecuteAsync();
+                    await SimpleLookup.ExecuteAsync();
                     break;
                 case SampleChoice.DependencyInjection:
-                    var diLookup = new DependencyInjectionLookup();
-                    await diLookup.ExecuteAsync(args);
+                    await DependencyInjectionLookup.ExecuteAsync(args);
                     break;
                 default:
                     System.Console.WriteLine("Could not figure out selection, exiting.");

@@ -15,7 +15,7 @@ namespace GeneGenie.Geocoder.Console.Samples
         /// The sample demonstrates the 'round robin' approach to geocoder selection (first Bing will be used, then Google).
         /// </summary>
         /// <returns>A <see cref="Task"/> that should be awaited.</returns>
-        internal async Task ExecuteAsync()
+        internal static async Task ExecuteAsync()
         {
             // Define the API keys for the geocoders we'll be using.
             var geocoderSettings = new List<GeocoderSettings>
