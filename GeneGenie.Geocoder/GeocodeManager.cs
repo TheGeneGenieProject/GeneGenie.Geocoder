@@ -91,7 +91,7 @@ namespace GeneGenie.Geocoder
             return addressLookupResult;
         }
 
-        private AddressLookupStatus SummariseGeocodeStatus(Dictionary<GeocoderNames, GeocodeStatus> geocodersTried)
+        private static AddressLookupStatus SummariseGeocodeStatus(Dictionary<GeocoderNames, GeocodeStatus> geocodersTried)
         {
             if (geocodersTried.ContainsValue(GeocodeStatus.Success))
             {
