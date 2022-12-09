@@ -44,7 +44,7 @@ namespace GeneGenie.Geocoder.Tests.Fakes
             return await Task.FromResult(response);
         }
 
-        private HttpStatusCode ExtractStatusCodeFromUrl(string url)
+        private static HttpStatusCode ExtractStatusCodeFromUrl(string url)
         {
             var urlParams = url.Substring(url.IndexOf("?") + 1);
             var keyvalues = urlParams.Split("&");
@@ -83,7 +83,7 @@ namespace GeneGenie.Geocoder.Tests.Fakes
             return HttpStatusCode.NotImplemented;
         }
 
-        private string ExtractContentFromFile(string url)
+        private static string ExtractContentFromFile(string url)
         {
             var content = string.Empty;
             var urlParams = url.Substring(url.IndexOf("?") + 1);
