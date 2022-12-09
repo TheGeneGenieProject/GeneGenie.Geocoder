@@ -178,7 +178,7 @@ namespace GeneGenie.Geocoder.Services
             return QueryHelpers.AddQueryString(BingRestApiEndpoint, parameters);
         }
 
-        private LocationPair ConvertPoint(Point point)
+        private static LocationPair ConvertPoint(Point point)
         {
             if (point != null && point.Coordinates.Count == 2)
             {
@@ -192,9 +192,9 @@ namespace GeneGenie.Geocoder.Services
             return null;
         }
 
-        private Bounds ConvertBoundingBox(List<double> points)
+        private static Bounds ConvertBoundingBox(List<double> points)
         {
-            if (points != null && points.Count == 4)
+            if (points is {Count: 4})
             {
                 return new Bounds
                 {
