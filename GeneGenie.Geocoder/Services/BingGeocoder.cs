@@ -145,7 +145,7 @@ namespace GeneGenie.Geocoder.Services
 
             if (content.ErrorDetails != null && content.ErrorDetails.Any())
             {
-                content.ErrorDetails.ForEach(e => logger.LogWarning((int)LogEventIds.GeocoderError, e));
+                content.ErrorDetails.ForEach(e => logger.LogWarning((int)LogEventIds.GeocoderError,"Geocoder error", e));
                 return GeocodeStatus.Error;
             }
 
