@@ -16,7 +16,7 @@ namespace GeneGenie.Geocoder.Tests.Fakes
         /// </summary>
         public abstract GeocoderNames GeocoderId { get; }
 
-        internal Dictionary<GeocoderNames, GeocodeStatus> ExtractStatusFromAddress(string address)
+        internal static Dictionary<GeocoderNames, GeocodeStatus> ExtractStatusFromAddress(string address)
         {
             var statusList = new Dictionary<GeocoderNames, GeocodeStatus>();
             var splitByGeocoder = address.Split(";");

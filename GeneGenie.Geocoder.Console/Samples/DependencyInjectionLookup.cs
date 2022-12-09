@@ -8,7 +8,7 @@ namespace GeneGenie.Geocoder.Console.Samples
     /// <summary>
     /// Sample of how to use the geocoder in a .Net Core environment with Dependency Injection.
     /// </summary>
-    internal class DependencyInjectionLookup
+    internal abstract class DependencyInjectionLookup
     {
         /// <summary>
         /// Sets up standard .Net Core configuration, DI, logging and registers the geocoder with DI.
