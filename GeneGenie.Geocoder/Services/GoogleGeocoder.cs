@@ -179,7 +179,7 @@ namespace GeneGenie.Geocoder.Services
             return GeocodeStatus.Success;
         }
 
-        private Models.Geo.LocationPair ConvertLocation(LocationPair locationPair)
+        private static Models.Geo.LocationPair ConvertLocation(LocationPair locationPair)
         {
             return new Models.Geo.LocationPair
             {
@@ -188,7 +188,7 @@ namespace GeneGenie.Geocoder.Services
             };
         }
 
-        private Models.Geo.Bounds ConvertBounds(Geometry geometry)
+        private static Models.Geo.Bounds ConvertBounds(Geometry geometry)
         {
             if (geometry.Bounds != null)
             {
