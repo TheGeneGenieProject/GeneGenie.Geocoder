@@ -14,7 +14,7 @@ namespace GeneGenie.Geocoder.Services
     {
         private const string GoogleRestApiEndpoint = "https://maps.googleapis.com/maps/api/geocode/json";
 
-        private static readonly List<GeocoderStatusMapping> GoogleStatusMappings = new List<GeocoderStatusMapping>
+        private static readonly List<GeocoderStatusMapping> GoogleStatusMappings = new()
         {
             new GeocoderStatusMapping { IsPermanentError = false, IsTemporaryError = false, StatusText = "OK", Status = GeocodeStatus.Success },
             new GeocoderStatusMapping { IsPermanentError = true, IsTemporaryError = false, StatusText = "INVALID_REQUEST", Status = GeocodeStatus.InvalidRequest },
