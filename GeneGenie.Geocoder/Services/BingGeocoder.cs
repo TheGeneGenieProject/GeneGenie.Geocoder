@@ -173,7 +173,7 @@ namespace GeneGenie.Geocoder.Services
                 { "maxResults", MaxResults.ToString() },
             };
 
-            geocoderAddressLookup.AddUrlParameters(geocodeRequest, parameters, "c", "userRegion", "userMapView");
+            GeocoderUrlHelper.AddUrlParameters(geocodeRequest, parameters, "c", "userRegion", "userMapView");
 
             return QueryHelpers.AddQueryString(BingRestApiEndpoint, parameters);
         }

@@ -215,7 +215,7 @@ namespace GeneGenie.Geocoder.Services
                 { "sensor", "false" },
             };
 
-            geocoderAddressLookup.AddUrlParameters(geocodeRequest, parameters, "language", "region", "bounds");
+            GeocoderUrlHelper.AddUrlParameters(geocodeRequest, parameters, "language", "region", "bounds");
 
             return QueryHelpers.AddQueryString(GoogleRestApiEndpoint, parameters);
         }
