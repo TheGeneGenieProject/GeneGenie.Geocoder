@@ -35,6 +35,7 @@
 	  <None Remove="Data\Bing\MissingLocation.json" />
 	  <None Remove="Data\Bing\NullResults.json" />
 	  <None Remove="Data\Bing\ZeroResults.json" />
+	  <None Remove="Data\Google\NullResults.json" />
 	  <None Remove="Data\Google\RequestDenied.json" />
 	  <None Remove="Data\Google\ValidButMissingResults.json" />
 	</ItemGroup>
@@ -64,6 +65,7 @@
         <EmbeddedResource Include="Data\Bing\Valid.json" />
         <EmbeddedResource Include="Data\Google\JunkStatus.json" />
         <EmbeddedResource Include="Data\Google\RequestDenied.json" />
+        <EmbeddedResource Include="Data\Google\NullResults.json" />
         <EmbeddedResource Include="Data\Google\ValidButMissingResults.json" />
         <EmbeddedResource Include="Data\Google\ZeroResults.json" />
         <EmbeddedResource Include="Data\Google\MissingBoundsAndViewport.json" />

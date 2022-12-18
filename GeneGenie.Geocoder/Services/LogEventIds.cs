@@ -80,7 +80,7 @@ namespace GeneGenie.Geocoder.Services
         GeocoderApiCallDenied = 2007,
 
         /// <summary>
-        /// An OK response was received from the API but the results were empty.
+        /// An OK response was received from the API but the results were empty or Null.
         /// </summary>
         GeocoderMissingResults = 2008,
 

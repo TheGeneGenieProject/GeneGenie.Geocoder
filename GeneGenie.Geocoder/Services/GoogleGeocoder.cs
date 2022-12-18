@@ -174,11 +174,13 @@ namespace GeneGenie.Geocoder.Services
 
             if (content.Results == null)
             {
-                return LogHttpResponse("Results missing when searching", content.Error_message, address, status, LogEventIds.GeocoderMissingResults);
+                status = new GeocoderStatusMapping { Status = GeocodeStatus.ZeroResults, StatusText = "Results null when searching" };
+                return LogHttpResponse("Results null when searching", content.Error_message, address, status, LogEventIds.GeocoderMissingResults);
             }
 
             if (!content.Results.Any())
             {
+                status = new GeocoderStatusMapping { Status = GeocodeStatus.ZeroResults, StatusText = "Results missing when searching" };
                 return LogHttpResponse("Results missing when searching", content.Error_message, address, status, LogEventIds.GeocoderZeroResults);
             }
 
