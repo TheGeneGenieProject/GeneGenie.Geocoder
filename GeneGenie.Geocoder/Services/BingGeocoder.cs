@@ -269,16 +269,16 @@ namespace GeneGenie.Geocoder.Services
             return statusRow;
         }
 
-        private string BuildUrl(GeocodeRequest geocodeRequest)
+        internal string BuildUrl(GeocodeRequest geocodeRequest)
         {
             var parameters = new Dictionary<string, string>()
             {
-                { "query", geocodeRequest.Address ?? string.Empty },
-                { "key", geocoderSettings.ApiKey ?? string.Empty },
+                { "query", geocodeRequest.Address ?? "" },
+                { "key", geocoderSettings.ApiKey ?? "" },
                 { "maxResults", MaxResults.ToString() },
             };
 
-            GeocoderUrlHelper.AddUrlParameters(geocodeRequest, parameters, "c", "userRegion", "userMapView");
+            GeocoderUrlHelper.AddUrlParameters(geocodeRequest, parameters, "culture", "userRegion", "userMapView", ',');
 
             return QueryHelpers.AddQueryString(BingRestApiEndpoint, parameters);
         }

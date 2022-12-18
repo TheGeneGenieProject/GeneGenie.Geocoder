@@ -16,7 +16,9 @@ namespace GeneGenie.Geocoder.Services
         /// <param name="localeKey">The name of the locale/language parameter.</param>
         /// <param name="regionKey">The name of the region parameter.</param>
         /// <param name="boundsKey">The name of the bounding area parameter.</param>
-        internal static void AddUrlParameters(GeocodeRequest geocodeRequest, Dictionary<string, string> parameters, string localeKey, string regionKey, string boundsKey)
+        /// <param name="boundsDelimiter">The character to use to split the bounding pairs. Differs between Google and Bing.</param>
+        internal static void AddUrlParameters(GeocodeRequest geocodeRequest, Dictionary<string, string> parameters, 
+            string localeKey, string regionKey, string boundsKey, char boundsDelimiter)
         {
             if (!string.IsNullOrWhiteSpace(geocodeRequest.Locale))
             {
@@ -32,7 +34,7 @@ namespace GeneGenie.Geocoder.Services
             {
                 var sw = $"{geocodeRequest.BoundsHint.SouthWest.Latitude},{geocodeRequest.BoundsHint.SouthWest.Longitude}";
                 var ne = $"{geocodeRequest.BoundsHint.NorthEast.Latitude},{geocodeRequest.BoundsHint.NorthEast.Longitude}";
-                parameters.Add(boundsKey, $"{sw},{ne}");
+                parameters.Add(boundsKey, $"{sw}{boundsDelimiter}{ne}");
             }
         }
     }
