@@ -33,5 +33,11 @@ namespace GeneGenie.Geocoder.Services
 
         /// <summary>The server is temporarily unavailable, usually due to high load or maintenance.</summary>
         TemporaryError,
+
+        /// <summary>Indicates that the request could not be processed due to a server error and probably won't work without user attention.</summary>
+        PermanentError,
+
+        /// <summary>The status code text returned in the content from the API was blank and is unusable.</summary>
+        StatusEmpty,
     }
 }

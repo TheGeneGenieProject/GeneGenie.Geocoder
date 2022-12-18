@@ -53,6 +53,7 @@ namespace GeneGenie.Geocoder
             {
                 Address = address,
                 BoundsHint = null,
+                Language = null,
             };
             var addressLookupResult = new GeocodeResponse();
 
@@ -68,7 +69,7 @@ namespace GeneGenie.Geocoder
 
                 var geocoderResponse = await geocoder.GeocodeAddressAsync(geocodeRequest);
 
-                if (geocoderResponse.ResponseStatus == GeocodeStatus.Success)
+                if (geocoderResponse.ResponseDetail.GeocodeStatus == GeocodeStatus.Success)
                 {
                     addressLookupResult.Locations = geocoderResponse
                         .Locations
@@ -83,7 +84,7 @@ namespace GeneGenie.Geocoder
                     addressLookupResult.Status = AddressLookupStatus.Geocoded;
                 }
 
-                geocodersTried.Add(geocoder.GeocoderId, geocoderResponse.ResponseStatus);
+                geocodersTried.Add(geocoder.GeocoderId, geocoderResponse.ResponseDetail.GeocodeStatus);
             }
             while (addressLookupResult.Status != AddressLookupStatus.Geocoded);
 

@@ -9,7 +9,7 @@ namespace GeneGenie.Geocoder.Tests.Fakes
     /// Fake for testing geocoder classes that implement <see cref="IGeocoder"/> and make network calls.
     /// This class replaces those network calls and does not cause any network traffic.
     /// </summary>
-    public class FakeGeocoderHttpClient : IGeocoderHttpClient
+    internal sealed class FakeGeocoderHttpClient : IGeocoderHttpClient
     {
         /// <summary>
         /// Simulates a HTTP call to an external geocoding service and returns a result based on the
@@ -26,7 +26,7 @@ namespace GeneGenie.Geocoder.Tests.Fakes
 
             if (url.Contains("NULL"))
             {
-                response.Content = new StringContent(string.Empty);
+                response.Content = new StringContent("");
             }
             else if (url.Contains("Header") && url.Contains("SlowDown"))
             {
@@ -40,13 +40,17 @@ namespace GeneGenie.Geocoder.Tests.Fakes
             {
                 response.Content = new StringContent(ExtractContentFromFile(url));
             }
+            else if (url.Contains("Exception"))
+            {
+                throw new DivideByZeroException("Not really, just testing exception catching.");
+            }
 
             return await Task.FromResult(response);
         }
 
         private static HttpStatusCode ExtractStatusCodeFromUrl(string url)
         {
-            var urlParams = url.Substring(url.IndexOf("?") + 1);
+            var urlParams = url.Substring(url.IndexOf('?') + 1);
             var keyvalues = urlParams.Split("&");
 
             // Google uses 'address' for the parameter.
@@ -86,7 +90,7 @@ namespace GeneGenie.Geocoder.Tests.Fakes
         private static string ExtractContentFromFile(string url)
         {
             var content = string.Empty;
-            var urlParams = url.Substring(url.IndexOf("?") + 1);
+            var urlParams = url.Substring(url.IndexOf('?') + 1);
             var keyvalues = urlParams.Split("&");
 
             foreach (var keyvalueItem in keyvalues)

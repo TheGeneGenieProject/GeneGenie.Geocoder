@@ -8,7 +8,7 @@ namespace GeneGenie.Geocoder.Console
     /// <summary>
     /// Console app demonstrating varying uses of the <see cref="GeocodeManager"/> class which is the main method used to geocode addresses.
     /// </summary>
-    public class Program
+    public static class Program
     {
         private enum SampleChoice
         {
@@ -22,17 +22,17 @@ namespace GeneGenie.Geocoder.Console
         /// </summary>
         /// <param name="args">Command line arguments, can be used to override the configuration json file in the Dependency Injection example.</param>
         /// <returns>A <see cref="Task"/> representing the result of the asynchronous operation.</returns>
-        protected static async Task Main(string[] args)
+        internal static async Task Main(string[] args)
         {
             var choice = RenderAndSelectSampleChoice();
 
             switch (choice)
             {
                 case SampleChoice.SimpleLookup:
-                    await SimpleLookup.ExecuteAsync();
+                    await SimpleLookup.ExecuteAsync().ConfigureAwait(false);
                     break;
                 case SampleChoice.DependencyInjection:
-                    await DependencyInjectionLookup.ExecuteAsync(args);
+                    await DependencyInjectionLookup.ExecuteAsync(args).ConfigureAwait(false);
                     break;
                 default:
                     System.Console.WriteLine("Could not figure out selection, exiting.");
@@ -54,15 +54,15 @@ namespace GeneGenie.Geocoder.Console
             var pressed = System.Console.ReadKey(true);
             System.Console.WriteLine();
 
-            switch (pressed.Key)
+            if (pressed.Key == ConsoleKey.D1)
             {
-                case ConsoleKey.D1:
-                    return SampleChoice.SimpleLookup;
-                case ConsoleKey.D2:
-                    return SampleChoice.DependencyInjection;
-                default:
-                    return SampleChoice.Exit;
+                return SampleChoice.SimpleLookup;
             }
+            if (pressed.Key == ConsoleKey.D2)
+            {
+                return SampleChoice.DependencyInjection;
+            }
+            return SampleChoice.Exit;
         }
     }
 }

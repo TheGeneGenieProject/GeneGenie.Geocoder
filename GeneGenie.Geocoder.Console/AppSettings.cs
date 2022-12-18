@@ -9,7 +9,7 @@ namespace GeneGenie.Geocoder.Console
     /// Settings for the sample app, loaded from appsettings.json, appsettings.development.json
     /// or environment variables.
     /// </summary>
-    public class AppSettings
+    internal sealed class AppSettings
     {
         /// <summary>
         /// A list of enabled geocoders and their API keys for the demo.

@@ -12,9 +12,9 @@ namespace GeneGenie.Geocoder.Dto
     /// <typeparam name="T">The C# type equivalent of the JSON response, unique to each external API.</typeparam>
     internal class GeocoderAddressLookupResponse<T>
     {
-        internal GeocoderAddressLookupResponse(GeocodeStatus responseStatus)
+        internal GeocoderAddressLookupResponse(ResponseDetail responseDetail)
         {
-            this.ResponseStatus = responseStatus;
+            this.ResponseDetail = responseDetail;
         }
 
         /// <summary>
@@ -23,8 +23,8 @@ namespace GeneGenie.Geocoder.Dto
         internal T Content { get; set; }
 
         /// <summary>
-        /// A parsed mix of the HTTP and content response reflecting the status of the API call.
+        /// The status of the geocode lookup.
         /// </summary>
-        internal GeocodeStatus ResponseStatus { get; set; }
+        internal ResponseDetail ResponseDetail { get; set; }
     }
 }

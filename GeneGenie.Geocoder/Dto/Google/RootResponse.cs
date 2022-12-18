@@ -20,11 +20,6 @@ namespace GeneGenie.Geocoder.Dto.Google
         public string Error_message { get; set; }
 
         /// <summary>
-        /// Indicates that the geocoder did not return an exact match for the original request, though it was able to match part of the requested address.
-        /// </summary>
-        public bool Partial_match { get; set; }
-
-        /// <summary>
         /// An array of geocoded address information and geometry information.
         /// </summary>
         public List<Result> Results { get; set; }

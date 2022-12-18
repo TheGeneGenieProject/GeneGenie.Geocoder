@@ -18,11 +18,14 @@ namespace GeneGenie.Geocoder.Models.Geo
         /// <summary>
         /// Gets or sets a hint passed in from the user that defines the geographical area where the search should apply additional emphasis to.
         /// For example, to focus on a part of the world or a specific part of a country and exclude similar place names found overseas.
+        /// Currently not used, for future expansion.
         /// </summary>
         public Bounds BoundsHint { get; set; }
 
         /// <summary>Gets or sets a hint to the geocoder so that the results may be localised.
-        /// Can be left as empty / null if not used.</summary>
+        /// Can be left as empty / null if not used.
+        /// Currently not used, for future expansion.
+        /// </summary>
         public string Language { get; set; }
 
         /// <summary>Gets or sets a hint to the geocoder so that the results may be localised.</summary>

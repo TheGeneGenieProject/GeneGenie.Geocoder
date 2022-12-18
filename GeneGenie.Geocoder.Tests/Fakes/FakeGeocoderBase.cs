@@ -16,9 +16,9 @@ namespace GeneGenie.Geocoder.Tests.Fakes
         /// </summary>
         public abstract GeocoderNames GeocoderId { get; }
 
-        internal static Dictionary<GeocoderNames, GeocodeStatus> ExtractStatusFromAddress(string address)
+        internal static Dictionary<GeocoderNames, ResponseDetail> ExtractResponseDetailFromAddress(string address)
         {
-            var statusList = new Dictionary<GeocoderNames, GeocodeStatus>();
+            var statusList = new Dictionary<GeocoderNames, ResponseDetail>();
             var splitByGeocoder = address.Split(";");
 
             foreach (var statusPair in splitByGeocoder)
@@ -27,8 +27,9 @@ namespace GeneGenie.Geocoder.Tests.Fakes
 
                 var geocoderId = Enum.Parse<GeocoderNames>(splitByNameAndStatus[0], true);
                 var geocoderStatus = Enum.Parse<GeocodeStatus>(splitByNameAndStatus[1], true);
+                var responseDetail = new ResponseDetail("XX", geocoderStatus);
 
-                statusList.Add(geocoderId, geocoderStatus);
+                statusList.Add(geocoderId, responseDetail);
             }
 
             return statusList;

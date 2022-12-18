@@ -10,23 +10,23 @@ namespace GeneGenie.Geocoder.Services
     /// <summary>
     /// A geocoder that calls the Google places API to generate coordinates for an address.
     /// </summary>
-    public class GoogleGeocoder : IGeocoder, IGeocoderAddressProcessor<RootResponse>
+    public class GoogleGeocoder : IGeocoder
     {
         private const string GoogleRestApiEndpoint = "https://maps.googleapis.com/maps/api/geocode/json";
 
         private static readonly List<GeocoderStatusMapping> GoogleStatusMappings = new()
         {
             new GeocoderStatusMapping { IsPermanentError = false, IsTemporaryError = false, StatusText = "OK", Status = GeocodeStatus.Success },
-            new GeocoderStatusMapping { IsPermanentError = true, IsTemporaryError = false, StatusText = "INVALID_REQUEST", Status = GeocodeStatus.InvalidRequest },
+            new GeocoderStatusMapping { IsPermanentError = true, IsTemporaryError = false, StatusText = "INVALID_REQUEST", Status = GeocodeStatus.PermanentError },
             new GeocoderStatusMapping { IsPermanentError = false, IsTemporaryError = true, StatusText = "OVER_DAILY_LIMIT", Status = GeocodeStatus.TooManyRequests },
             new GeocoderStatusMapping { IsPermanentError = false, IsTemporaryError = true, StatusText = "OVER_QUERY_LIMIT", Status = GeocodeStatus.TooManyRequests },
-            new GeocoderStatusMapping { IsPermanentError = false, IsTemporaryError = false, StatusText = "REQUEST_DENIED", Status = GeocodeStatus.RequestDenied },
+            new GeocoderStatusMapping { IsPermanentError = true, IsTemporaryError = false, StatusText = "REQUEST_DENIED", Status = GeocodeStatus.PermanentError },
             new GeocoderStatusMapping { IsPermanentError = false, IsTemporaryError = true, StatusText = "UNKNOWN_ERROR", Status = GeocodeStatus.TemporaryError },
             new GeocoderStatusMapping { IsPermanentError = false, IsTemporaryError = false, StatusText = "ZERO_RESULTS", Status = GeocodeStatus.ZeroResults },
-            new GeocoderStatusMapping { IsPermanentError = true, IsTemporaryError = true, StatusText = "Unparseable error", Status = GeocodeStatus.Error },
+            new GeocoderStatusMapping { IsPermanentError = true, IsTemporaryError = false, StatusText = "Unparseable error", Status = GeocodeStatus.PermanentError },
+            new GeocoderStatusMapping { IsPermanentError = true, IsTemporaryError = false, StatusText = "Content status empty", Status = GeocodeStatus.StatusEmpty },
         };
 
-        private readonly GeocoderAddressLookup<RootResponse> geocoderAddressLookup;
         private readonly IGeocoderHttpClient geocoderHttpClient;
         private readonly GeocoderSettings geocoderSettings;
         private readonly ILogger logger;
@@ -42,20 +42,21 @@ namespace GeneGenie.Geocoder.Services
             this.geocoderHttpClient = geocoderHttpClient;
             this.geocoderSettings = geocoderSettings;
             this.logger = logger;
-            geocoderAddressLookup = new GeocoderAddressLookup<RootResponse>(this, logger);
         }
 
         /// <inheritdoc/>
         public GeocoderNames GeocoderId { get => GeocoderNames.Google; }
 
+        private static readonly ResponseDetail OkResponse = new("OK", GeocodeStatus.Success);
+
         /// <inheritdoc/>
         public async Task<GeocodeResponseDto> GeocodeAddressAsync(GeocodeRequest geocodeRequest)
         {
-            var response = await geocoderAddressLookup.GeocodeAddressAsync(geocodeRequest);
+            var response = await GeocodeAddressInternalAsync(geocodeRequest);
 
-            if (response.ResponseStatus == GeocodeStatus.Success)
+            if (response.ResponseDetail.GeocodeStatus == GeocodeStatus.Success)
             {
-                return new GeocodeResponseDto(GeocodeStatus.Success)
+                return new GeocodeResponseDto(OkResponse)
                 {
                     Locations = response.Content
                         .Results
@@ -69,54 +70,74 @@ namespace GeneGenie.Geocoder.Services
                 };
             }
 
-            return new GeocodeResponseDto(response.ResponseStatus);
+            return new GeocodeResponseDto(response.ResponseDetail);
         }
 
-        /// <inheritdoc/>
-        public GeocoderStatusMapping ExtractStatus(RootResponse content)
+        private sealed class GoogleResponse : GeocoderAddressLookupResponse<RootResponse>
         {
-            if (string.IsNullOrWhiteSpace(content.Status))
+            internal GoogleResponse(ResponseDetail responseStatusDetail) : base(responseStatusDetail)
             {
-                return GoogleStatusMappings.First(s => s.Status == GeocodeStatus.Error);
             }
+        }
 
+        private async Task<GoogleResponse> GeocodeAddressInternalAsync(GeocodeRequest geocodeRequest)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(geocodeRequest.Address))
+                {
+                    logger.LogWarning((int)LogEventIds.GeocoderInputEmpty, "Data passed to geocoder was empty.");
+                    return new GoogleResponse(new("Data passed to geocoder was empty.", GeocodeStatus.InvalidRequest));
+                }
+
+                var response = await MakeApiRequestAsync(geocodeRequest);
+                if (response.StatusCode != HttpStatusCode.OK)
+                {
+                    logger.LogWarning((int)LogEventIds.GeocoderError, "Geocoder HTTP error code of {responseDetail}", response.StatusCode.ToString());
+                    return new GoogleResponse(new(response.StatusCode.ToString(), GeocodeStatus.Error));
+                }
+
+                var json = await response.Content.ReadAsStringAsync();
+                logger.LogTrace((int)LogEventIds.GeocoderResponse, "Geocoder response was - {json}", json);
+                var content = JsonConvert.DeserializeObject<RootResponse>(json);
+
+                var responseDetail = ValidateResponse(content, geocodeRequest.Address);
+                if (responseDetail.GeocodeStatus != GeocodeStatus.Success)
+                {
+                    return new GoogleResponse(responseDetail);
+                }
+
+                logger.LogTrace((int)LogEventIds.Success, "Geocode completed successfully for {address}.", geocodeRequest.Address);
+                return new GoogleResponse(OkResponse)
+                {
+                    Content = content
+                };
+            }
+            catch (Exception ex)
+            {
+                logger.LogError((int)LogEventIds.GeocodeException, ex,
+                    "Call to geocoder failed for {address} with error {exception}", geocodeRequest.Address, ex);
+
+                return new GoogleResponse(new($"Call to geocoder failed for {geocodeRequest.Address} with error {ex}", GeocodeStatus.PermanentError));
+            }
+        }
+
+        internal GeocoderStatusMapping LookupContentStatus(RootResponse content)
+        {
             var statusRow = GoogleStatusMappings
                 .FirstOrDefault(s => string.Compare(s.StatusText, content.Status.Trim(), true) == 0);
-            if (statusRow == null)
+            if (statusRow is null)
             {
-                return GoogleStatusMappings.First(s => s.Status == GeocodeStatus.Error);
+                logger.LogWarning((int)LogEventIds.GeocoderUnknownContentStatus, "Unknown status of {status} returned from Google", content.Status);
+                return new GeocoderStatusMapping
+                {
+                    Status = GeocodeStatus.PermanentError,
+                    StatusText = content.Status,
+                    IsPermanentError = true,
+                };
             }
 
             return statusRow;
-        }
-
-        /// <summary>
-        /// Validates the HTTP level response (the status code and headers).
-        /// Does not validate the message itself which is handled by <see cref="ValidateResponse"/>.
-        /// </summary>
-        /// <param name="response">The HTTP response to validate.</param>
-        /// <returns>Returns <see cref="GeocodeStatus.Success"/> if all OK, otherwise returns an error code.</returns>
-        public GeocodeStatus ValidateHttpResponse(HttpResponseMessage response)
-        {
-            if (response.StatusCode == HttpStatusCode.ServiceUnavailable)
-            {
-                logger.LogWarning((int)LogEventIds.GeocoderError, "Service unavailable");
-                return GeocodeStatus.TemporaryError;
-            }
-
-            if (response.StatusCode == HttpStatusCode.InternalServerError)
-            {
-                logger.LogWarning((int)LogEventIds.GeocoderError, "Service error");
-                return GeocodeStatus.Error;
-            }
-
-            if (response.StatusCode != HttpStatusCode.OK)
-            {
-                logger.LogWarning((int)LogEventIds.GeocoderError, "Service error, status code {statusCode}", response.StatusCode);
-                return GeocodeStatus.Error;
-            }
-
-            return GeocodeStatus.Success;
         }
 
         /// <inheritdoc/>
@@ -127,56 +148,88 @@ namespace GeneGenie.Geocoder.Services
         }
 
         /// <inheritdoc/>
-        public GeocodeStatus ValidateResponse(RootResponse root)
+        public ResponseDetail ValidateResponse(RootResponse content, string address)
         {
-            var statusCode = ValidateResults(root);
-            if (statusCode != GeocodeStatus.Success)
+            if (content is null)
             {
-                return statusCode;
+                logger.LogCritical((int)LogEventIds.GeocoderReturnedNull, "Response missing from Google geocode");
+                return new("Response missing from Google geocode", GeocodeStatus.PermanentError);
             }
 
-            return ValidateGeometry(root.Results);
-        }
-
-        private GeocodeStatus ValidateResults(RootResponse root)
-        {
-            if (root == null || root.Results == null || !root.Results.Any())
+            var status = LookupContentStatus(content);
+            if (status.IsPermanentError)
             {
-                if (root?.Status == "ZERO_RESULTS")
-                {
-                    // Technically, the call worked as far as the API is concerned. There were just no results.
-                    logger.LogInformation((int)LogEventIds.GeocoderZeroResults, "Zero results received from Google geocode");
-                    return GeocodeStatus.ZeroResults;
-                }
-
-                logger.LogCritical((int)LogEventIds.GeocoderReturnedNull, "Results missing from Google geocode");
-                return GeocodeStatus.Error;
+                return LogHttpResponse("Geocoder returned permanent error", content.Error_message, address, status, LogEventIds.GeocoderPermanentError);
             }
 
-            return GeocodeStatus.Success;
+            if (status.IsTemporaryError)
+            {
+                return LogHttpResponse("Geocoder returned temporary error", content.Error_message, address, status, LogEventIds.GeocoderTemporaryError);
+            }
+
+            if (status.Status != GeocodeStatus.Success)
+            {
+                return LogHttpResponse("Geocoder did not return success but did not raise an error either when searching", content.Error_message, address, status, LogEventIds.GeocoderZeroResults);
+            }
+
+            if (content.Results == null)
+            {
+                return LogHttpResponse("Results missing when searching", content.Error_message, address, status, LogEventIds.GeocoderMissingResults);
+            }
+
+            if (!content.Results.Any())
+            {
+                return LogHttpResponse("Results missing when searching", content.Error_message, address, status, LogEventIds.GeocoderZeroResults);
+            }
+
+            return ValidateGeometry(content.Results, address);
         }
 
-        private GeocodeStatus ValidateGeometry(List<Result> results)
+        /// <summary>
+        /// Takes the error message and status of an API call and logs it as a warning, then returns response details
+        /// for the end user to view.
+        /// </summary>
+        /// <param name="prefix">Text to show before the error parameters.</param>
+        /// <param name="errorMessage">Message received from the API.</param>
+        /// <param name="address">The address we were trying to geocode.</param>
+        /// <param name="status">The status we want to return to the end user.</param>
+        /// <param name="eventId">The event id for the logging output.</param>
+        /// <returns></returns>
+        private ResponseDetail LogHttpResponse(string prefix, string errorMessage, string address, GeocoderStatusMapping status, LogEventIds eventId)
+        {
+            logger.LogWarning((int)eventId, "{prefix} for {address} with status of {status}, status description of {statusDescription} and error detail of {error}",
+                prefix, address, status.Status.ToString(), status.StatusText, errorMessage);
+
+            var message = $"{prefix} for {address} with status of {status}, status description of {status.StatusText} and error detail of {errorMessage}";
+            return new(message, status.Status);
+        }
+
+        private ResponseDetail ValidateGeometry(List<Result> results, string address)
         {
             if (results.Any(r => r.Geometry == null))
             {
-                logger.LogCritical((int)LogEventIds.GeocoderMissingGeometry, "Missing geometry from Google geocode");
-                return GeocodeStatus.Error;
+                return LogGeometryError("Missing geometry from Google geocode", address, LogEventIds.GeocoderMissingGeometry);
             }
 
             if (results.Any(r => r.Geometry.Bounds == null && r.Geometry.Viewport == null))
             {
-                logger.LogCritical((int)LogEventIds.GeocoderMissingBounds, "Missing geometry from Google geocode");
-                return GeocodeStatus.Error;
+                return LogGeometryError("Missing geometry from Google geocode", address, LogEventIds.GeocoderMissingBounds);
             }
 
             if (results.Any(r => r.Geometry.Location == null))
             {
-                logger.LogCritical((int)LogEventIds.GeocoderMissingLocation, "Missing locations from Google geocode");
-                return GeocodeStatus.Error;
+                return LogGeometryError("Missing locations from Google geocode", address, LogEventIds.GeocoderMissingLocation);
             }
 
-            return GeocodeStatus.Success;
+            return OkResponse;
+        }
+
+        private ResponseDetail LogGeometryError(string prefix, string address, LogEventIds logEventId)
+        {
+            logger.LogWarning((int)logEventId, "Geometry error - {prefix} for {address}", prefix, address);
+
+            var message = $"{prefix} for {address}";
+            return new(message, GeocodeStatus.PermanentError);
         }
 
         private static Models.Geo.LocationPair ConvertLocation(LocationPair locationPair)

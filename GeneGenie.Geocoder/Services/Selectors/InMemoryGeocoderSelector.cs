@@ -15,7 +15,7 @@ namespace GeneGenie.Geocoder.Services.Selectors
     /// </summary>
     public class InMemoryGeocoderSelector : IGeocoderSelector
     {
-        private readonly List<GeocoderNames> emptyList = new List<GeocoderNames>();
+        private readonly List<GeocoderNames> emptyList = new();
         private readonly List<GeocoderSettings> geocoderSettings;
         private readonly IServiceProvider serviceProvider;
         private readonly ITimeProvider timeProvider;

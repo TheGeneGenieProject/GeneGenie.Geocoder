@@ -8,20 +8,20 @@ namespace GeneGenie.Geocoder.Services
     /// <summary>
     /// A geocoder that calls the Bing locations API to generate coordinates for an address.
     /// </summary>
-    public class BingGeocoder : IGeocoder, IGeocoderAddressProcessor<RootResponse>
+    public class BingGeocoder : IGeocoder
     {
         private const int MaxResults = 25;
         private const string BingRestApiEndpoint = "https://dev.virtualearth.net/REST/v1/Locations";
 
-        private static readonly List<GeocoderStatusMapping> BingStatusMappings = new List<GeocoderStatusMapping>
+        private static readonly List<GeocoderStatusMapping> BingStatusMappings = new()
         {
             new GeocoderStatusMapping { IsPermanentError = false, IsTemporaryError = false, StatusText = "OK", Status = GeocodeStatus.Success },
             new GeocoderStatusMapping { IsPermanentError = true, IsTemporaryError = false, StatusText = "Unauthorized", Status = GeocodeStatus.RequestDenied },
             new GeocoderStatusMapping { IsPermanentError = false, IsTemporaryError = true, StatusText = "Service Unavailable", Status = GeocodeStatus.TemporaryError },
             new GeocoderStatusMapping { IsPermanentError = true, IsTemporaryError = true, StatusText = "Unparseable error", Status = GeocodeStatus.Error },
+            new GeocoderStatusMapping { IsPermanentError = false, IsTemporaryError = false, StatusText = "ZERO_RESULTS", Status = GeocodeStatus.ZeroResults },
         };
 
-        private readonly GeocoderAddressLookup<RootResponse> geocoderAddressLookup;
         private readonly IGeocoderHttpClient geocoderHttpClient;
         private readonly GeocoderSettings geocoderSettings;
         private readonly ILogger logger;
@@ -37,20 +37,21 @@ namespace GeneGenie.Geocoder.Services
             this.geocoderHttpClient = geocoderHttpClient;
             this.geocoderSettings = geocoderSettings;
             this.logger = logger;
-            geocoderAddressLookup = new GeocoderAddressLookup<RootResponse>(this, logger);
         }
 
         /// <inheritdoc/>
         public GeocoderNames GeocoderId { get => GeocoderNames.Bing; }
 
+        private static readonly ResponseDetail OkResponse = new("OK", GeocodeStatus.Success);
+
         /// <inheritdoc/>
         public async Task<GeocodeResponseDto> GeocodeAddressAsync(GeocodeRequest geocodeRequest)
         {
-            var response = await geocoderAddressLookup.GeocodeAddressAsync(geocodeRequest);
+            var response = await GeocodeAddressInternalAsync(geocodeRequest);
 
-            if (response.ResponseStatus == GeocodeStatus.Success)
+            if (response.ResponseDetail.GeocodeStatus == GeocodeStatus.Success)
             {
-                return new GeocodeResponseDto(GeocodeStatus.Success)
+                return new GeocodeResponseDto(response.ResponseDetail)
                 {
                     Locations = response.Content
                         .ResourceSets
@@ -66,65 +67,84 @@ namespace GeneGenie.Geocoder.Services
                 };
             }
 
-            return new GeocodeResponseDto(response.ResponseStatus);
+            return new GeocodeResponseDto(response.ResponseDetail);
         }
 
-        /// <inheritdoc/>
-        public GeocoderStatusMapping ExtractStatus(RootResponse content)
+        private sealed class BingResponse : GeocoderAddressLookupResponse<RootResponse>
         {
-            if (string.IsNullOrWhiteSpace(content.StatusDescription))
+            internal BingResponse(ResponseDetail responseStatusDetail) : base(responseStatusDetail)
             {
-                return new GeocoderStatusMapping
-                {
-                    Status = GeocodeStatus.Error,
-                    StatusText = "Empty status received from Bing, unable to parse response.",
-                };
             }
-
-            var statusRow = BingStatusMappings
-                .FirstOrDefault(s => string.Compare(s.StatusText, content.StatusDescription.Trim(), true) == 0);
-            if (statusRow == null)
-            {
-                return BingStatusMappings.First(s => s.Status == GeocodeStatus.Error);
-            }
-
-            return statusRow;
         }
 
         /// <summary>
-        /// Validates the HTTP level response (the status code and headers).
-        /// Does not validate the message itself which is handled by <see cref="ValidateResponse(RootResponse)"/>.
+        /// Given an address will check it for validity, call the API and parse the most common error states.
         /// </summary>
-        /// <param name="response">The HTTP response to validate.</param>
-        /// <returns>Returns <see cref="GeocodeStatus.Success"/> if all OK, otherwise returns an error code.</returns>
-        public GeocodeStatus ValidateHttpResponse(HttpResponseMessage response)
+        /// <param name="geocodeRequest">The address to lookup.</param>
+        /// <returns>The status of the call, if OK then the content can be parsed for the results.</returns>
+        private async Task<BingResponse> GeocodeAddressInternalAsync(GeocodeRequest geocodeRequest)
         {
-            if (response.StatusCode == HttpStatusCode.ServiceUnavailable)
+            try
             {
-                logger.LogWarning((int)LogEventIds.GeocoderError, "Service unavailable");
-                return GeocodeStatus.TemporaryError;
-            }
+                if (string.IsNullOrWhiteSpace(geocodeRequest.Address))
+                {
+                    logger.LogWarning((int)LogEventIds.GeocoderInputEmpty, "Data passed to geocoder was empty.");
+                    return new BingResponse(new("Data passed to geocoder was empty.", GeocodeStatus.InvalidRequest));
+                }
 
-            if (response.StatusCode == HttpStatusCode.InternalServerError)
+                var response = await MakeApiRequestAsync(geocodeRequest);
+                if (response.StatusCode != HttpStatusCode.OK)
+                {
+                    var geocodeStatus = HttpToGeocodeStatusCode(response.StatusCode);
+                    logger.LogWarning((int)LogEventIds.GeocoderError, "Geocoder HTTP error code of {ResponseDetail} resulted in a status of {GeocodeStatus}",
+                        response.StatusCode.ToString(), geocodeStatus);
+                    return new BingResponse(new(response.StatusCode.ToString(), geocodeStatus));
+                }
+
+                // Bing sends back this header instead of HTTP status 429 (back-off) when too many requests.
+                if (response.Headers.Any(h => h.Key == "X-MS-BM-WS-INFO" && h.Value.Any(v => v == "1")))
+                {
+                    logger.LogWarning((int)LogEventIds.GeocoderTooManyRequests, "Backoff received from geocoder");
+                    return new BingResponse(new(response.StatusCode.ToString(), GeocodeStatus.TooManyRequests));
+                }
+
+                var json = await response.Content.ReadAsStringAsync();
+                logger.LogTrace((int)LogEventIds.GeocoderResponse, "Geocoder response was - {json}", json);
+                var content = JsonConvert.DeserializeObject<RootResponse>(json);
+
+                var responseDetail = ValidateResponse(content, geocodeRequest.Address);
+                if (responseDetail.GeocodeStatus != GeocodeStatus.Success)
+                {
+                    return new BingResponse(responseDetail);
+                }
+
+                logger.LogTrace((int)LogEventIds.Success, "Geocode completed successfully for {address}.", geocodeRequest.Address);
+                return new BingResponse(OkResponse)
+                {
+                    Content = content
+                };
+            }
+            catch (Exception ex)
             {
-                logger.LogWarning((int)LogEventIds.GeocoderError, "Service error");
-                return GeocodeStatus.Error;
-            }
+                logger.LogError((int)LogEventIds.GeocodeException, ex,
+                    "Call to geocoder failed for {address} with error {exception}", geocodeRequest.Address, ex);
 
-            // Bing sends back this header instead of HTTP status 429 (back-off) when too many requests.
-            if (response.Headers.Any(h => h.Key == "X-MS-BM-WS-INFO" && h.Value.Any(v => v == "1")))
+                return new BingResponse(new($"Call to geocoder failed for {geocodeRequest.Address} with error {ex}", GeocodeStatus.PermanentError));
+            }
+        }
+
+        private static GeocodeStatus HttpToGeocodeStatusCode(HttpStatusCode statusCode)
+        {
+            return statusCode switch
             {
-                logger.LogWarning((int)LogEventIds.GeocoderTooManyRequests, "Backoff received from geocoder");
-                return GeocodeStatus.TooManyRequests;
-            }
-
-            if (response.StatusCode != HttpStatusCode.OK)
-            {
-                logger.LogWarning((int)LogEventIds.GeocoderError, "Service error, status code {statusCode}", response.StatusCode);
-                return GeocodeStatus.Error;
-            }
-
-            return GeocodeStatus.Success;
+                HttpStatusCode.BadRequest => GeocodeStatus.InvalidRequest,
+                HttpStatusCode.Unauthorized => GeocodeStatus.RequestDenied,
+                HttpStatusCode.Forbidden => GeocodeStatus.RequestDenied,
+                HttpStatusCode.TooManyRequests => GeocodeStatus.TooManyRequests,
+                HttpStatusCode.InternalServerError => GeocodeStatus.Error,
+                HttpStatusCode.ServiceUnavailable => GeocodeStatus.TemporaryError,
+                _ => GeocodeStatus.Error,
+            };
         }
 
         /// <inheritdoc/>
@@ -135,33 +155,118 @@ namespace GeneGenie.Geocoder.Services
         }
 
         /// <inheritdoc/>
-        public GeocodeStatus ValidateResponse(RootResponse content)
+        public ResponseDetail ValidateResponse(RootResponse content, string address)
         {
             if (content is null)
             {
-                logger.LogWarning((int)LogEventIds.GeocoderReturnedNull, "Null response received from API.");
-                return GeocodeStatus.Error;
+                logger.LogCritical((int)LogEventIds.GeocoderReturnedNull, "Response missing from Bing geocode");
+                return new("Response missing from Bing geocode", GeocodeStatus.PermanentError);
             }
 
             if (content.ErrorDetails != null && content.ErrorDetails.Any())
             {
-                content.ErrorDetails.ForEach(e => logger.LogWarning((int)LogEventIds.GeocoderError,"Geocoder error", e));
-                return GeocodeStatus.Error;
+                var errors = FormatErrors(content.ErrorDetails);
+                logger.LogWarning((int)LogEventIds.GeocoderError, "Geocoder errors returned, {errors}", errors);
+                return new(errors, GeocodeStatus.Error);
             }
 
-            if (content.ResourceSets == null || !content.ResourceSets.Any() || content.ResourceSets.Sum(rs => rs.EstimatedTotal) == 0)
+            var status = LookupContentStatus(content.StatusDescription);
+            if (status.IsPermanentError)
             {
-                logger.LogInformation((int)LogEventIds.GeocoderZeroResults, "Zero results received.");
-                return GeocodeStatus.ZeroResults;
+                return LogHttpResponse("Geocoder returned permanent error", content.ErrorDetails, address, status, LogEventIds.GeocoderPermanentError);
             }
 
-            if (content.StatusCode != (int)HttpStatusCode.OK)
+            if (status.IsTemporaryError)
             {
-                logger.LogInformation((int)LogEventIds.GeocoderZeroResults, "Results received but status code was not 'OK', it was instead '{statusCode}'.", content.StatusCode);
-                return GeocodeStatus.Error;
+                return LogHttpResponse("Geocoder returned temporary error", content.ErrorDetails, address, status, LogEventIds.GeocoderTemporaryError);
             }
 
-            return GeocodeStatus.Success;
+            if (content.ResourceSets == null)
+            {
+                status = LookupContentStatus("ZERO_RESULTS");
+                return LogHttpResponse("Results missing from response", content.ErrorDetails, address, status, LogEventIds.GeocoderMissingResults);
+            }
+
+            if (!content.ResourceSets.Any() || content.ResourceSets.Sum(rs => rs.EstimatedTotal) == 0)
+            {
+                status = LookupContentStatus("ZERO_RESULTS");
+                return LogHttpResponse("Zero results returned", content.ErrorDetails, address, status, LogEventIds.GeocoderZeroResults);
+            }
+
+            return ValidateGeometry(content.ResourceSets, address);
+        }
+
+        private ResponseDetail ValidateGeometry(List<ResourceSet> resourceSets, string address)
+        {
+            foreach (var resourceSet in resourceSets)
+            {
+                foreach (var resource in resourceSet.Resources)
+                {
+                    if (resource.BoundingBox is null)
+                    {
+                        return LogGeometryError("Missing bounding box from Bing geocode", address, LogEventIds.GeocoderMissingBounds);
+                    }
+
+                    if (resource.GeocodePoints is null || !resource.GeocodePoints.Any())
+                    {
+                        return LogGeometryError("Missing geocode points from Google geocode", address, LogEventIds.GeocoderMissingGeometry);
+                    }
+
+                    if (resource.Point is null)
+                    {
+                        return LogGeometryError("Missing point from Google geocode", address, LogEventIds.GeocoderMissingLocation);
+                    }
+                }
+            }
+
+            return OkResponse;
+        }
+
+        private ResponseDetail LogGeometryError(string prefix, string address, LogEventIds logEventId)
+        {
+            logger.LogWarning((int)logEventId, "Geometry error - {prefix} for {address}", prefix, address);
+
+            var message = $"{prefix} for {address}";
+            return new(message, GeocodeStatus.PermanentError);
+        }
+
+        private ResponseDetail LogHttpResponse(string prefix, List<string> errors, string address, GeocoderStatusMapping status, LogEventIds eventId)
+        {
+            var errorMessage = FormatErrors(errors);
+
+            logger.LogWarning((int)eventId, "{prefix} for {address} with status of {status}, status description of {statusDescription} and error detail of {error}",
+                prefix, address, status.Status.ToString(), status.StatusText, errorMessage);
+
+            var message = $"{prefix} for {address} with status of {status}, status description of {status.StatusText} and error detail of {errorMessage}";
+            return new(message, status.Status);
+        }
+
+        private static string FormatErrors(List<string> errors)
+        {
+            if (errors is null || !errors.Any())
+            {
+                return "";
+            }
+
+            return string.Join(", ", errors);
+        }
+
+        internal GeocoderStatusMapping LookupContentStatus(string status)
+        {
+            var statusRow = BingStatusMappings
+                .FirstOrDefault(s => string.Compare(s.StatusText, status.Trim(), true) == 0);
+            if (statusRow is null)
+            {
+                logger.LogWarning((int)LogEventIds.GeocoderUnknownContentStatus, "Unknown status of {status} returned from Google", status);
+                return new GeocoderStatusMapping
+                {
+                    Status = GeocodeStatus.PermanentError,
+                    StatusText = status,
+                    IsPermanentError = true,
+                };
+            }
+
+            return statusRow;
         }
 
         private string BuildUrl(GeocodeRequest geocodeRequest)
@@ -194,7 +299,7 @@ namespace GeneGenie.Geocoder.Services
 
         private static Bounds ConvertBoundingBox(List<double> points)
         {
-            if (points is {Count: 4})
+            if (points is { Count: 4 })
             {
                 return new Bounds
                 {

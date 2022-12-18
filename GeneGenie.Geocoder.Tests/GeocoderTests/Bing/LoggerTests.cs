@@ -61,25 +61,12 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Bing
         }
 
         /// <summary>
-        /// Checks that a missing bounds message is not logged if a viewport is received in the response.
-        /// </summary>
-        [Fact]
-        public async Task Missing_bounds_is_not_logged_when_viewport_exists()
-        {
-            var geocodeRequest = new GeocodeRequest { Address = "File=Bing/MissingBounds.json" };
-
-            await geocoder.GeocodeAddressAsync(geocodeRequest);
-
-            Assert.DoesNotContain(logger.LoggedEventIds, l => l.Id == (int)LogEventIds.GeocoderMissingBounds);
-        }
-
-        /// <summary>
         /// Checks that we don't inadvertently log missing bounds if it exists in the result.
         /// </summary>
         [Fact]
-        public async Task Missing_bounds_is_not_logged_when_bounds_exist_and_viewport_does_not()
+        public async Task Missing_bounds_is_not_logged_when_bounds_exist()
         {
-            var geocodeRequest = new GeocodeRequest { Address = "File=Bing/BoundsExist.json" };
+            var geocodeRequest = new GeocodeRequest { Address = "File=Bing/Valid.json" };
 
             await geocoder.GeocodeAddressAsync(geocodeRequest);
 
@@ -147,13 +134,15 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Bing
         [InlineData($"HttpStatusCode={nameof(HttpStatusCode.ServiceUnavailable)}", LogEventIds.GeocoderError)]
         [InlineData($"HttpStatusCode={nameof(HttpStatusCode.InternalServerError)}", LogEventIds.GeocoderError)]
         [InlineData($"HttpStatusCode={nameof(HttpStatusCode.SeeOther)}", LogEventIds.GeocoderError)]
-        [InlineData("File=Bing/TemporaryError.json", LogEventIds.GeocoderError)]
-     // xx [InlineData("File=Bing/PermanentError.json", LogEventIds.GeocoderError)]
-     // xx [InlineData("File=Bing/MissingLocation.json", LogEventIds.GeocoderMissingLocation)]
-     // xx [InlineData("File=Bing/MissingBoundsAndViewport.json", LogEventIds.GeocoderMissingBounds)]
-     // xx [InlineData("File=Bing/MissingGeometry.json", LogEventIds.GeocoderMissingGeometry)]
-     // xx [InlineData("File=Bing/ZeroResults.json", LogEventIds.GeocoderZeroResults)]
-        //[InlineData(null, LogEventIds.GeocoderInputEmpty)]
+        [InlineData("Exception", LogEventIds.GeocodeException)]
+        [InlineData("File=Bing/TemporaryError.json", LogEventIds.GeocoderTemporaryError)]
+        [InlineData("File=Bing/JunkStatus.json", LogEventIds.GeocoderUnknownContentStatus)]
+        [InlineData("File=Bing/MissingLocation.json", LogEventIds.GeocoderMissingLocation)]
+        [InlineData("File=Bing/MissingBounds.json", LogEventIds.GeocoderMissingBounds)]
+        [InlineData("File=Bing/MissingGeometry.json", LogEventIds.GeocoderMissingGeometry)]
+        [InlineData("File=Bing/NullResults.json", LogEventIds.GeocoderMissingResults)]
+        [InlineData("File=Bing/ZeroResults.json", LogEventIds.GeocoderZeroResults)]
+        [InlineData(null, LogEventIds.GeocoderInputEmpty)]
         public async Task Geocoder_status_is_logged_from_bing(string address, LogEventIds expected)
         {
             var geocodeRequest = new GeocodeRequest { Address = address };

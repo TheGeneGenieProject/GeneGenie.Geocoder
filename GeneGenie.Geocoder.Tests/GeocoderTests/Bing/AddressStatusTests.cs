@@ -30,7 +30,7 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Bing
 
             var response = await bingGeocoder.GeocodeAddressAsync(geocodeRequest);
 
-            Assert.Equal(GeocodeStatus.InvalidRequest, response.ResponseStatus);
+            Assert.Equal(GeocodeStatus.InvalidRequest, response.ResponseDetail.GeocodeStatus);
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Bing
 
             var response = await bingGeocoder.GeocodeAddressAsync(geocodeRequest);
 
-            Assert.Equal(GeocodeStatus.Error, response.ResponseStatus);
+            Assert.Equal(GeocodeStatus.PermanentError, response.ResponseDetail.GeocodeStatus);
         }
 
         /// <summary>
@@ -56,20 +56,33 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Bing
 
             var response = await bingGeocoder.GeocodeAddressAsync(geocodeRequest);
 
-            Assert.Equal(GeocodeStatus.TooManyRequests, response.ResponseStatus);
+            Assert.Equal(GeocodeStatus.TooManyRequests, response.ResponseDetail.GeocodeStatus);
         }
 
         /// <summary>
         /// Checks that error responses are parsed from Bing and returned to the caller.
         /// </summary>
         [Fact]
-        public async Task Error_is_returned_when_error_details_returned_from_bing()
+        public async Task Error_code_is_returned_when_error_details_returned_from_bing()
         {
             var geocodeRequest = new GeocodeRequest { Address = "File=Bing/ErrorDetails.json" };
 
             var response = await bingGeocoder.GeocodeAddressAsync(geocodeRequest);
 
-            Assert.Equal(GeocodeStatus.Error, response.ResponseStatus);
+            Assert.Equal(GeocodeStatus.Error, response.ResponseDetail.GeocodeStatus);
+        }
+
+        /// <summary>
+        /// Checks that textual error responses are parsed from Bing and returned to the caller.
+        /// </summary>
+        [Fact]
+        public async Task Error_text_is_returned_when_error_details_returned_from_bing()
+        {
+            var geocodeRequest = new GeocodeRequest { Address = "File=Bing/ErrorDetails.json" };
+
+            var response = await bingGeocoder.GeocodeAddressAsync(geocodeRequest);
+
+            Assert.Contains("Access was denied", response.ResponseDetail.Description);
         }
 
         /// <summary>
@@ -82,7 +95,7 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Bing
 
             var response = await bingGeocoder.GeocodeAddressAsync(geocodeRequest);
 
-            Assert.Equal(GeocodeStatus.Error, response.ResponseStatus);
+            Assert.Equal(GeocodeStatus.PermanentError, response.ResponseDetail.GeocodeStatus);
         }
 
         /// <summary>
@@ -95,7 +108,7 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Bing
 
             var response = await bingGeocoder.GeocodeAddressAsync(geocodeRequest);
 
-            Assert.Equal(GeocodeStatus.TemporaryError, response.ResponseStatus);
+            Assert.Equal(GeocodeStatus.TemporaryError, response.ResponseDetail.GeocodeStatus);
         }
 
         /// <summary>
@@ -108,11 +121,24 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Bing
 
             var response = await bingGeocoder.GeocodeAddressAsync(geocodeRequest);
 
-            Assert.Equal(GeocodeStatus.ZeroResults, response.ResponseStatus);
+            Assert.Equal(GeocodeStatus.ZeroResults, response.ResponseDetail.GeocodeStatus);
         }
 
         /// <summary>
-        /// Ensures 'zero results' status code is passed back to the caller.
+        /// Ensures 'zero results' status code is passed back to the caller when Bing returns weird null data.
+        /// </summary>
+        [Fact]
+        public async Task Zero_results_is_returned_when_null_results_returned_from_bing()
+        {
+            var geocodeRequest = new GeocodeRequest { Address = "File=Bing/NullResults.json" };
+
+            var response = await bingGeocoder.GeocodeAddressAsync(geocodeRequest);
+
+            Assert.Equal(GeocodeStatus.ZeroResults, response.ResponseDetail.GeocodeStatus);
+        }
+
+        /// <summary>
+        /// Ensures success status code is passed back to the caller.
         /// </summary>
         [Fact]
         public async Task Success_is_returned_on_valid_response()
@@ -121,7 +147,7 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Bing
 
             var response = await bingGeocoder.GeocodeAddressAsync(geocodeRequest);
 
-            Assert.Equal(GeocodeStatus.Success, response.ResponseStatus);
+            Assert.Equal(GeocodeStatus.Success, response.ResponseDetail.GeocodeStatus);
         }
     }
 }

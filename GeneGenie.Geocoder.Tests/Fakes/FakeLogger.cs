@@ -9,7 +9,7 @@ namespace GeneGenie.Geocoder.Tests.Fakes
     /// Generic test logger for checking what <see cref="EventId"/> codes get written.
     /// </summary>
     /// <typeparam name="T">The class that the logger is for.</typeparam>
-    public class FakeLogger<T> : ILogger<T>
+    internal sealed class FakeLogger<T> : ILogger<T>
     {
         /// <summary>
         /// The number of critical events written.
@@ -49,7 +49,7 @@ namespace GeneGenie.Geocoder.Tests.Fakes
         /// <summary>
         /// The id's of the events written.
         /// </summary>
-        public List<EventId> LoggedEventIds { get; set; } = new List<EventId>();
+        public List<EventId> LoggedEventIds { get; } = new List<EventId>();
 
         /// <summary>
         /// We don't use this in our tests, only here to implement the interface.

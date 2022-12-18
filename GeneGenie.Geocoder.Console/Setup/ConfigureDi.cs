@@ -15,7 +15,7 @@ namespace GeneGenie.Geocoder.Console.Setup
         /// </summary>
         /// <param name="configuration"></param>
         /// <returns></returns>
-        public static IServiceProvider BuildDi(IConfigurationRoot configuration)
+        internal static IServiceProvider BuildDi(IConfigurationRoot configuration)
         {
             var appSettings = configuration.GetSection("App").Get<AppSettings>();
 

@@ -10,7 +10,7 @@ namespace GeneGenie.Geocoder.Tests.ExtensionMethods
         public static string ReadEmbeddedFile(string resourceName)
         {
             var assembly = typeof(ResourceReader).GetTypeInfo().Assembly;
-            var fileName = resourceName.Replace("/", ".");
+            var fileName = resourceName.Replace('/', '.');
 
             using (var stream = assembly.GetManifestResourceStream(fileName))
             {

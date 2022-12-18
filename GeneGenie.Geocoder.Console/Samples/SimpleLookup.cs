@@ -37,7 +37,7 @@ namespace GeneGenie.Geocoder.Console.Samples
             var geocodeManager = GeocodeManager.Create(geocoderSettings);
 
             // This first lookup will be handled by Bing (unless it fails to resolve the address, which will then fail over to Google).
-            var firstResult = await geocodeManager.GeocodeAddressAsync("10 Downing St., London, UK");
+            var firstResult = await geocodeManager.GeocodeAddressAsync("10 Downing St., London, UK").ConfigureAwait(false);
             System.Console.WriteLine($"Result of first lookup, used {firstResult.GeocoderId}, status of {firstResult.Status} with {firstResult.Locations.Count} results.");
             foreach (var foundLocation in firstResult.Locations)
             {
@@ -45,7 +45,7 @@ namespace GeneGenie.Geocoder.Console.Samples
             }
 
             // The following lookup then uses the other geocoder service.
-            var secondResult = await geocodeManager.GeocodeAddressAsync("The Acropolis, Greece");
+            var secondResult = await geocodeManager.GeocodeAddressAsync("The Acropolis, Greece").ConfigureAwait(false);
             System.Console.WriteLine($"Result of second lookup, used {secondResult.GeocoderId}, status of {secondResult.Status} with {secondResult.Locations.Count} results.");
             foreach (var foundLocation in secondResult.Locations)
             {

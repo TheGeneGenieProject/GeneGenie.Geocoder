@@ -8,7 +8,7 @@ namespace GeneGenie.Geocoder.Tests.Fakes
     /// <summary>
     /// A fake Google geocoder for unit testing.
     /// </summary>
-    public class FakeGoogleGeocoder : FakeGeocoderBase, IGeocoder
+    internal sealed class FakeGoogleGeocoder : FakeGeocoderBase, IGeocoder
     {
         /// <inheritdoc/>
         public override GeocoderNames GeocoderId { get => GeocoderNames.Google; }
@@ -21,7 +21,7 @@ namespace GeneGenie.Geocoder.Tests.Fakes
         /// <returns></returns>
         public Task<GeocodeResponseDto> GeocodeAddressAsync(GeocodeRequest geocodeRequest)
         {
-            var requiredStatusList = ExtractStatusFromAddress(geocodeRequest.Address);
+            var requiredStatusList = ExtractResponseDetailFromAddress(geocodeRequest.Address);
             var requiredStatus = requiredStatusList[GeocoderNames.Google];
 
             return Task.FromResult(new GeocodeResponseDto(requiredStatus)

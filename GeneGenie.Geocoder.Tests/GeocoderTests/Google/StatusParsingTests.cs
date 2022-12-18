@@ -5,8 +5,6 @@
 
 namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
 {
-    using GeneGenie.Geocoder.Dto.Google;
-
     /// <summary>
     /// Tests to ensure response parsing from Google handles all of the known status codes.
     /// </summary>
@@ -23,44 +21,30 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
         }
 
         /// <summary>
-        /// Tests that whitespace is logged as an error when received as a status code.
+        /// Checks that the varying responses from Google return the status codes we expect.
         /// </summary>
-        /// <param name="source">One of the whitespace test values.</param>
+        /// <param name="address"></param>
+        /// <param name="expectedGeocodeStatus"></param>
+        /// <returns></returns>
         [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        [InlineData(" ")]
-        [InlineData("  ")]
-        [InlineData("\t")]
-        public void Whitespace_and_non_data_values_are_treated_as_errors(string source)
+        [InlineData("File=Google/Valid.json", GeocodeStatus.Success)]
+        [InlineData($"HttpStatusCode={nameof(HttpStatusCode.ServiceUnavailable)}", GeocodeStatus.Error)]
+        [InlineData($"HttpStatusCode={nameof(HttpStatusCode.InternalServerError)}", GeocodeStatus.Error)]
+        [InlineData($"HttpStatusCode={nameof(HttpStatusCode.SeeOther)}", GeocodeStatus.Error)]
+        [InlineData("File=Google/JunkStatus.json", GeocodeStatus.PermanentError)]
+        [InlineData("File=Google/OverQueryLimit.json", GeocodeStatus.TooManyRequests)]
+        [InlineData("File=Google/MissingLocation.json", GeocodeStatus.PermanentError)]
+        [InlineData("File=Google/MissingBoundsAndViewport.json", GeocodeStatus.PermanentError)]
+        [InlineData("File=Google/MissingGeometry.json", GeocodeStatus.PermanentError)]
+        [InlineData("File=Google/RequestDenied.json", GeocodeStatus.PermanentError)]
+        [InlineData("File=Google/ZeroResults.json", GeocodeStatus.ZeroResults)]
+        public async Task Status_codes_are_as_expected_based_on_google_response(string address, GeocodeStatus expectedGeocodeStatus)
         {
-            var response = geocoder.ExtractStatus(new RootResponse { Status = source });
+            var geocodeRequest = new GeocodeRequest { Address = address };
 
-            Assert.Equal(GeocodeStatus.Error, response.Status);
-        }
+            var response = await geocoder.GeocodeAddressAsync(geocodeRequest);
 
-        /// <summary>
-        /// Checks that spaces around the status response do not break the parsing as well as casing of the status code.
-        /// </summary>
-        /// <param name="source">The status code text.</param>
-        /// <param name="expected">The expected status after parsing.</param>
-        [Theory]
-        [InlineData(" OK ", GeocodeStatus.Success)]
-        [InlineData(" ZERO_RESULTS ", GeocodeStatus.ZeroResults)]
-        [InlineData("Invalid_Request", GeocodeStatus.InvalidRequest)]
-        [InlineData("OK", GeocodeStatus.Success)]
-        [InlineData("ZERO_RESULTS", GeocodeStatus.ZeroResults)]
-        [InlineData("xxxxx", GeocodeStatus.Error)]
-        [InlineData("INVALID_REQUEST", GeocodeStatus.InvalidRequest)]
-        [InlineData("OVER_DAILY_LIMIT", GeocodeStatus.TooManyRequests)]
-        [InlineData("OVER_QUERY_LIMIT", GeocodeStatus.TooManyRequests)]
-        [InlineData("REQUEST_DENIED", GeocodeStatus.RequestDenied)]
-        [InlineData("UNKNOWN_ERROR", GeocodeStatus.TemporaryError)]
-        public void Expected_google_status_codes_can_be_parsed(string source, GeocodeStatus expected)
-        {
-            var response = geocoder.ExtractStatus(new RootResponse { Status = source });
-
-            Assert.Equal(expected, response.Status);
+            Assert.Equal(expectedGeocodeStatus, response.ResponseDetail.GeocodeStatus);
         }
     }
 }

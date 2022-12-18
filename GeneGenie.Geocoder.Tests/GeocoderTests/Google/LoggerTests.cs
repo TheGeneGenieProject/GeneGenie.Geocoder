@@ -48,32 +48,6 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
         }
 
         /// <summary>
-        /// Checks that if a weird null response is received, we log it.
-        /// </summary>
-        [Fact]
-        public async Task Empty_result_from_google_is_logged()
-        {
-            var geocodeRequest = new GeocodeRequest { Address = "File=Empty.json" };
-
-            await geocoder.GeocodeAddressAsync(geocodeRequest);
-
-            Assert.Contains(logger.LoggedEventIds, l => l.Id == (int)LogEventIds.GeocoderReturnedNull);
-        }
-
-        /// <summary>
-        /// Checks that a missing bounds message is not logged if a viewport is received in the response.
-        /// </summary>
-        [Fact]
-        public async Task Missing_bounds_is_not_logged_when_viewport_exists()
-        {
-            var geocodeRequest = new GeocodeRequest { Address = "File=Google/MissingBounds.json" };
-
-            await geocoder.GeocodeAddressAsync(geocodeRequest);
-
-            Assert.DoesNotContain(logger.LoggedEventIds, l => l.Id == (int)LogEventIds.GeocoderMissingBounds);
-        }
-
-        /// <summary>
         /// Checks that we don't inadvertently log missing bounds if it exists in the result.
         /// </summary>
         [Fact]
@@ -147,11 +121,16 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
         [InlineData($"HttpStatusCode={nameof(HttpStatusCode.ServiceUnavailable)}", LogEventIds.GeocoderError)]
         [InlineData($"HttpStatusCode={nameof(HttpStatusCode.InternalServerError)}", LogEventIds.GeocoderError)]
         [InlineData($"HttpStatusCode={nameof(HttpStatusCode.SeeOther)}", LogEventIds.GeocoderError)]
-        [InlineData("File=Google/TemporaryError.json", LogEventIds.GeocoderError)]
-        [InlineData("File=Google/PermanentError.json", LogEventIds.GeocoderError)]
-        [InlineData("File=Google/MissingLocation.json", LogEventIds.GeocoderMissingLocation)]
+        [InlineData("File=Empty.json", LogEventIds.GeocoderReturnedNull)]
+        [InlineData("File=Google/JunkStatus.json", LogEventIds.GeocoderPermanentError)]
+        [InlineData("File=Google/JunkStatus.json", LogEventIds.GeocoderUnknownContentStatus)]
         [InlineData("File=Google/MissingBoundsAndViewport.json", LogEventIds.GeocoderMissingBounds)]
         [InlineData("File=Google/MissingGeometry.json", LogEventIds.GeocoderMissingGeometry)]
+        [InlineData("File=Google/MissingLocation.json", LogEventIds.GeocoderMissingLocation)]
+        [InlineData("File=Google/RequestDenied.json", LogEventIds.GeocoderPermanentError)]
+        [InlineData("File=Google/Valid.json", LogEventIds.Success)]
+        [InlineData("File=Google/ValidButMissingResults.json", LogEventIds.GeocoderZeroResults)]
+        [InlineData("File=Google/ViewportExists.json", LogEventIds.Success)]
         [InlineData("File=Google/ZeroResults.json", LogEventIds.GeocoderZeroResults)]
         [InlineData(null, LogEventIds.GeocoderInputEmpty)]
         public async Task Geocoder_status_is_logged_from_google(string address, LogEventIds expected)

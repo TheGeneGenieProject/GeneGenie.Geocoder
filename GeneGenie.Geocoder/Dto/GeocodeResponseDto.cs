@@ -13,10 +13,10 @@ namespace GeneGenie.Geocoder.Dto
         /// <summary>
         /// Creates a new response from the geocoder with the passed status.
         /// </summary>
-        /// <param name="responseStatus">The status of the lookup to be returned to the caller.</param>
-        public GeocodeResponseDto(GeocodeStatus responseStatus)
+        /// <param name="responseDetail">The status of the lookup to be returned to the caller.</param>
+        public GeocodeResponseDto(ResponseDetail responseDetail)
         {
-            this.ResponseStatus = responseStatus;
+            this.ResponseDetail = responseDetail;
         }
 
         /// <summary>
@@ -27,6 +27,6 @@ namespace GeneGenie.Geocoder.Dto
         /// <summary>
         /// The status of the geocode lookup.
         /// </summary>
-        public GeocodeStatus ResponseStatus { get; set; }
+        public ResponseDetail ResponseDetail { get; set; }
     }
 }

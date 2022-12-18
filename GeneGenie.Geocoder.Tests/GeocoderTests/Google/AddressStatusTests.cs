@@ -30,7 +30,7 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
 
             var response = await googleGeocoder.GeocodeAddressAsync(geocodeRequest);
 
-            Assert.Equal(GeocodeStatus.InvalidRequest, response.ResponseStatus);
+            Assert.Equal(GeocodeStatus.InvalidRequest, response.ResponseDetail.GeocodeStatus);
         }
 
         /// <summary>
@@ -43,20 +43,20 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
 
             var response = await googleGeocoder.GeocodeAddressAsync(geocodeRequest);
 
-            Assert.Equal(GeocodeStatus.Error, response.ResponseStatus);
+            Assert.Equal(GeocodeStatus.PermanentError, response.ResponseDetail.GeocodeStatus);
         }
 
         /// <summary>
         /// Tests that we receive an error when Google has a permanent error.
         /// </summary>
         [Fact]
-        public async Task Error_is_returned_when_receiving_permanent_error_from_google()
+        public async Task Error_is_returned_when_receiving_junk_status_from_google()
         {
-            var geocodeRequest = new GeocodeRequest { Address = "File=Google/PermanentError.json" };
+            var geocodeRequest = new GeocodeRequest { Address = "File=Google/JunkStatus.json" };
 
             var response = await googleGeocoder.GeocodeAddressAsync(geocodeRequest);
 
-            Assert.Equal(GeocodeStatus.Error, response.ResponseStatus);
+            Assert.Equal(GeocodeStatus.PermanentError, response.ResponseDetail.GeocodeStatus);
         }
 
         /// <summary>
@@ -65,11 +65,11 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
         [Fact]
         public async Task Temporary_error_is_returned_when_receiving_temporary_error_from_google()
         {
-            var geocodeRequest = new GeocodeRequest { Address = "File=Google/TemporaryError.json" };
+            var geocodeRequest = new GeocodeRequest { Address = "File=Google/OverQueryLimit.json" };
 
             var response = await googleGeocoder.GeocodeAddressAsync(geocodeRequest);
 
-            Assert.Equal(GeocodeStatus.TemporaryError, response.ResponseStatus);
+            Assert.Equal(GeocodeStatus.TooManyRequests, response.ResponseDetail.GeocodeStatus);
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
 
             var response = await googleGeocoder.GeocodeAddressAsync(geocodeRequest);
 
-            Assert.Equal(GeocodeStatus.Success, response.ResponseStatus);
+            Assert.Equal(GeocodeStatus.Success, response.ResponseDetail.GeocodeStatus);
         }
     }
 }

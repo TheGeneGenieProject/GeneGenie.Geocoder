@@ -22,36 +22,29 @@ namespace GeneGenie.Geocoder.Console.Samples
         {
             var configuration = ConfigureSettings.Build(args);
             var serviceProvider = ConfigureDi.BuildDi(configuration);
-            var logger = serviceProvider.GetService<ILogger<Program>>();
+            var logger = serviceProvider.GetService<ILogger>();
 
-            try
+            var addresses = new List<string>
             {
-                var addresses = new List<string>
-                {
-                    "Luton",
-                    "Unknown",
-                    "?",
-                    "75 Beadlow Road, Lewsey Farm, Luton, LU4 0QZ",
-                    "75 Beadlow Road, Lewsey Farm, Luton, LU4 0QZ, UK",
-                };
+                "Luton",
+                "Unknown",
+                "?",
+                "75 Beadlow Road, Lewsey Farm, Luton, LU4 0QZ",
+                "75 Beadlow Road, Lewsey Farm, Luton, LU4 0QZ, UK",
+            };
 
-                var geocodeManager = serviceProvider.GetRequiredService<GeocodeManager>();
-                foreach (var address in addresses)
-                {
-                    var geocoded = await geocodeManager.GeocodeAddressAsync(address);
+            var geocodeManager = serviceProvider.GetRequiredService<GeocodeManager>();
+            foreach (var address in addresses)
+            {
+                var geocoded = await geocodeManager.GeocodeAddressAsync(address).ConfigureAwait(false);
 
-                    using (logger.BeginScope("Geocoding results for '{address}' via {engine}", address, geocoded.GeocoderId))
+                using (logger.BeginScope("Geocoding results for '{Address}' via {Engine}", address, geocoded.GeocoderId))
+                {
+                    foreach (var location in geocoded.Locations)
                     {
-                        foreach (var location in geocoded.Locations)
-                        {
-                            logger.LogInformation("Result '{address}', {lat},{lng} from {source}", location.FormattedAddress, location.Location.Latitude, location.Location.Longitude, geocoded.GeocoderId);
-                        }
+                        logger.LogInformation("Result '{Address}', {Lat}, {Lng} from {Source}", location.FormattedAddress, location.Location.Latitude, location.Location.Longitude, geocoded.GeocoderId);
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                logger.LogCritical(ex, "Error running console");
             }
         }
     }

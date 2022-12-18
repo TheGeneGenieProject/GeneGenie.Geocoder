@@ -40,7 +40,7 @@ namespace GeneGenie.Geocoder.Tests.GeocoderTests.Google
         [Fact]
         public async Task Viewport_is_used_when_bounds_are_null()
         {
-            var geocodeRequest = new GeocodeRequest { Address = "File=Google/MissingBounds.json" };
+            var geocodeRequest = new GeocodeRequest { Address = "File=Google/ViewportExists.json" };
 
             var response = await googleGeocoder.GeocodeAddressAsync(geocodeRequest);
             var bounds = response.Locations.Single().Bounds;

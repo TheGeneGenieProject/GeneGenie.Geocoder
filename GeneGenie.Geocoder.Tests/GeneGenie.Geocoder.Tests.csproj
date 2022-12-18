@@ -13,16 +13,34 @@
 	<PropertyGroup>
         <WarningLevel>9999</WarningLevel>
         <LangVersion>latest</LangVersion>
-        <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
         <WarningsAsErrors />
-        <NoWarn />
+        <NoWarn>CA1707;IDE0063</NoWarn>
         <AnalysisMode>All</AnalysisMode>
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	  <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	  <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Remove="Data\Bing\JunkStatus.json" />
+	  <None Remove="Data\Bing\MissingBounds.json" />
+	  <None Remove="Data\Bing\MissingGeometry.json" />
+	  <None Remove="Data\Bing\MissingLocation.json" />
+	  <None Remove="Data\Bing\NullResults.json" />
+	  <None Remove="Data\Bing\ZeroResults.json" />
+	  <None Remove="Data\Google\RequestDenied.json" />
+	  <None Remove="Data\Google\ValidButMissingResults.json" />
+	</ItemGroup>
+
     <ItemGroup>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
         <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="7.0.0" />
         <PackageReference Include="xunit" Version="2.4.2" />
@@ -37,7 +55,16 @@
         <EmbeddedResource Include="Data\Bing\UnknownError.json" />
         <EmbeddedResource Include="Data\Bing\ErrorDetails.json" />
         <EmbeddedResource Include="Data\Bing\NoData.json" />
+        <EmbeddedResource Include="Data\Bing\NullResults.json" />
+        <EmbeddedResource Include="Data\Bing\MissingLocation.json" />
+        <EmbeddedResource Include="Data\Bing\MissingBounds.json" />
+        <EmbeddedResource Include="Data\Bing\MissingGeometry.json" />
+        <EmbeddedResource Include="Data\Bing\JunkStatus.json" />
+        <EmbeddedResource Include="Data\Bing\ZeroResults.json" />
         <EmbeddedResource Include="Data\Bing\Valid.json" />
+        <EmbeddedResource Include="Data\Google\JunkStatus.json" />
+        <EmbeddedResource Include="Data\Google\RequestDenied.json" />
+        <EmbeddedResource Include="Data\Google\ValidButMissingResults.json" />
         <EmbeddedResource Include="Data\Google\ZeroResults.json" />
         <EmbeddedResource Include="Data\Google\MissingBoundsAndViewport.json" />
         <EmbeddedResource Include="Data\Google\MissingGeometry.json" />
@@ -45,11 +72,10 @@
         <EmbeddedResource Include="Data\Google\BoundsExist.json" />
         <EmbeddedResource Include="Data\Google\MissingLocation.json" />
         <EmbeddedResource Include="Data\Google\HasBoundsAndViewport.json" />
-        <EmbeddedResource Include="Data\Google\TemporaryError.json" />
-        <EmbeddedResource Include="Data\Google\PermanentError.json" />
+        <EmbeddedResource Include="Data\Google\OverQueryLimit.json" />
         <EmbeddedResource Include="Data\Google\MixedCase.json" />
         <EmbeddedResource Include="Data\Google\Valid.json" />
-        <EmbeddedResource Include="Data\Google\MissingBounds.json" />
+        <EmbeddedResource Include="Data\Google\ViewportExists.json" />
     </ItemGroup>
 
     <ItemGroup>

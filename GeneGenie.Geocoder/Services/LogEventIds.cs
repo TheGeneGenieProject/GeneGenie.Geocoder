@@ -7,6 +7,7 @@ namespace GeneGenie.Geocoder.Services
 {
     /// <summary>
     /// Events logged by the geocoders to the standard logging framework.
+    /// Not all events are logged by all geocoders.
     /// </summary>
     public enum LogEventIds
     {
@@ -69,5 +70,36 @@ namespace GeneGenie.Geocoder.Services
         /// Data passed to geocoder is null or whitespace and could not be used.
         /// </summary>
         GeocoderInputEmpty = 2006,
+
+        /// <summary>
+        /// The geocoder API returned an error that indicates an authorisation issue.
+        /// This could be a bad API key, permissions issue or billing problem.
+        /// You'll need to check the rest of the response and log into the
+        /// geocoder control panel to troubleshoot fully.
+        /// </summary>
+        GeocoderApiCallDenied = 2007,
+
+        /// <summary>
+        /// An OK response was received from the API but the results were empty.
+        /// </summary>
+        GeocoderMissingResults = 2008,
+
+        /// <summary>
+        /// Geocoder API could not process this query and is not likely to succeed if another attempt is made.
+        /// Could be an issue with the addres, API key, billing etc.
+        /// </summary>
+        GeocoderPermanentError = 2009,
+
+        /// <summary>
+        /// Geocoder API could not process this query but might be able to in future.
+        /// Could be due to too many requests, over quota, network conditions etc.
+        /// </summary>
+        GeocoderTemporaryError = 2010,
+
+        /// <summary>
+        /// The HTTP status came back as OK but the content of the response gave us a status code
+        /// that we don't understand. The API may have changed or we've just not implemented everything.
+        /// </summary>
+        GeocoderUnknownContentStatus = 2011,
     }
 }
